@@ -1,0 +1,6 @@
+{
+  "health_title": "API Health",
+  "loading": "Cargando...",
+  "backend_error": "Backend no disponible",
+  "status": "Estado"
+}
