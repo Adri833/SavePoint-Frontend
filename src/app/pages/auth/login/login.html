@@ -1,0 +1,33 @@
+<div class="login-container">
+  <div class="login-card">
+    <!-- IZQUIERDA -->
+    <div class="login-image">
+      <app-logo />
+      <h2>SavePoint</h2>
+      <p>El punto de guardado para tus juegos</p>
+    </div>
+
+    <!-- DERECHA -->
+    <div class="login-form">
+      <h1>Iniciar sesión</h1>
+
+      <form (ngSubmit)="login()">
+        <app-input-field 
+        type="email" 
+        placeholder="Email" 
+        [(ngModel)]="email" 
+        name="email" 
+        />
+
+        <app-input-field
+          type="password"
+          placeholder="Contraseña"
+          [(ngModel)]="password"
+          name="password"
+        />
+
+        <button type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
+</div>

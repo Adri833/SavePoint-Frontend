@@ -1,0 +1,132 @@
+.login-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #151515, #1c1c1c);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  width: 1000px;
+  height: 600px;
+  background: #ffffff;
+  border-radius: 18px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+/* IZQUIERDA */
+.login-image {
+  width: 50%;
+  background: linear-gradient(135deg, #5b3cc4, #3a2a8c);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+}
+
+app-logo {
+  margin-bottom: 20px;
+}
+
+.login-image h2 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.login-image p {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+/* DERECHA */
+.login-form {
+  width: 50%;
+  padding: 60px 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-form h1 {
+  margin-bottom: 30px;
+  font-size: 28px;
+  text-align: center;
+}
+
+.login-form button {
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 20px;
+  background: #5b3cc4;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.login-form button:hover {
+  background: #4a32a8;
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  .login-card {
+    flex-direction: column;
+    width: 90%;
+    max-width: 400px;
+    height: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-radius: 18px;
+    margin: 0 auto;
+  }
+
+  .login-image,
+  .login-form {
+    width: 100%;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  app-logo {
+    margin-bottom: 15px;
+  }
+
+  .login-image h2 {
+    font-size: 28px;
+  }
+
+  .login-image p {
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .login-form h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .login-form input {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .login-form button {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px;
+    font-size: 14px;
+  }
+}

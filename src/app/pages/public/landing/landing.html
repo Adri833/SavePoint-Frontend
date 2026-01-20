@@ -1,0 +1,44 @@
+<div class="landing">
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="logo">
+      <app-logo [width]="50" />
+      <span>SavePoint</span>
+    </div>
+
+    <div class="actions">
+      <button class="ghost" (click)="goToLogin()">Iniciar sesión</button>
+      <button class="primary" (click)="goToRegister()">Registrarse</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Tu progreso<br><span>Guardado</span></h1>
+    <p>Organiza, guarda y sigue tu progreso en tus juegos como nunca antes.</p>
+
+    <div class="hero-actions">
+      <button class="primary" (click)="goToRegister()">Empieza ahora</button>
+      <button class="ghost" (click)="goToLogin()">Ya tengo cuenta</button>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="feature-card">
+      <h3>🎯 Backlog</h3>
+      <p>Ten claro qué juegas ahora y qué viene después.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>💾 Progreso</h3>
+      <p>Marca partidas, completados y pendientes.</p>
+    </div>
+
+    <div class="feature-card">
+      <h3>🎮 Colección</h3>
+      <p>Todo tu catálogo en un solo lugar.</p>
+    </div>
+  </section>
+</div>

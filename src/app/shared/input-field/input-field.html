@@ -1,0 +1,10 @@
+<div class="input-container">
+  <input
+    [type]="type"
+    [placeholder]="placeholder"
+    [name]="name"
+    [value]="value"
+    (input)="onChange($event.target.value)"
+    (blur)="onTouched()"
+  />
+</div>
