@@ -1,5 +1,4 @@
 <div class="landing">
-
   <!-- NAVBAR -->
   <header class="navbar">
     <div class="logo">
@@ -15,30 +14,26 @@
 
   <!-- HERO -->
   <section class="hero">
-    <h1>Tu progreso<br><span>Guardado</span></h1>
-    <p>Organiza, guarda y sigue tu progreso en tus juegos como nunca antes.</p>
+    <div class="hero-content">
+      <h1>
+        Ten el control de tus juegos<br />
+        <span>Unete a la comunidad</span>
+      </h1>
 
-    <div class="hero-actions">
-      <button class="primary" (click)="goToRegister()">Empieza ahora</button>
-      <button class="ghost" (click)="goToLogin()">Ya tengo cuenta</button>
+      <ul class="hero-features">
+        <li>📚 Organiza toda tu biblioteca en un solo lugar</li>
+        <li>⭐ Consulta el proceso de tus juegos</li>
+        <li>🧠 Descubre opiniones y aportes de la comunidad</li>
+      </ul>
+
+      <div class="hero-actions">
+        <app-button-rgb> Únete a SavePoint </app-button-rgb>
+      </div>
+    </div>
+
+    <div class="hero-media">
+      <img src="/mockup.png" alt="Vista de juego" />
     </div>
   </section>
-
-  <!-- FEATURES -->
-  <section class="features">
-    <div class="feature-card">
-      <h3>🎯 Backlog</h3>
-      <p>Ten claro qué juegas ahora y qué viene después.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>💾 Progreso</h3>
-      <p>Marca partidas, completados y pendientes.</p>
-    </div>
-
-    <div class="feature-card">
-      <h3>🎮 Colección</h3>
-      <p>Todo tu catálogo en un solo lugar.</p>
-    </div>
-  </section>
+  <app-trending-games></app-trending-games>
 </div>

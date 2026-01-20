@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
-import { Logo } from '../../../shared/logo/logo';
-import { InputFieldComponent } from '../../../shared/input-field/input-field';
+import { Logo } from '../../../shared/components/logo/logo';
+import { InputFieldComponent } from '../../../shared/components/input-field/input-field';
 
 @Component({
   standalone: true,
