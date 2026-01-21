@@ -1,14 +1,14 @@
 <div class="trending-games">
-  <h2>Popular en 2025</h2>
+  <h2>{{ title }}</h2>
 
   <div class="games-scroll-wrapper">
     <button *ngIf="showLeftButton" class="scroll-btn left" (click)="scrollLeft()">&lt;</button>
 
     <div class="games-scroll" #scrollContainer>
-      <div class="game-card" *ngFor="let game of trendingGames">
+      <div class="game-card" *ngFor="let item of items" (click)="itemClick.emit(item)">
         <div class="image-wrapper">
-          <img [src]="game.image" [alt]="game.name" />
-          <div class="game-title">{{ game.name }}</div>
+          <img [src]="item.image" [alt]="item.name" />
+          <div class="game-title">{{ item.name }}</div>
         </div>
       </div>
     </div>

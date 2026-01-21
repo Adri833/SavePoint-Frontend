@@ -35,5 +35,10 @@
       <img src="/mockup.png" alt="Vista de juego" />
     </div>
   </section>
-  <app-trending-games></app-trending-games>
+
+  <app-horizontal-scroll-section title="Populares en 2025" [items]="trendingGames">
+  </app-horizontal-scroll-section>
+
+  <app-horizontal-scroll-section title="Lo mas esperado" [items]="upComingGames">
+  </app-horizontal-scroll-section>
 </div>

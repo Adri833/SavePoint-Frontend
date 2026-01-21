@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TrendingGames } from './trending-games';
+import { HorizontalScrollSection } from './horizontal-scroll-section';
 
-describe('TrendingGames', () => {
-  let component: TrendingGames;
-  let fixture: ComponentFixture<TrendingGames>;
+describe('HorizontalScrollSection', () => {
+  let component: HorizontalScrollSection;
+  let fixture: ComponentFixture<HorizontalScrollSection>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TrendingGames]
+      imports: [HorizontalScrollSection]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TrendingGames);
+    fixture = TestBed.createComponent(HorizontalScrollSection);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
