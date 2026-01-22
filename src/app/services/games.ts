@@ -23,6 +23,10 @@ export class GamesService {
   }
 
   getUpComingGames(): Observable<Game[]> {
-    return this.http.get<Game[]>(`${this.apiUrl}/upcoming-2026`);
+    return this.http.get<Game[]>(`${this.apiUrl}/upcoming-next-year`);
+  }
+
+  getThisWeekGames(): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/this-week`);
   }
 }

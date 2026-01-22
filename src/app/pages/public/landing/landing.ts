@@ -16,6 +16,8 @@ import { HorizontalScrollSection } from '../../../shared/components/horizontal-s
 export class Landing {
   trendingGames: Game[] = [];
   upComingGames: Game[] = [];
+  thisWeekGames: Game[] = [];
+  
   constructor(
     private router: Router,
     private gamesService: GamesService,
@@ -30,6 +32,11 @@ export class Landing {
 
     this.gamesService.getUpComingGames().subscribe((games) => {
       this.upComingGames = games;
+      this.cdr.detectChanges();
+    });
+
+    this.gamesService.getThisWeekGames().subscribe((games) => {
+      this.thisWeekGames = games;
       this.cdr.detectChanges();
     });
   }

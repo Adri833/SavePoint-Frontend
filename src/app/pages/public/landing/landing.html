@@ -36,9 +36,46 @@
     </div>
   </section>
 
+  <app-horizontal-scroll-section title="Lo mas esperado" [items]="upComingGames">
+  </app-horizontal-scroll-section>
+
+  <app-horizontal-scroll-section title="Nuevo esta semana" [items]="thisWeekGames">
+  </app-horizontal-scroll-section>
+
   <app-horizontal-scroll-section title="Populares en 2025" [items]="trendingGames">
   </app-horizontal-scroll-section>
 
-  <app-horizontal-scroll-section title="Lo mas esperado" [items]="upComingGames">
-  </app-horizontal-scroll-section>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <!-- Sección superior -->
+    <div class="footer-top">
+      <div class="footer-content">
+        <h3>Adrián Álvarez</h3>
+        <p>Desarrollador Full-Stack</p>
+
+        <!-- Iconos rrss -->
+        <div class="social-links">
+          <a
+            href="https://www.linkedin.com/in/Adri833"
+            target="_blank"
+            rel="noopener"
+            aria-label="LinkedIn"
+          >
+            <img src="linkedin.svg" alt="LinkedIn" />
+          </a>
+          <a href="https://github.com/Adri833" target="_blank" rel="noopener" aria-label="GitHub">
+            <img src="github.svg" alt="GitHub" />
+          </a>
+          <a href="mailto:adrialvarez638@gmail.com" aria-label="Email">
+            <img src="email.svg" alt="Email" />
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección inferior -->
+    <div class="footer-bottom">
+      <span>© 2026 SavePoint. Todos los derechos reservados.</span>
+    </div>
+  </footer>
 </div>
