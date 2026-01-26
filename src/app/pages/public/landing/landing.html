@@ -1,16 +1,6 @@
 <div class="landing">
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="logo">
-      <app-logo [width]="50" />
-      <span>SavePoint</span>
-    </div>
-
-    <div class="actions">
-      <button class="ghost" (click)="goToLogin()">Iniciar sesión</button>
-      <button class="primary" (click)="goToRegister()">Registrarse</button>
-    </div>
-  </header>
+  <app-navbar></app-navbar>
 
   <!-- HERO -->
   <section class="hero">
@@ -27,7 +17,7 @@
       </ul>
 
       <div class="hero-actions">
-        <app-button-rgb> Únete a SavePoint </app-button-rgb>
+        <app-button variant="rgb"> Únete a SavePoint </app-button>
       </div>
     </div>
 
@@ -55,20 +45,24 @@
 
         <!-- Iconos rrss -->
         <div class="social-links">
-          <a
+          <app-social-icon
+            icon="linkedin.svg"
             href="https://www.linkedin.com/in/Adri833"
-            target="_blank"
-            rel="noopener"
-            aria-label="LinkedIn"
-          >
-            <img src="linkedin.svg" alt="LinkedIn" />
-          </a>
-          <a href="https://github.com/Adri833" target="_blank" rel="noopener" aria-label="GitHub">
-            <img src="github.svg" alt="GitHub" />
-          </a>
-          <a href="mailto:adrialvarez638@gmail.com" aria-label="Email">
-            <img src="email.svg" alt="Email" />
-          </a>
+            label="LinkedIn"
+          ></app-social-icon>
+
+          <app-social-icon
+            icon="github.svg"
+            href="https://github.com/Adri833"
+            label="GitHub"
+          ></app-social-icon>
+
+          <app-social-icon
+            icon="email.svg"
+            href="mailto:adrialvarez638@gmail.com"
+            label="Email"
+            target="_self"
+          ></app-social-icon>
         </div>
       </div>
     </div>

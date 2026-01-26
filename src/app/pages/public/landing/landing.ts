@@ -2,14 +2,15 @@ import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GamesService, Game } from '../../../services/games';
-import { Logo } from '../../../shared/components/logo/logo';
-import { ButtonRgb } from '../../../shared/components/button-rgb/button-rgb';
 import { HorizontalScrollSection } from '../../../shared/components/horizontal-scroll-section/horizontal-scroll-section';
+import { SocialIcon } from "../../../shared/components/social-icon/social-icon";
+import { Navbar } from '../../../shared/components/navbar/navbar';
+import { Button } from '../../../shared/components/button/button';
 
 @Component({
   standalone: true,
   selector: 'app-landing',
-  imports: [CommonModule, Logo, ButtonRgb, HorizontalScrollSection],
+  imports: [CommonModule, Navbar, Button, HorizontalScrollSection, SocialIcon],
   templateUrl: './landing.html',
   styleUrl: './landing.scss',
 })

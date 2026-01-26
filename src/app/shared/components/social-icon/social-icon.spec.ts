@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ButtonRgb } from './button-rgb';
+import { SocialIcon } from './social-icon';
 
-describe('ButtonRgb', () => {
-  let component: ButtonRgb;
-  let fixture: ComponentFixture<ButtonRgb>;
+describe('SocialIcon', () => {
+  let component: SocialIcon;
+  let fixture: ComponentFixture<SocialIcon>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ButtonRgb]
+      imports: [SocialIcon]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ButtonRgb);
+    fixture = TestBed.createComponent(SocialIcon);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

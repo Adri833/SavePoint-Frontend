@@ -5,28 +5,6 @@
   font-family: 'Inter', sans-serif;
 }
 
-/* NAVBAR */
-.navbar {
-  background-color: #7c5cff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 24px 48px;
-
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    font-size: 18px;
-  }
-
-  .actions {
-    display: flex;
-    gap: 16px;
-  }
-}
-
 /* HERO */
 .hero {
   display: grid;
@@ -71,35 +49,6 @@
   box-shadow: 0 0 clamp(32px, 4vw, 48px) rgba(0, 0, 0, 0.6);
 }
 
-/* BUTTONS */
-button {
-  border: none;
-  padding: 0.9em 2.5em;
-  border-radius: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-button.primary {
-  background: linear-gradient(135deg, #7c5cff, #5b3cc4);
-  color: white;
-  box-shadow: 0 0 16px rgba(124, 92, 255, 0.4);
-}
-
-button.ghost {
-  background: transparent;
-  color: rgba(226, 226, 226, 0.9);
-  border: 1px solid rgba(226, 226, 226, 0.9);
-  transition:
-    color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-button.ghost:hover {
-  color: #ffffff;
-  border-color: #ffffff;
-}
-
 /* FOOTER */
 .footer {
   display: flex;
@@ -139,16 +88,6 @@ button.ghost:hover {
       display: flex;
       gap: clamp(16px, 2vw, 24px);
       margin-top: 12px;
-
-      a img {
-        width: clamp(24px, 3vw, 32px);
-        height: clamp(24px, 3vw, 32px);
-        transition: transform 0.2s;
-      }
-
-      a:hover img {
-        transform: scale(1.2);
-      }
     }
   }
 
