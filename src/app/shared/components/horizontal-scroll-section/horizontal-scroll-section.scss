@@ -114,4 +114,44 @@
       display: none; // retirar botones en movil
     }
   }
+
+  &.animate {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  &.animate.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
+  }
+
+  &.animate .games-scroll {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+
+  &.animate.is-visible .games-scroll {
+    opacity: 1;
+    transform: translateX(0);
+    transition:
+      opacity 0.6s ease 0.15s,
+      transform 0.6s ease 0.15s;
+  }
+
+  &.animate .game-card {
+    transform: translateY(20px);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+
+  &.animate.is-visible .game-card {
+    transform: translateY(0);
+    opacity: 1;
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
 }

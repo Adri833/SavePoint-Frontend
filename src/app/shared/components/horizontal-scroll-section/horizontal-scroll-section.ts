@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export interface scrollItem {
+export interface ScrollItem {
   name: string;
   image: string;
 }
@@ -26,31 +26,27 @@ export interface scrollItem {
 })
 export class HorizontalScrollSection implements AfterViewInit, OnChanges {
   @Input() title: string = '';
-  @Input() items: scrollItem[] = [];
+  @Input() items: ScrollItem[] = [];
 
-  @Output() itemClick = new EventEmitter<scrollItem>();
+  @Output() itemClick = new EventEmitter<ScrollItem>();
 
   showLeftButton = false;
   showRightButton = false;
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('section') section!: ElementRef<HTMLElement>;
 
   constructor(private cdr: ChangeDetectorRef) {}
 
   ngAfterViewInit(): void {
     this.attachScrollListener();
+    this.observeSection();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['items'] && this.scrollContainer) {
       setTimeout(() => this.updateScrollButtons());
     }
-  }
-
-  private attachScrollListener() {
-    this.scrollContainer.nativeElement.addEventListener('scroll', () => this.updateScrollButtons());
-
-    setTimeout(() => this.updateScrollButtons());
   }
 
   scrollLeft() {
@@ -67,6 +63,14 @@ export class HorizontalScrollSection implements AfterViewInit, OnChanges {
     });
   }
 
+  private attachScrollListener() {
+    const container = this.scrollContainer.nativeElement;
+
+    container.addEventListener('scroll', () => this.updateScrollButtons());
+
+    setTimeout(() => this.updateScrollButtons());
+  }
+
   private updateScrollButtons() {
     const container = this.scrollContainer.nativeElement;
 
@@ -76,5 +80,19 @@ export class HorizontalScrollSection implements AfterViewInit, OnChanges {
       container.scrollLeft < container.scrollWidth - container.clientWidth;
 
     this.cdr.detectChanges();
+  }
+
+  private observeSection() {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          this.section.nativeElement.classList.add('is-visible');
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+
+    observer.observe(this.section.nativeElement);
   }
 }

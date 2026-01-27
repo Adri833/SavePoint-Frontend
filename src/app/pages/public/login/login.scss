@@ -1,6 +1,6 @@
 .login-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #151515, #1c1c1c);
+  background: radial-gradient(circle at top, #1a1a2e, #0f0f14);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,7 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
 }
 
-/* IZQUIERDA */
+/* ---------- IZQUIERDA ---------- */
 .login-image {
   width: 50%;
   background: linear-gradient(135deg, #5b3cc4, #3a2a8c);
@@ -43,7 +43,7 @@ app-logo {
   opacity: 0.9;
 }
 
-/* DERECHA */
+/* ---------- DERECHA ---------- */
 .login-form {
   width: 50%;
   padding: 60px 50px;
@@ -55,6 +55,13 @@ app-logo {
 .login-form h1 {
   margin-bottom: 30px;
   font-size: 28px;
+  text-align: center;
+}
+
+.error-text {
+  margin: 12px 0 16px;
+  color: #e5484d;
+  font-size: 14px;
   text-align: center;
 }
 
@@ -74,7 +81,12 @@ app-logo {
   background: #4a32a8;
 }
 
-/* MOBILE */
+.login-form button:disabled {
+  background: #9a8bd6;
+  cursor: not-allowed;
+}
+
+/* ---------- MOBILE ---------- */
 @media (max-width: 767px) {
   .login-card {
     flex-direction: column;
