@@ -1,4 +1,4 @@
-.login-container {
+.register-container {
   min-height: 100vh;
   background: radial-gradient(circle at top, #1a1a2e, #0f0f14);
   display: flex;
@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-.login-card {
+.register-card {
   width: 1000px;
   height: 600px;
   background: #ffffff;
@@ -19,7 +19,7 @@
 }
 
 /* ---------- IZQUIERDA ---------- */
-.login-image {
+.register-image {
   width: 50%;
   background: linear-gradient(135deg, #5b3cc4, #3a2a8c);
   color: white;
@@ -35,18 +35,18 @@ app-logo {
   margin-bottom: 20px;
 }
 
-.login-image h2 {
+.register-image h2 {
   font-size: 36px;
   margin-bottom: 10px;
 }
 
-.login-image p {
+.register-image p {
   font-size: 18px;
   opacity: 0.9;
 }
 
 /* ---------- DERECHA ---------- */
-.login-form {
+.register-form {
   width: 50%;
   padding: 60px 50px;
   display: flex;
@@ -54,7 +54,7 @@ app-logo {
   justify-content: center;
 }
 
-.login-form h1 {
+.register-form h1 {
   margin-bottom: 30px;
   font-size: 28px;
   text-align: center;
@@ -67,7 +67,7 @@ app-logo {
   text-align: center;
 }
 
-.login-form button {
+.register-form button {
   width: 100%;
   padding: 16px;
   border: none;
@@ -79,12 +79,12 @@ app-logo {
   transition: background 0.2s ease;
 }
 
-.login-form button:hover {
+.register-form button:hover {
   background: #4a32a8;
 }
 
-.login-form button:disabled {
-  background: #9a8bd6;
+.register-form button:disabled {
+  background: #5c3cc4bb;
   cursor: not-allowed;
 }
 
@@ -128,7 +128,7 @@ app-logo {
 
 /* ---------- MOBILE ---------- */
 @media (max-width: 767px) {
-  .login-card {
+  .register-card {
     flex-direction: column;
     width: 90%;
     max-width: 400px;
@@ -138,8 +138,8 @@ app-logo {
     margin: 0 auto;
   }
 
-  .login-image,
-  .login-form {
+  .register-image,
+  .register-form {
     width: 100%;
     padding: 20px 40px;
     display: flex;
@@ -152,22 +152,22 @@ app-logo {
     margin-bottom: 15px;
   }
 
-  .login-image h2 {
+  .register-image h2 {
     font-size: 28px;
   }
 
-  .login-image p {
+  .register-image p {
     font-size: 14px;
     text-align: center;
   }
 
-  .login-form h1 {
+  .register-form h1 {
     font-size: 24px;
     margin-bottom: 20px;
     text-align: center;
   }
 
-  .login-form input {
+  .register-form input {
     width: 100%;
     max-width: 300px;
     padding: 12px 14px;
@@ -175,7 +175,7 @@ app-logo {
     margin-bottom: 20px;
   }
 
-  .login-form button {
+  .register-form button {
     width: 100%;
     max-width: 300px;
     padding: 12px;

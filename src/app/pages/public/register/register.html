@@ -1,16 +1,16 @@
-<div class="login-container">
-  <div class="login-card">
+<div class="register-container">
+  <div class="register-card">
     <!-- IZQUIERDA -->
-    <div class="login-image">
+    <div class="register-image">
       <app-logo />
       <h2>SavePoint</h2>
     </div>
 
     <!-- DERECHA -->
-    <div class="login-form">
-      <h1>Iniciar sesión</h1>
+    <div class="register-form">
+      <h1>Crea tu cuenta</h1>
 
-      <form (ngSubmit)="login()">
+      <form (ngSubmit)="register()">
         <app-input-field
           type="email"
           placeholder="Email"
@@ -32,7 +32,7 @@
         </p>
 
         <button type="submit" [disabled]="loading" class="submit-btn">
-          <span class="btn-text" [class.hidden]="loading"> Entrar </span>
+          <span class="btn-text" [class.hidden]="loading"> Regístrate </span>
 
           <span class="spinner" *ngIf="loading"></span>
         </button>
