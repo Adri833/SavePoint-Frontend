@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { GamesService, Game } from '../../../services/games';
 import { HorizontalScrollSection } from '../../../shared/components/horizontal-scroll-section/horizontal-scroll-section';
 import { SocialIcon } from "../../../shared/components/social-icon/social-icon";
-import { Navbar } from '../../../shared/components/navbar/navbar';
+import { Navbar } from '../../../shared/components/navbar-landing/navbar';
 import { Button } from '../../../shared/components/button/button';
 
 @Component({

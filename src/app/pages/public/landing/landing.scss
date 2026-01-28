@@ -8,13 +8,12 @@
 /* HERO */
 .hero {
   display: grid;
-  grid-template-columns: clamp(1fr, 1.1fr, 1.1fr) clamp(0.8fr, 0.9fr, 0.9fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
   gap: clamp(32px, 5vw, 64px);
   padding: clamp(60px, 10vw, 120px) clamp(24px, 8vw, 80px);
-  background: linear-gradient(165deg, #0f0f14, #15152a);
-  color: #ffffff;
 }
+
 
 .hero-content h1 {
   font-size: clamp(32px, 4vw, 56px);

@@ -1,14 +1,15 @@
 .trending-games {
   margin: clamp(40px, 5vw, 90px) 0;
-  padding-left: clamp(16px, 4vw, 36px);
 
   h2 {
+    padding-left: clamp(16px, 4vw, 36px);
     margin-bottom: 24px;
     font-size: clamp(18px, 3vw, 30px);
     color: #ffffff;
   }
 
   .games-scroll-wrapper {
+    overflow-x: hidden;
     position: relative;
   }
 
@@ -16,6 +17,8 @@
     display: flex;
     flex-wrap: nowrap;
     gap: clamp(12px, 3vw, 18px);
+    padding-inline: clamp(16px, 4vw, 36px);
+    box-sizing: border-box;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
@@ -108,13 +111,7 @@
     }
   }
 
-  /* MOBILE */
-  @media (max-width: 768px) {
-    .scroll-btn {
-      display: none; // retirar botones en movil
-    }
-  }
-
+  
   &.animate {
     opacity: 0;
     transform: translateY(40px);
@@ -126,11 +123,6 @@
     transition:
       opacity 0.6s ease,
       transform 0.6s ease;
-  }
-
-  &.animate .games-scroll {
-    opacity: 0;
-    transform: translateX(40px);
   }
 
   &.animate.is-visible .games-scroll {
@@ -153,5 +145,13 @@
     transition:
       transform 0.4s ease,
       opacity 0.4s ease;
+  }
+
+  
+  /* MOBILE */
+  @media (max-width: 768px) {
+    .scroll-btn {
+      display: none; // retirar botones en movil
+    }
   }
 }
