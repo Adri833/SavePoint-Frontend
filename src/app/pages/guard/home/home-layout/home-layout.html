@@ -1,1 +1,12 @@
-<h2>home-layout works!</h2>
+<div class="home-layout">
+  <app-navbar class="navbar"></app-navbar>
+  <app-search-overlay></app-search-overlay>
+  
+  <div class="body">
+    <app-sidebar class="sidebar"></app-sidebar>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+</div>

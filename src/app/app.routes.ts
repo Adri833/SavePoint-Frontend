@@ -27,5 +27,16 @@ export const routes: Routes = [
     path: 'home',
     canActivate: [AuthGuard],
     component: HomeLayout, 
+    children: [
+      {
+        path: 'biblioteca',
+        loadComponent: () => import('./pages/guard/home/biblioteca/biblioteca').then(m => m.Biblioteca),
+      },
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./pages/guard/home/dashboard/dashboard').then(m => m.Dashboard),
+      },
+    ]
   },
+
 ];

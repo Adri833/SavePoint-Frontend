@@ -1,1 +1,18 @@
-<p>sidebar works!</p>
+<aside class="sidebar" [class.collapsed]="collapsed">
+  <div class="sidebar-header">
+    <button class="collapse-btn" [class.expanded]="!collapsed" (click)="toggle()"></button>
+  </div>
+
+  <nav class="menu">
+    <app-sidebar-item
+      (click)="goToBiblioteca()"
+      icon="📚"
+      label="Biblioteca"
+      [collapsed]="collapsed"
+    >
+    </app-sidebar-item>
+
+    <app-sidebar-item (click)="goToDashboard()" icon="📊" label="Dashboard" [collapsed]="collapsed">
+    </app-sidebar-item>
+  </nav>
+</aside>
