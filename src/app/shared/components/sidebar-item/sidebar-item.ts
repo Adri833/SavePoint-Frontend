@@ -9,6 +9,7 @@ import { Component, Input } from '@angular/core';
 })
 export class SidebarItemComponent {
   @Input() icon: string = '';
+  @Input() iconActive: string = '';
   @Input() label: string = '';
   @Input() collapsed: boolean = true;
 }

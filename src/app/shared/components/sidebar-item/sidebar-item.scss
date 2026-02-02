@@ -4,32 +4,100 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
   transition: color 0.2s ease;
 
+  // ---------------- ICONOS ----------------
   .icon {
-    font-size: 20px;
-    transition: transform 0.2s ease;
+    position: relative;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      transform-origin: center;
+    }
+
+    .icon-filled {
+      opacity: 0;
+      transform: scale(0.95);
+    }
   }
 
+  // ---------------- LABEL ----------------
+  .label {
+    position: relative;
+    z-index: 1;
+    transition: opacity 0.3s ease, color 0.2s ease;
+  }
+
+  .label.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  // ---------------- BARRA MORADA ----------------
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 4px;
+    height: 100%;
+    background: #7c5cff;
+    opacity: 0;   
+    transform: scaleY(1);   
+    transition: opacity 0.25s ease; 
+    border-radius: 0 2px 2px 0;
+  }
+
+  // ---------------- HOVER ----------------
   &:hover {
     color: #7c5cff;
 
     .icon {
-      transform: scale(1.15);
+      .icon-outline {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      .icon-filled {
+        opacity: 1;
+        transform: scale(1.1);
+      }
     }
 
-    .hover-bg {
-      left: 0;
+    &::before {
+      opacity: 1; // barra aparece al hover
     }
   }
 
-  &.active {
+  // ---------------- ACTIVE ----------------
+  &.active,
+  :host-context(.active) & {
     color: #7c5cff;
-    box-shadow: inset 4px 0 0 0 #7c5cff;
+
+    .icon {
+      .icon-outline {
+        opacity: 0;
+      }
+      .icon-filled {
+        opacity: 1;
+        transform: scale(1.1);
+      }
+    }
+
+    &::before {
+      opacity: 1;
+    }
 
     .hover-bg {
       left: 0;
@@ -38,24 +106,10 @@
       -webkit-backdrop-filter: blur(8px) saturate(150%);
       box-shadow: 0 0 12px rgba(124, 92, 255, 0.25);
     }
-
-    .icon {
-      transform: scale(1.1);
-    }
-  }
-
-  .label {
-    position: relative;
-    z-index: 1;
-    transition: opacity 0.3s ease;
-  }
-
-  .label.hidden {
-    opacity: 0;
-    pointer-events: none;
   }
 }
 
+// ---------------- TOOLTIP SIDEBAR COLLAPSED ----------------
 .sidebar.collapsed .menu-item[title]:hover::after {
   content: attr(title);
   position: absolute;

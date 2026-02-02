@@ -1,10 +1,10 @@
-import { Component, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { SidebarItemComponent } from "../sidebar-item/sidebar-item";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [SidebarItemComponent],
+  imports: [SidebarItemComponent, RouterModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -13,17 +13,5 @@ export class Sidebar {
 
   toggle() {
     this.collapsed = !this.collapsed;
-  }
-
-  constructor(
-    private router: Router
-  ) {}
-
-  goToBiblioteca() {
-    this.router.navigate(['/home/biblioteca']);
-  }
-
-  goToDashboard() {
-    this.router.navigate(['/home/dashboard']);
   }
 }

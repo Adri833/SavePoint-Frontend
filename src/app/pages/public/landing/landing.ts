@@ -1,7 +1,7 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { GamesService, Game } from '../../../services/games';
+import { GamesService, Game } from '../../../services/games.service';
 import { HorizontalScrollSection } from '../../../shared/components/horizontal-scroll-section/horizontal-scroll-section';
 import { SocialIcon } from "../../../shared/components/social-icon/social-icon";
 import { Navbar } from '../../../shared/components/navbar-landing/navbar';

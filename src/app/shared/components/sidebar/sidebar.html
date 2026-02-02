@@ -1,18 +1,33 @@
 <aside class="sidebar" [class.collapsed]="collapsed">
   <div class="sidebar-header">
-    <button class="collapse-btn" [class.expanded]="!collapsed" (click)="toggle()"></button>
+    <button
+      class="collapse-btn"
+      [class.expanded]="!collapsed"
+      (click)="toggle()"
+    ></button>
   </div>
 
   <nav class="menu">
     <app-sidebar-item
-      (click)="goToBiblioteca()"
-      icon="📚"
+      routerLink="/home/biblioteca"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      icon="/library.svg"
+      iconActive="/library-filled.svg"
       label="Biblioteca"
       [collapsed]="collapsed"
     >
     </app-sidebar-item>
 
-    <app-sidebar-item (click)="goToDashboard()" icon="📊" label="Dashboard" [collapsed]="collapsed">
+    <app-sidebar-item
+      routerLink="/home/dashboard"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      icon="/dashboard.svg"
+      iconActive="/dashboard-filled.svg"
+      label="Dashboard"
+      [collapsed]="collapsed"
+    >
     </app-sidebar-item>
   </nav>
 </aside>

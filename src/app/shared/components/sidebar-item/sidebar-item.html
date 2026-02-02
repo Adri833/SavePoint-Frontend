@@ -1,5 +1,12 @@
-<a class="menu-item" title="{{label}}">
-  <span class="icon">{{icon}}</span>
-  <span class="label" [class.hidden]="collapsed">{{label}}</span>
+<a class="menu-item" title="{{ label }}">
+  <span class="icon">
+    <img class="icon-outline" [src]="icon" alt="" />
+    <img class="icon-filled" [src]="iconActive" alt="" />
+  </span>
+
+  <span class="label" [class.hidden]="collapsed">
+    {{ label }}
+  </span>
+
   <span class="hover-bg"></span>
 </a>
