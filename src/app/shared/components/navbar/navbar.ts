@@ -12,6 +12,6 @@ export class Navbar {
 
   onSearch(event: Event) {
     const value = (event.target as HTMLInputElement).value;
-    this.searchService.setQuery(value);
+    this.searchService.setQuery(value.trim());
   }
 }

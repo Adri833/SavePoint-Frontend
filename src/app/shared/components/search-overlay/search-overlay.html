@@ -1,5 +1,46 @@
-<div class="search-overlay" *ngIf="query">
-  <div class="results">
-    <p>Resultados para "{{ query }}"</p>
+<div
+  class="search-overlay"
+  *ngIf="(query$ | async) as query"
+  (click)="closeOverlay()"
+>
+  <div class="results" (click)="$event.stopPropagation()">
+
+    <!-- LOADING -->
+    <div class="loading" *ngIf="loading$ | async">
+      <div class="spinner"></div>
+      Buscando juegos…
+    </div>
+
+    <!-- RESULTADOS -->
+    <ng-container *ngIf="(results$ | async) as results">
+      <div class="games" *ngIf="results.length && !(loading$ | async); else noResults">
+
+        <div class="game-card" *ngFor="let game of results">
+          <img [src]="game.background_image" alt="" />
+
+          <div class="info">
+            <h4>{{ game.name }}</h4>
+
+            <div class="platforms">
+              <span
+                class="platform"
+                *ngFor="let p of game.parent_platforms"
+                [ngClass]="getPlatformIcon(p.platform.name)"
+                [title]="p.platform.name"
+              ></span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </ng-container>
+
+    <!-- VACÍO -->
+    <ng-template #noResults>
+      <p class="empty" *ngIf="!(loading$ | async)">
+        No se encontraron juegos
+      </p>
+    </ng-template>
+
   </div>
 </div>
