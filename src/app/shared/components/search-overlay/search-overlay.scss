@@ -118,32 +118,6 @@
   }
 }
 
-/* ---------------------- PLATAFORMAS / ICONOS ---------------------- */
-.platforms {
-  display: flex;
-  gap: 6px;
-}
-
-.platform {
-  width: 16px;
-  height: 16px;
-  opacity: 0.85;
-  filter: drop-shadow(0 0 4px rgba(124, 92, 255, 0.35));
-}
-
-.icon-pc {
-  background: url('/pc.svg') center / contain no-repeat;
-}
-.icon-playstation {
-  background: url('/playstation.svg') center / contain no-repeat;
-}
-.icon-xbox {
-  background: url('/xbox.svg') center / contain no-repeat;
-}
-.icon-nintendo {
-  background: url('/nintendo.svg') center / contain no-repeat;
-}
-
 /* ---------------------- LOADING ---------------------- */
 .loading {
   display: flex;

@@ -36,6 +36,10 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./pages/guard/home/dashboard/dashboard').then(m => m.Dashboard),
       },
+      {
+        path: 'game/:id',
+        loadComponent: () => import('./pages/guard/home/game-detail/game-detail').then(m => m.GameDetail),
+      },
     ]
   },
 

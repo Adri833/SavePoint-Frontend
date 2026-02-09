@@ -5,10 +5,13 @@ import { Observable } from 'rxjs';
 export interface Game {
   id: number;
   name: string;
-  image: string;
+  background_image: string;
   rating: number;
   released: string;
+  parent_platforms: { platform: { name: string } }[]; 
+  description: string;
 }
+
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +31,13 @@ export class GamesService {
 
   getThisWeekGames(): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/this-week`);
+  }
+
+  getGameById(id: number): Observable<Game> {
+    return this.http.get<Game>(`${this.apiUrl}/${id}`);
+  }
+
+  getGameScreenshots(id: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/${id}/screenshots`);
   }
 }

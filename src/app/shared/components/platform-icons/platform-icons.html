@@ -1,0 +1,12 @@
+<div
+  class="platforms"
+  [ngClass]="sizeClass"
+  *ngIf="platforms.length"
+>
+  <span
+    class="platform"
+    *ngFor="let p of platforms"
+    [ngClass]="getPlatformIcon(p.platform.name)"
+    [title]="p.platform.name"
+  ></span>
+</div>

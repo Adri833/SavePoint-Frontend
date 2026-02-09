@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 
 export interface ScrollItem {
   name: string;
-  image: string;
+  background_image: string;
 }
 
 @Component({

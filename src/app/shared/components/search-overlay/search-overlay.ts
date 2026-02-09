@@ -1,15 +1,20 @@
 import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchService } from '../../../services/search.service';
+import { Router } from '@angular/router';
+import { PlatformIcons } from '../platform-icons/platform-icons';
 
 @Component({
   selector: 'app-search-overlay',
-  imports: [CommonModule],
+  imports: [CommonModule, PlatformIcons],
   templateUrl: './search-overlay.html',
   styleUrl: './search-overlay.scss',
 })
 export class SearchOverlay {
-  constructor(private searchService: SearchService) {}
+  constructor(
+    private searchService: SearchService,
+    private router: Router,
+  ) {}
 
   get query$() {
     return this.searchService.query$;
@@ -23,19 +28,11 @@ export class SearchOverlay {
     return this.searchService.loading$;
   }
 
-  getPlatformIcon(name: string): string {
-    switch (name.toLowerCase()) {
-      case 'pc':
-        return 'icon-pc';
-      case 'playstation':
-        return 'icon-playstation';
-      case 'xbox':
-        return 'icon-xbox';
-      case 'nintendo':
-        return 'icon-nintendo';
-      default:
-        return '';
-    }
+  goToGame(gameId: number) {
+    this.searchService.clear();
+    document.body.style.overflow = '';
+
+    this.router.navigate(['/home/game', gameId]);
   }
 
   @HostListener('document:keydown', ['$event'])

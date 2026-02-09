@@ -1,0 +1,60 @@
+<div class="game-detail-container">
+  <!-- BACKGROUND -->
+  <div
+    class="game-bg"
+    [class.loaded]="game"
+    [style.background-image]="game ? 'url(' + game.background_image + ')' : null"
+  ></div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="game-content" *ngIf="game">
+    <!-- IZQUIERDA: Datos + acción -->
+    <div class="left-column">
+      <h1>{{ game.name }}</h1>
+
+      <div class="game-meta">
+        <div class="meta-item platforms">
+          <app-platform-icons [platforms]="game.parent_platforms" size="md"> </app-platform-icons>
+        </div>
+
+        <div class="meta-item release" *ngIf="game.released">
+          <span class="icon">📅</span>
+          <span>{{ formatDate(game.released) }}</span>
+        </div>
+
+        <div class="meta-item rating" *ngIf="game.rating" [ngClass]="getRatingClass(game.rating)">
+          <span class="icon">⭐</span>
+          <span>{{ game.rating }}/5</span>
+        </div>
+      </div>
+
+      <div class="about">
+        <h2>About</h2>
+        <p
+          #aboutText
+          class="about-text"
+          [class.collapsed]="!showFullAbout && showToggle"
+          [class.expanded]="showFullAbout"
+          [innerHTML]="game.description"
+        ></p>
+
+        <button class="toggle-btn" *ngIf="showToggle" (click)="showFullAbout = !showFullAbout">
+          {{ showFullAbout ? 'Mostrar menos' : 'Mostrar más' }}
+        </button>
+      </div>
+
+      <button class="start-btn">▶️ Comenzar partida</button>
+    </div>
+
+    <!-- DERECHA: Screenshots -->
+    <div class="right-column" *ngIf="screenshots.length">
+      <!-- Principal -->
+      <img class="main-shot" [src]="screenshots[0]" alt="Screenshot principal" />
+
+      <!-- Secundarias -->
+      <div class="secondary-shots">
+        <img *ngFor="let img of screenshots.slice(1)" [src]="img" alt="Screenshot" />
+      </div>
+    </div>
+  </div>
+</div>

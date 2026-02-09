@@ -1,0 +1,47 @@
+.platforms {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  &.size-sm {
+    .platform {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  &.size-md {
+    .platform {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &.size-lg {
+    .platform {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}
+
+.platform {
+  opacity: 0.85;
+  filter: drop-shadow(0 0 4px rgba(124, 92, 255, 0.35));
+}
+
+.icon-pc {
+  background: url('/pc.svg') center / contain no-repeat;
+}
+
+.icon-playstation {
+  background: url('/playstation.svg') center / contain no-repeat;
+}
+
+.icon-xbox {
+  background: url('/xbox.svg') center / contain no-repeat;
+}
+
+.icon-nintendo {
+  background: url('/nintendo.svg') center / contain no-repeat;
+}
