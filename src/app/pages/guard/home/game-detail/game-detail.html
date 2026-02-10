@@ -6,55 +6,162 @@
     [style.background-image]="game ? 'url(' + game.background_image + ')' : null"
   ></div>
 
+  <!-- SKELETON -->
+  @if (isLoading) {
+    <div class="game-content skeleton">
+      <div class="left-column">
+        <div class="sk-title"></div>
+        <div class="sk-meta"></div>
+        <div class="sk-paragraph"></div>
+        <div class="sk-paragraph short"></div>
+        <div class="sk-button"></div>
+      </div>
+
+      <div class="right-column">
+        <div class="sk-image main"></div>
+        <div class="sk-images">
+          <div class="sk-image"></div>
+          <div class="sk-image"></div>
+        </div>
+      </div>
+    </div>
+  }
+
   <!-- CONTENIDO PRINCIPAL -->
-  <div class="game-content" *ngIf="game">
-    <!-- IZQUIERDA: Datos + acción -->
-    <div class="left-column">
-      <h1>{{ game.name }}</h1>
+  @if (!isLoading && game) {
+    <div class="game-content loaded">
+      <!-- IZQUIERDA: Datos + acción -->
+      <div class="left-column">
+        <h1>{{ game.name }}</h1>
 
-      <div class="game-meta">
-        <div class="meta-item platforms">
-          <app-platform-icons [platforms]="game.parent_platforms" size="md"> </app-platform-icons>
+        <div class="game-meta">
+          @if (game.parent_platforms.length) {
+            <div class="meta-item platforms">
+              <app-platform-icons
+                [platforms]="game.parent_platforms"
+                size="md"
+              ></app-platform-icons>
+            </div>
+          }
+
+          @if (game.released) {
+            <div class="meta-item release">
+              <span class="icon">📅</span>
+              <span>{{ formatDate(game.released) }}</span>
+            </div>
+          }
+
+          @if (game.rating) {
+            <div class="meta-item rating" [ngClass]="getRatingClass(game.rating)">
+              <span class="icon">⭐</span>
+              <span>{{ game.rating }}/5</span>
+            </div>
+          }
         </div>
 
-        <div class="meta-item release" *ngIf="game.released">
-          <span class="icon">📅</span>
-          <span>{{ formatDate(game.released) }}</span>
-        </div>
+        @if (game.description) {
+          <div class="about">
+            <h2>Descripción</h2>
+            <p
+              #aboutText
+              class="about-text"
+              [class.collapsed]="!showFullAbout && showToggle"
+              [class.expanded]="showFullAbout"
+              [innerHTML]="game.description"
+            ></p>
 
-        <div class="meta-item rating" *ngIf="game.rating" [ngClass]="getRatingClass(game.rating)">
-          <span class="icon">⭐</span>
-          <span>{{ game.rating }}/5</span>
-        </div>
+            @if (showToggle) {
+              <button class="toggle-btn" (click)="showFullAbout = !showFullAbout">
+                {{ showFullAbout ? 'Mostrar menos' : 'Mostrar más' }}
+              </button>
+            }
+          </div>
+        }
+
+        <!-- PARTIDA ACTIVA -->
+        @if (hasActivePlaythrough) {
+          <div class="active-playthrough">
+            <h3>🎮 Partida en curso</h3>
+
+            <p class="meta">Iniciada el {{ formatDate(currentPlaythrough.started_at) }}</p>
+
+            @if (currentPlaythrough.notes) {
+              <p class="notes">📝 {{ currentPlaythrough.notes }}</p>
+            }
+
+            <div class="actions">
+              <button class="finish-btn" (click)="openFinishModal()">✅ Terminar</button>
+              <button class="drop-btn" (click)="dropPlaythrough()">❌ Abandonar</button>
+            </div>
+          </div>
+        } @else {
+          <button class="start-btn" (click)="startPlaythrough()">▶️ Comenzar partida</button>
+        }
       </div>
 
-      <div class="about">
-        <h2>About</h2>
-        <p
-          #aboutText
-          class="about-text"
-          [class.collapsed]="!showFullAbout && showToggle"
-          [class.expanded]="showFullAbout"
-          [innerHTML]="game.description"
-        ></p>
+      <!-- DERECHA: Screenshots -->
+      @if (screenshots.length) {
+        <div class="right-column">
+          <!-- Principal -->
+          <img class="main-shot" [src]="screenshots[0]" alt="Screenshot principal" />
 
-        <button class="toggle-btn" *ngIf="showToggle" (click)="showFullAbout = !showFullAbout">
-          {{ showFullAbout ? 'Mostrar menos' : 'Mostrar más' }}
-        </button>
-      </div>
+          <!-- Secundarias -->
+          <div class="secondary-shots">
+            <img *ngFor="let img of screenshots.slice(1)" [src]="img" alt="Screenshot" />
+          </div>
+        </div>
+      }
 
-      <button class="start-btn">▶️ Comenzar partida</button>
+      @if (pastPlaythroughs.length) {
+        <div class="playthrough-history">
+          <h3>📚 Historial de partidas</h3>
+
+          <div class="history-list">
+            <div class="history-item" *ngFor="let p of pastPlaythroughs">
+              <div class="row">
+                <span class="status" [class]="p.status">
+                  {{ p.status === 'finished' ? '✔️ Terminada' : '❌ Abandonada' }}
+                </span>
+
+                <span class="hours"> {{ p.hours }}h </span>
+              </div>
+
+              <div class="dates">
+                {{ formatDate(p.started_at) }}
+                →
+                {{ p.finished_at ? formatDate(p.finished_at) : '—' }}
+              </div>
+
+              @if (p.notes) {
+                <p class="notes">📝 {{ p.notes }}</p>
+              }
+            </div>
+          </div>
+        </div>
+      }
     </div>
+  }
 
-    <!-- DERECHA: Screenshots -->
-    <div class="right-column" *ngIf="screenshots.length">
-      <!-- Principal -->
-      <img class="main-shot" [src]="screenshots[0]" alt="Screenshot principal" />
+  @if (showFinishModal) {
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h3>🏁 Terminar partida</h3>
 
-      <!-- Secundarias -->
-      <div class="secondary-shots">
-        <img *ngFor="let img of screenshots.slice(1)" [src]="img" alt="Screenshot" />
+        <label>
+          Horas jugadas
+          <input type="number" min="0" [(ngModel)]="finishHours" />
+        </label>
+
+        <label>
+          Notas
+          <textarea [(ngModel)]="finishNotes"></textarea>
+        </label>
+
+        <div class="modal-actions">
+          <button (click)="confirmFinish()">Guardar</button>
+          <button (click)="showFinishModal = false">Cancelar</button>
+        </div>
       </div>
     </div>
-  </div>
+  }
 </div>

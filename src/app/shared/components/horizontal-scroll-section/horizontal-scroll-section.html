@@ -2,34 +2,27 @@
   <h2>{{ title }}</h2>
 
   <div class="games-scroll-wrapper">
-    <button
-      *ngIf="showLeftButton"
-      class="scroll-btn left"
-      (click)="scrollLeft()"
-    >
-      &lt;
-    </button>
+    @if (showLeftButton) {
+      <button class="scroll-btn left" (click)="scrollLeft()">&lt;</button>
+    }
 
     <div class="games-scroll" #scrollContainer>
-      <div
-        class="game-card"
-        *ngFor="let item of items; let i = index"
-        [style.transitionDelay.ms]="i * 80"
-        (click)="itemClick.emit(item)"
-      >
-        <div class="image-wrapper">
-          <img [src]="item.background_image" [alt]="item.name" />
-          <div class="game-title">{{ item.name }}</div>
+      @for (item of items; track $index) {
+        <div
+          class="game-card"
+          [style.transitionDelay.ms]="$index * 80"
+          (click)="itemClick.emit(item)"
+        >
+          <div class="image-wrapper">
+            <img [src]="item.background_image" [alt]="item.name" />
+            <div class="game-title">{{ item.name }}</div>
+          </div>
         </div>
-      </div>
+      }
     </div>
 
-    <button
-      *ngIf="showRightButton"
-      class="scroll-btn right"
-      (click)="scrollRight()"
-    >
-      &gt;
-    </button>
+    @if (showRightButton) {
+      <button class="scroll-btn right" (click)="scrollRight()">&gt;</button>
+    }
   </div>
 </div>

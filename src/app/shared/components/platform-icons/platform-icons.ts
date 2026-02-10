@@ -21,6 +21,16 @@ export class PlatformIcons {
     switch (name.toLowerCase()) {
       case 'pc':
         return 'icon-pc';
+      case 'apple macintosh':
+        return 'icon-mac';
+      case 'linux':
+        return 'icon-linux';
+      case 'ios':
+        return 'icon-ios';
+      case 'android':
+        return 'icon-android';
+      case 'web':
+        return 'icon-web';
       case 'playstation':
         return 'icon-playstation';
       case 'xbox':
