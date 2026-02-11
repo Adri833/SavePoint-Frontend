@@ -1,3 +1,28 @@
-<div style="height: 2000px;">
-  <h1>BIBLIOTECA</h1>
+<div class="biblioteca-container">
+  <h1>Mi Biblioteca</h1>
+
+  @if (loading) {
+    <div>Cargando...</div>
+  }
+
+  @if (error) {
+    <div class="error">
+      {{ error }}
+    </div>
+  }
+
+  @if (!loading && playthroughs.length === 0) {
+    <div>No tienes juegos aún.</div>
+  }
+
+  @for (p of playthroughs; track p.id) {
+    <div class="game-card">
+      <p><strong>Game ID:</strong> {{ p.game_id }}</p>
+      <p><strong>Status:</strong> {{ p.status }}</p>
+      <p><strong>Started:</strong> {{ p.started_at }}</p>
+      <p><strong>Ended:</strong> {{ p.ended_at || '—' }}</p>
+      <p><strong>Hours:</strong> {{ p.hours }}</p>
+      <p><strong>Completed:</strong> {{ p.completed }}</p>
+    </div>
+  }
 </div>

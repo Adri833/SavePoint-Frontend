@@ -22,7 +22,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './game-detail.scss',
 })
 export class GameDetail implements OnInit, AfterViewChecked {
-  
   isLoading = true;
   game!: Game;
   screenshots: string[] = [];
@@ -33,7 +32,11 @@ export class GameDetail implements OnInit, AfterViewChecked {
   activePlaythrough: Playthrough | null = null;
   pastPlaythroughs: Playthrough[] = [];
 
-  // modal
+  showStartModal = false;
+  startStep = 1;
+  private _startDate: Date = new Date();
+  startNotes = '';
+
   showFinishModal = false;
   finishHours = 0;
   finishNotes = '';
@@ -57,6 +60,13 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   get currentPlaythrough(): Playthrough {
     return this.activePlaythrough!;
+  }
+
+  get startDate(): string {
+    return this._startDate.toISOString().split('T')[0];
+  }
+  set startDate(value: string) {
+    this._startDate = new Date(value);
   }
 
   /* ================= LIFECYCLE ================= */
@@ -113,12 +123,6 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   /* ================= ACTIONS ================= */
 
-  async startPlaythrough() {
-    if (!this.game) return;
-
-    this.activePlaythrough = await this.playthroughService.start(this.game.id);
-  }
-
   openFinishModal() {
     this.finishHours = 0;
     this.finishNotes = '';
@@ -148,6 +152,38 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.activePlaythrough = null;
   }
 
+  openStartModal() {
+    this.startStep = 1;
+    this._startDate = new Date();
+    this.startNotes = '';
+    this.showStartModal = true;
+  }
+
+  async confirmStart() {
+    if (!this.game) return;
+
+    const created = await this.playthroughService.start(
+      this.game.id,
+      this._startDate,
+      this.startNotes,
+    );
+
+    this.activePlaythrough = created;
+    this.showStartModal = false;
+  }
+
+  nextStartStep() {
+    if (this.startStep < 3) {
+      this.startStep++;
+    }
+  }
+
+  prevStartStep() {
+    if (this.startStep > 1) {
+      this.startStep--;
+    }
+  }
+
   /* ================= UI ================= */
 
   private checkAboutHeight() {
@@ -157,8 +193,9 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.cd.detectChanges();
   }
 
-  formatDate(date: string): string {
-    return new Date(date).toLocaleDateString('es-ES', {
+  formatDate(date: Date | string): string {
+    const d = typeof date === 'string' ? new Date(date) : date;
+    return d.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

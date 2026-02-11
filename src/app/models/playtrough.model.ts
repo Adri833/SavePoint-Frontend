@@ -1,13 +1,15 @@
+export type PlaythroughStatus = 'playing' | 'finished' | 'dropped';
+
 export interface Playthrough {
   id: string;
   user_id: string;
   game_id: number;
-
-  status: 'playing' | 'finished' | 'dropped';
-
-  started_at: string;
-  finished_at: string | null;
-  hours: number | null;
-
+  started_at: Date;
+  ended_at: Date | null;
+  hours: number;
+  completed: boolean;
+  status: PlaythroughStatus;
+  created_at: Date;
+  updated_at: Date;
   notes: string | null;
 }

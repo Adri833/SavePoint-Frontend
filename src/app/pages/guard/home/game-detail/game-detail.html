@@ -81,21 +81,21 @@
         <!-- PARTIDA ACTIVA -->
         @if (hasActivePlaythrough) {
           <div class="active-playthrough">
-            <h3>🎮 Partida en curso</h3>
+            <h3>Partida en curso</h3>
 
             <p class="meta">Iniciada el {{ formatDate(currentPlaythrough.started_at) }}</p>
 
             @if (currentPlaythrough.notes) {
-              <p class="notes">📝 {{ currentPlaythrough.notes }}</p>
+              <p class="notes">{{ currentPlaythrough.notes }}</p>
             }
 
             <div class="actions">
-              <button class="finish-btn" (click)="openFinishModal()">✅ Terminar</button>
-              <button class="drop-btn" (click)="dropPlaythrough()">❌ Abandonar</button>
+              <button class="finish-btn" (click)="openFinishModal()">Terminar</button>
+              <button class="drop-btn" (click)="dropPlaythrough()">Abandonar</button>
             </div>
           </div>
         } @else {
-          <button class="start-btn" (click)="startPlaythrough()">▶️ Comenzar partida</button>
+          <button class="start-btn" (click)="openStartModal()">Comenzar partida</button>
         }
       </div>
 
@@ -112,6 +112,7 @@
         </div>
       }
 
+      <!-- HISTORIAL -->
       @if (pastPlaythroughs.length) {
         <div class="playthrough-history">
           <h3>📚 Historial de partidas</h3>
@@ -120,21 +121,17 @@
             <div class="history-item" *ngFor="let p of pastPlaythroughs">
               <div class="row">
                 <span class="status" [class]="p.status">
-                  {{ p.status === 'finished' ? '✔️ Terminada' : '❌ Abandonada' }}
+                  {{ p.status === 'finished' ? 'Terminada' : 'Abandonada' }}
                 </span>
 
                 <span class="hours"> {{ p.hours }}h </span>
               </div>
 
               <div class="dates">
-                {{ formatDate(p.started_at) }}
-                →
-                {{ p.finished_at ? formatDate(p.finished_at) : '—' }}
+                {{ formatDate(p.started_at) }} → {{ p.ended_at ? formatDate(p.ended_at) : '—' }}
               </div>
 
-              @if (p.notes) {
-                <p class="notes">📝 {{ p.notes }}</p>
-              }
+              <p *ngIf="p.notes" class="notes">{{ p.notes }}</p>
             </div>
           </div>
         </div>
@@ -142,6 +139,7 @@
     </div>
   }
 
+  <!-- MODAL TERMINAR PARTIDA -->
   @if (showFinishModal) {
     <div class="modal-backdrop">
       <div class="modal">
@@ -161,6 +159,71 @@
           <button (click)="confirmFinish()">Guardar</button>
           <button (click)="showFinishModal = false">Cancelar</button>
         </div>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL NUEVA PARTIDA -->
+  @if (showStartModal) {
+    <div class="modal-backdrop">
+      <div class="modal wizard">
+        <h3>Nueva partida</h3>
+
+        <!-- STEP 1 -->
+        @if (startStep === 1) {
+          <div class="step">
+            <h4>Fecha de inicio</h4>
+
+            <label>
+              Selecciona la fecha
+              <input type="date" [(ngModel)]="startDate" />
+            </label>
+
+            <div class="wizard-actions">
+              <button class="cancel" (click)="showStartModal = false">Cancelar</button>
+              <button class="next-btn" [disabled]="!startDate" (click)="nextStartStep()">Siguiente</button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 2 -->
+        @if (startStep === 2) {
+          <div class="step">
+            <h4>Notas</h4>
+
+            <textarea
+              [(ngModel)]="startNotes"
+              placeholder="Ej: partida empezada con 10h"
+            ></textarea>
+
+            <div class="wizard-actions">
+              <button class="next-btn" (click)="prevStartStep()">Atrás</button>
+              <button class="next-btn" (click)="nextStartStep()">Siguiente</button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 3 -->
+        @if (startStep === 3) {
+          <div class="step">
+            <h4>Confirmar</h4>
+
+            <div class="summary">
+              <p><strong>Fecha:</strong> {{ formatDate(startDate) }}</p>
+
+              @if (startNotes) {
+                <p><strong>Notas:</strong> {{ startNotes }}</p>
+              } @else {
+                <p><em>Sin notas</em></p>
+              }
+            </div>
+
+            <div class="wizard-actions">
+              <button (click)="prevStartStep()">Atrás</button>
+              <button class="confirm" (click)="confirmStart()">Crear partida</button>
+            </div>
+          </div>
+        }
       </div>
     </div>
   }

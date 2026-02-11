@@ -6,37 +6,89 @@ import { Playthrough } from '../models/playtrough.model';
   providedIn: 'root',
 })
 export class PlaythroughService {
+  private async getUserId(): Promise<string> {
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) throw new Error('Not authenticated');
+    return user.id;
+  }
+
   /* ========== GET ========== */
 
-  async getByGame(gameId: number): Promise<Playthrough[]> {
+  async getAllByUser(): Promise<Playthrough[]> {
+    const user = (await supabase.auth.getUser()).data.user;
+    if (!user) throw new Error('Not authenticated');
+
     const { data, error } = await supabase
       .from('playthroughs')
       .select('*')
-      .eq('game_id', gameId)
+      .eq('user_id', user.id)
       .order('started_at', { ascending: false });
 
     if (error) throw error;
-    return data ?? [];
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
   }
 
-  async getActiveByGame(gameId: number): Promise<Playthrough | null> {
+  async getByGame(gameId: number): Promise<Playthrough[]> {
+    const userId = await this.getUserId();
+
     const { data, error } = await supabase
       .from('playthroughs')
       .select('*')
       .eq('game_id', gameId)
+      .eq('user_id', userId)
+      .order('started_at', { ascending: false });
+
+    if (error) throw error;
+
+    return (data ?? []).map((p) => ({
+      ...p,
+      started_at: new Date(p.started_at),
+      ended_at: p.ended_at ? new Date(p.ended_at) : null,
+      created_at: new Date(p.created_at),
+      updated_at: new Date(p.updated_at),
+    }));
+  }
+
+  async getActiveByGame(gameId: number): Promise<Playthrough | null> {
+    const userId = await this.getUserId();
+
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .select('*')
+      .eq('game_id', gameId)
+      .eq('user_id', userId)
       .eq('status', 'playing')
       .maybeSingle();
 
     if (error) throw error;
-    return data;
+
+    if (!data) return null;
+
+    return {
+      ...data,
+      started_at: new Date(data.started_at),
+      ended_at: data.ended_at ? new Date(data.ended_at) : null,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
+    };
   }
 
   /* ========== CREATE ========== */
 
-
-  async start(gameId: number, notes?: string) {
+  async start(gameId: number, startedAt: Date, notes?: string) {
     const user = (await supabase.auth.getUser()).data.user;
     if (!user) throw new Error('Not authenticated');
+
+    if (startedAt > new Date()) {
+      throw new Error('La fecha de inicio no puede ser futura');
+    }
 
     const { data, error } = await supabase
       .from('playthroughs')
@@ -44,26 +96,33 @@ export class PlaythroughService {
         user_id: user.id,
         game_id: gameId,
         status: 'playing',
-        started_at: new Date().toISOString(),
+        started_at: startedAt.toISOString(),
         notes: notes ?? null,
       })
       .select()
       .single();
 
     if (error) throw error;
-    return data as Playthrough;
+
+    return {
+      ...data,
+      started_at: new Date(data.started_at),
+      ended_at: data.ended_at ? new Date(data.ended_at) : null,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
+    } as Playthrough;
   }
 
   /* ========== UPDATE ========== */
-
 
   async finish(id: string, hours: number, notes?: string) {
     const { data, error } = await supabase
       .from('playthroughs')
       .update({
         status: 'finished',
-        finished_at: new Date().toISOString(),
+        ended_at: new Date().toISOString(),
         hours,
+        completed: true,
         notes: notes ?? null,
       })
       .eq('id', id)
@@ -71,7 +130,14 @@ export class PlaythroughService {
       .single();
 
     if (error) throw error;
-    return data as Playthrough;
+
+    return {
+      ...data,
+      started_at: new Date(data.started_at),
+      ended_at: data.ended_at ? new Date(data.ended_at) : null,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
+    } as Playthrough;
   }
 
   async drop(id: string, notes?: string) {
@@ -86,6 +152,13 @@ export class PlaythroughService {
       .single();
 
     if (error) throw error;
-    return data as Playthrough;
+
+    return {
+      ...data,
+      started_at: new Date(data.started_at),
+      ended_at: data.ended_at ? new Date(data.ended_at) : null,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
+    } as Playthrough;
   }
 }
