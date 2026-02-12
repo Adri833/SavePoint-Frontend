@@ -1,7 +1,8 @@
 .game-detail-container {
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
   color: #fff;
   font-family: 'Inter', sans-serif;
   z-index: 0;
@@ -16,7 +17,6 @@
     background-position: center;
     z-index: -1;
     filter: blur(14px) brightness(0.15) saturate(0.8);
-    transform: scale(1.1);
   }
 
   &::before {
@@ -163,14 +163,14 @@
         font-size: 1rem;
         border: none;
         cursor: pointer;
-        box-shadow: 0 10px 30px rgba(124, 92, 255, 0.35);
+        box-shadow: 0 2px 8px rgba(124, 92, 255, 0.35);
         transition:
           transform 0.2s ease,
           box-shadow 0.2s ease;
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 14px 40px rgba(124, 92, 255, 0.45);
+          box-shadow: 0 2px 10px rgba(124, 92, 255, 0.45);
         }
       }
     }
@@ -183,9 +183,8 @@
 
       .main-shot {
         width: 100%;
-        max-width: fit-content;
-        max-height: fit-content;
-        object-fit: fill;
+        max-height: 280px;
+        object-fit: cover;
         border-radius: 12px;
         margin-bottom: 0.7rem;
         transition:
@@ -203,10 +202,9 @@
 
         img {
           width: 100%;
-          max-width: fit-content;
-          max-height: fit-content;
+          max-height: 140px;
           border-radius: 8px;
-          object-fit: fill;
+          object-fit: cover;
           transition:
             transform 0.2s ease,
             box-shadow 0.2s ease;
@@ -218,87 +216,6 @@
         }
       }
     }
-  }
-
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-
-  .modal {
-    background: #1e1e2f;
-    padding: 30px;
-    border-radius: 12px;
-    width: 400px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .modal label {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    font-size: 14px;
-  }
-
-  .modal input,
-  .modal textarea {
-    background: #111;
-    border: 1px solid #333;
-    color: white;
-    padding: 8px;
-    border-radius: 6px;
-  }
-
-  .modal-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  .modal.wizard {
-    width: 420px;
-    animation: fadeInScale 0.2s ease;
-  }
-
-  .step {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .wizard-actions {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
-  }
-
-  .summary {
-    background: #111;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #333;
-  }
-
-  textarea {
-    min-height: 90px;
-    resize: vertical;
-  }
-
-  button.confirm {
-    background: #4e7cff;
-    color: white;
-  }
-
-  button.cancel {
-    opacity: 0.7;
   }
 
   @keyframes fadeInScale {

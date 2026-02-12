@@ -115,14 +115,30 @@ export class PlaythroughService {
 
   /* ========== UPDATE ========== */
 
-  async finish(id: string, hours: number, notes?: string) {
+  async finish(
+    id: string,
+    ended_at: Date,
+    hours: number,
+    completed: boolean,
+    platinum: boolean,
+    notes?: string,
+  ) {
+    if (platinum && !completed) {
+      throw new Error('No se puede tener platino sin completar el juego');
+    }
+
+    if (ended_at > new Date()) {
+      throw new Error('La fecha de finalización no puede ser futura');
+    }
+
     const { data, error } = await supabase
       .from('playthroughs')
       .update({
         status: 'finished',
         ended_at: new Date().toISOString(),
         hours,
-        completed: true,
+        completed,
+        platinum,
         notes: notes ?? null,
       })
       .eq('id', id)

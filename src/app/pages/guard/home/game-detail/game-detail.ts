@@ -13,11 +13,13 @@ import { PlatformIcons } from '../../../../shared/components/platform-icons/plat
 import { Playthrough } from '../../../../models/playtrough.model';
 import { PlaythroughService } from '../../../../services/playtrough.service';
 import { FormsModule } from '@angular/forms';
+import { StartPlaythroughModal } from '../../../../shared/components/start-playthrough-modal/start-playthrough-modal';
+import { FinishPlaythroughModal } from '../../../../shared/components/finish-playthrough-modal/finish-playthrough-modal';
 
 @Component({
   selector: 'app-game-detail',
   standalone: true,
-  imports: [CommonModule, PlatformIcons, FormsModule],
+  imports: [CommonModule, PlatformIcons, FormsModule, StartPlaythroughModal, FinishPlaythroughModal],
   templateUrl: './game-detail.html',
   styleUrl: './game-detail.scss',
 })
@@ -28,18 +30,11 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   showFullAbout = false;
   showToggle = false;
+  showStartModal = false;
+  showFinishModal = false;
 
   activePlaythrough: Playthrough | null = null;
   pastPlaythroughs: Playthrough[] = [];
-
-  showStartModal = false;
-  startStep = 1;
-  private _startDate: Date = new Date();
-  startNotes = '';
-
-  showFinishModal = false;
-  finishHours = 0;
-  finishNotes = '';
 
   private needsHeightCheck = false;
 
@@ -60,13 +55,6 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   get currentPlaythrough(): Playthrough {
     return this.activePlaythrough!;
-  }
-
-  get startDate(): string {
-    return this._startDate.toISOString().split('T')[0];
-  }
-  set startDate(value: string) {
-    this._startDate = new Date(value);
   }
 
   /* ================= LIFECYCLE ================= */
@@ -94,6 +82,8 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
     this.activePlaythrough = all.find((p) => p.status === 'playing') ?? null;
     this.pastPlaythroughs = all.filter((p) => p.status !== 'playing');
+
+    this.cd.detectChanges();
   }
 
   loadGame(gameId: number) {
@@ -123,65 +113,34 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   /* ================= ACTIONS ================= */
 
-  openFinishModal() {
-    this.finishHours = 0;
-    this.finishNotes = '';
-    this.showFinishModal = true;
-  }
-
-  async confirmFinish() {
-    if (!this.activePlaythrough) return;
-
-    const finished = await this.playthroughService.finish(
-      this.activePlaythrough.id,
-      this.finishHours,
-      this.finishNotes,
-    );
-
-    this.pastPlaythroughs.unshift(finished);
-    this.activePlaythrough = null;
-    this.showFinishModal = false;
-  }
-
-  async dropPlaythrough() {
-    if (!this.activePlaythrough) return;
-
-    const dropped = await this.playthroughService.drop(this.activePlaythrough.id);
-
-    this.pastPlaythroughs.unshift(dropped);
-    this.activePlaythrough = null;
-  }
-
   openStartModal() {
-    this.startStep = 1;
-    this._startDate = new Date();
-    this.startNotes = '';
     this.showStartModal = true;
   }
 
-  async confirmStart() {
-    if (!this.game) return;
-
-    const created = await this.playthroughService.start(
-      this.game.id,
-      this._startDate,
-      this.startNotes,
-    );
-
-    this.activePlaythrough = created;
+  closeStartModal() {
     this.showStartModal = false;
   }
 
-  nextStartStep() {
-    if (this.startStep < 3) {
-      this.startStep++;
-    }
+  openFinishModal() {
+    this.showFinishModal = true;
   }
 
-  prevStartStep() {
-    if (this.startStep > 1) {
-      this.startStep--;
-    }
+  closeFinishModal() {
+    this.showFinishModal = false;
+  }
+
+  onPlaythroughFinished() {
+    this.loadPlaythroughs(this.game.id);
+    this.closeFinishModal();
+  }
+
+  onPlaythroughStarted() {
+    this.loadPlaythroughs(this.game.id);
+  }
+
+  editPlaythrough() {
+    // TODO: Abrir modal para editar notas de la partida
+    console.log('Editar notas', this.currentPlaythrough);
   }
 
   /* ================= UI ================= */

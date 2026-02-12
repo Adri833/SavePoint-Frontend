@@ -1,0 +1,138 @@
+/* ---------- OVERLAY ---------- */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 10, 18, 0.75);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+
+  animation: fadeInOverlay 0.25s ease forwards;
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- MODAL ---------- */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%) scale(0.95);
+  background: #141422;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 400px;
+  max-width: 90%;
+  z-index: 101;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+
+  opacity: 0;
+  animation: modalEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+  @keyframes modalEnter {
+    to {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+  }
+
+  h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: #aaa;
+
+    input,
+    textarea {
+      width: 100%;
+      margin-top: 0.4rem;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #2a2a40;
+      background: #1e1e2f;
+      color: #fff;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+
+    button {
+      padding: 0.6rem 1.4rem;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.2s ease;
+    }
+
+    .cancel {
+      background: transparent;
+      color: #aaa;
+    }
+
+    button[type='submit'] {
+      background: #fff;
+      color: #141422;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .error {
+    color: #ff6b6b;
+    font-size: 0.85rem;
+  }
+
+  .flatpickr-calendar {
+    background: #1e1e2f;
+    border: 1px solid #2a2a40;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  /* ---------- CALENDAR ---------- */
+
+  .flatpickr-day {
+    color: #e6e6ff;
+
+    &.selected,
+    &.startRange,
+    &.endRange {
+      background: #7c5cff;
+      border-color: #7c5cff;
+    }
+
+    &:hover {
+      background: rgba(124, 92, 255, 0.25);
+    }
+  }
+
+  .flatpickr-months {
+    background: #141422;
+    border-bottom: 1px solid #2a2a40;
+  }
+
+  .flatpickr-weekdays {
+    background: #141422;
+  }
+}

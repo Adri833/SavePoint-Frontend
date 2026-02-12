@@ -8,6 +8,7 @@ export interface Playthrough {
   ended_at: Date | null;
   hours: number;
   completed: boolean;
+  platinum: boolean;
   status: PlaythroughStatus;
   created_at: Date;
   updated_at: Date;

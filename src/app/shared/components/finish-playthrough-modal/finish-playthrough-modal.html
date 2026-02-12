@@ -1,0 +1,42 @@
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>Finalizar partida</h2>
+
+    <!-- Fecha -->
+    <div class="form-group">
+      <label>Fecha de finalización</label>
+      <input type="date" [(ngModel)]="endDate" />
+    </div>
+
+    <!-- Horas -->
+    <div class="form-group">
+      <label>Horas jugadas</label>
+      <input type="number" min="0" [(ngModel)]="hours" />
+    </div>
+
+    <!-- Checkboxes -->
+    <div class="checkbox-group">
+      <label>
+        <input type="checkbox" [(ngModel)]="completed" (change)="onCompletedChange()" />
+        Historia completada
+      </label>
+
+      <label>
+        <input type="checkbox" [(ngModel)]="platinum" (change)="onPlatinumChange()" [disabled]="!completed" />
+        Platino conseguido 🏆
+      </label>
+    </div>
+
+    <!-- Notas -->
+    <div class="form-group">
+      <label>Notas</label>
+      <textarea rows="4" [(ngModel)]="notes"></textarea>
+    </div>
+
+    <!-- Acciones -->
+    <div class="modal-actions">
+      <button class="cancel-btn" (click)="close()">Cancelar</button>
+      <button class="confirm-btn" (click)="finishPlaythrough()">Finalizar</button>
+    </div>
+  </div>
+</div>

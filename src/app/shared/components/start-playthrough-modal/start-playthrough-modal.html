@@ -1,0 +1,42 @@
+<div class="overlay" (click)="close()"></div>
+
+<div class="modal">
+  <h2>Comenzar partida</h2>
+
+  <form (ngSubmit)="submit()">
+    <!-- Fecha -->
+    <label>
+      Fecha de inicio
+      <input 
+      #dateInput 
+      type="text" 
+      required 
+      />
+    </label>
+
+    <!-- Notas -->
+    <label>
+      Notas (opcional)
+      <textarea
+        [(ngModel)]="notes"
+        name="notes"
+        rows="3"
+        placeholder="Ej: Comenzada con 10h jugadas, NG+..."
+      ></textarea>
+    </label>
+
+    <!-- Error -->
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+
+    <!-- Botones -->
+    <div class="actions">
+      <button type="button" class="cancel" (click)="close()">Cancelar</button>
+
+      <button type="submit" [disabled]="isLoading">
+        {{ isLoading ? 'Guardando...' : 'Comenzar' }}
+      </button>
+    </div>
+  </form>
+</div>
