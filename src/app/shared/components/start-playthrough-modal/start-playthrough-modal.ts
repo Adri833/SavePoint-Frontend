@@ -75,7 +75,7 @@ export class StartPlaythroughModal implements OnInit, OnDestroy, AfterViewInit {
 
     // Actualizar fechas al seleccionar
     this.picker.on('selected', (date) => {
-      this.startedAtISO = date.format('YYYY-MM-DD');       // ISO
+      this.startedAtISO = date.format('YYYY-MM-DD'); // ISO
       this.startedAtDisplay = date.format('DD MMM. YYYY'); // legible
       this.dateInput.nativeElement.value = this.startedAtDisplay;
     });
