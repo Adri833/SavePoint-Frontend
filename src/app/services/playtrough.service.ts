@@ -115,6 +115,50 @@ export class PlaythroughService {
 
   /* ========== UPDATE ========== */
 
+  async update(
+    id: string,
+    started_at: Date,
+    hours: number,
+    completed: boolean,
+    platinum: boolean,
+    notes?: string,
+  ) {
+    if (platinum && !completed) {
+      throw new Error('No se puede tener platino sin completar el juego');
+    }
+
+    if (started_at > new Date()) {
+      throw new Error('La fecha de inicio no puede ser futura');
+    }
+
+    if (hours < 0) {
+      throw new Error('Las horas no pueden ser negativas');
+    }
+
+    const { data, error } = await supabase
+      .from('playthroughs')
+      .update({
+        started_at: started_at.toISOString(),
+        hours,
+        completed,
+        platinum,
+        notes: notes ?? null,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    return {
+      ...data,
+      started_at: new Date(data.started_at),
+      ended_at: data.ended_at ? new Date(data.ended_at) : null,
+      created_at: new Date(data.created_at),
+      updated_at: new Date(data.updated_at),
+    } as Playthrough;
+  }
+
   async finish(
     id: string,
     ended_at: Date,

@@ -94,56 +94,124 @@
           <!-- Partida activa -->
           @if (hasActivePlaythrough) {
             <div class="active-playthrough">
-              <h2>Partida en curso</h2>
-
-              <!-- Estado y progreso -->
-              <div class="playthrough-meta">
-                <div class="meta-item">
-                  <span class="label">Fecha de inicio:</span>
-                  <span>{{ formatDate(currentPlaythrough.started_at) }}</span>
-                </div>
-                <div class="meta-item" *ngIf="currentPlaythrough.hours">
-                  <span class="label">Horas jugadas:</span>
-                  <span>{{ currentPlaythrough.hours }}h</span>
-                </div>
-                <div class="meta-item">
-                  <span class="label">Notas:</span>
-                  <span>{{ currentPlaythrough.notes || 'Sin notas' }}</span>
-                </div>
+              <div class="active-header">
+                <span class="status-dot"></span>
+                <h2>Partida activa</h2>
               </div>
 
-              <!-- Acciones rápidas -->
-              <div class="playthrough-actions">
-                <button class="finish-btn" (click)="openFinishModal()">Terminar partida</button>
-                @if (showFinishModal) {
-                  <app-finish-playthrough-modal
-                    [playthrough]="currentPlaythrough"
-                    (closed)="closeFinishModal()"
-                    (finished)="onPlaythroughFinished()"
-                  />
-                }
+              <div class="active-body">
+                <div class="active-main-info">
+                  <div class="info-block">
+                    <span class="label">Iniciada</span>
+                    <span class="value">
+                      {{ formatDate(currentPlaythrough.started_at) }}
+                    </span>
+                  </div>
 
-                <button class="edit-btn" (click)="editPlaythrough()">Editar notas</button>
+                  @if (currentPlaythrough.hours) {
+                    <div class="info-block">
+                      <span class="label">Tiempo jugado</span>
+                      <span class="value highlight"> {{ currentPlaythrough.hours }}h </span>
+                    </div>
+                  }
+                </div>
+
+                <div class="active-notes">
+                  <span class="label">Notas</span>
+                  <p>
+                    {{ currentPlaythrough.notes || 'Sin notas todavía...' }}
+                  </p>
+                </div>
+
+                <div class="playthrough-actions">
+                  <button class="finish-btn" (click)="openFinishModal()">Terminar partida</button>
+
+                  <button class="edit-btn" (click)="openEditModal()">Editar</button>
+                </div>
               </div>
             </div>
           }
         </div>
+
+        @if (showFinishModal) {
+          <app-finish-playthrough-modal
+            [playthrough]="currentPlaythrough"
+            (closed)="closeFinishModal()"
+            (finished)="onPlaythroughFinished()"
+          />
+        }
+
+        @if (showEditModal) {
+          <app-edit-playthrough-modal
+            [playthrough]="currentPlaythrough"
+            (closed)="closeEditModal()"
+            (updated)="onPlaythroughUpdated($event)"
+          />
+        }
       </div>
 
-      <!-- DERECHA: Screenshots -->
-      @if (screenshots.length) {
-        <div class="right-column">
-          <!-- Principal -->
-          <img class="main-shot" [src]="screenshots[0]" alt="Screenshot principal" />
+      <!-- DERECHA: Screenshots + Historial -->
+      <div class="right-column">
+        <!-- Principal -->
+        <img class="main-shot" [src]="screenshots[0]" alt="Screenshot principal" />
 
-          <!-- Secundarias -->
+        <!-- Secundarias -->
+        @if (screenshots.length > 1) {
           <div class="secondary-shots">
             @for (img of screenshots.slice(1); track img) {
               <img [src]="img" alt="Screenshot" />
             }
           </div>
-        </div>
-      }
+        }
+
+        <!-- Historial de partidas -->
+        @if (pastPlaythroughs.length) {
+          <div class="playthrough-history">
+            <h2>Partidas anteriores</h2>
+            <div class="history-list">
+              @for (pt of pastPlaythroughs; track pt.id) {
+                <div class="history-item">
+                  <div class="history-header">
+                    <span class="history-date">
+                      {{ formatDate(pt.started_at) }} -
+                      {{ pt.ended_at ? formatDate(pt.ended_at) : '—' }}
+                    </span>
+                    <span
+                      class="history-status"
+                      [ngClass]="{
+                        completed: pt.completed,
+                        dropped: pt.status === 'dropped',
+                      }"
+                    >
+                      {{ pt.completed ? 'Completada' : 'Abandonada' }}
+                    </span>
+                  </div>
+
+                  <div class="history-body">
+                    <div class="history-stats">
+                      @if (pt.hours) {
+                        <span>
+                          Horas jugadas: <strong>{{ pt.hours }}h</strong>
+                        </span>
+                      }
+                      @if (pt.platinum !== undefined) {
+                        <span>
+                          PLatino:
+                          <strong>{{ pt.platinum ? 'Sí' : 'No' }}</strong>
+                        </span>
+                      }
+                    </div>
+
+                    @if (pt.notes) {
+                      <p class="history-notes">{{ pt.notes }}</p>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
     </div>
   }
 </div>

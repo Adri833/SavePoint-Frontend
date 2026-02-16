@@ -1,5 +1,4 @@
 /* ---------- OVERLAY ---------- */
-
 .overlay {
   position: fixed;
   top: 0;
@@ -9,17 +8,12 @@
   background: rgba(10, 10, 18, 0.75);
   backdrop-filter: blur(4px);
   z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
 
   animation: fadeInOverlay 0.25s ease forwards;
-}
-
-@keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }
 
 /* ---------- MODAL ---------- */
@@ -38,13 +32,6 @@
 
   opacity: 0;
   animation: modalEnter 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-
-  @keyframes modalEnter {
-    to {
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1);
-    }
-  }
 
   h2 {
     margin-bottom: 1.5rem;
@@ -135,5 +122,21 @@
 
   .flatpickr-weekdays {
     background: #141422;
+  }
+}
+
+@keyframes fadeInOverlay {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalEnter {
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
   }
 }

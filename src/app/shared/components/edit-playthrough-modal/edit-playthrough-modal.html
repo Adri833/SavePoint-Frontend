@@ -1,12 +1,12 @@
 <div class="overlay" (click)="close()"></div>
 
 <div class="modal">
-  <h2>Finalizar partida</h2>
+  <h2>Editar partida</h2>
 
-  <form (ngSubmit)="finishPlaythrough()" novalidate>
-    <!-- Fecha -->
+  <form (ngSubmit)="updatePlaythrough()" novalidate>
+    <!-- Fecha inicio -->
     <label>
-      Fecha de finalización
+      Fecha de inicio
       <input #dateInput type="text" required />
     </label>
 
@@ -48,26 +48,23 @@
 
     <!-- Notas -->
     <label>
-      Notas (opcional)
+      Notas
       <textarea
         [(ngModel)]="notes"
         name="notes"
         rows="3"
-        placeholder="Ej: 100%, todas las secundarias..."
       ></textarea>
     </label>
 
-    <!-- Error -->
     @if (errorMessage) {
       <p class="error">{{ errorMessage }}</p>
     }
 
-    <!-- Acciones -->
     <div class="actions">
       <button type="button" class="cancel" (click)="close()">Cancelar</button>
 
-      <button type="submit" [disabled]="isLoading" class="submit-btn">
-        <span class="btn-content" [class.hidden]="isLoading"> Finalizar </span>
+      <button type="submit" [disabled]="isLoading">
+        <span class="btn-content" [class.hidden]="isLoading">Guardar</span>
 
         @if (isLoading) {
           <span class="btn-spinner"></span>

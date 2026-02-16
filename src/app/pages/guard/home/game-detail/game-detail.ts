@@ -15,11 +15,19 @@ import { PlaythroughService } from '../../../../services/playtrough.service';
 import { FormsModule } from '@angular/forms';
 import { StartPlaythroughModal } from '../../../../shared/components/start-playthrough-modal/start-playthrough-modal';
 import { FinishPlaythroughModal } from '../../../../shared/components/finish-playthrough-modal/finish-playthrough-modal';
+import { EditPlaythroughModal } from '../../../../shared/components/edit-playthrough-modal/edit-playthrough-modal';
 
 @Component({
   selector: 'app-game-detail',
   standalone: true,
-  imports: [CommonModule, PlatformIcons, FormsModule, StartPlaythroughModal, FinishPlaythroughModal],
+  imports: [
+    CommonModule,
+    PlatformIcons,
+    FormsModule,
+    StartPlaythroughModal,
+    FinishPlaythroughModal,
+    EditPlaythroughModal,
+  ],
   templateUrl: './game-detail.html',
   styleUrl: './game-detail.scss',
 })
@@ -32,6 +40,7 @@ export class GameDetail implements OnInit, AfterViewChecked {
   showToggle = false;
   showStartModal = false;
   showFinishModal = false;
+  showEditModal = false;
 
   activePlaythrough: Playthrough | null = null;
   pastPlaythroughs: Playthrough[] = [];
@@ -60,11 +69,41 @@ export class GameDetail implements OnInit, AfterViewChecked {
   /* ================= LIFECYCLE ================= */
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
+    this.route.paramMap.subscribe(async (params) => {
       const gameId = Number(params.get('id'));
-      if (gameId) {
-        this.loadGame(gameId);
-        this.loadPlaythroughs(gameId);
+      if (!gameId) return;
+
+      this.isLoading = true;
+      this.showFullAbout = false;
+      this.showToggle = false;
+      this.screenshots = [];
+
+      try {
+        // Esperamos a que juego y playthroughs se carguen juntos
+        const [game, playthroughs, screenshots] = await Promise.all([
+          this.gamesService.getGameById(gameId).toPromise(),
+          this.playthroughService.getByGame(gameId),
+          this.gamesService.getGameScreenshots(gameId).toPromise(),
+        ]);
+
+        // Juego
+        if (!game) return;
+        this.game = game;
+
+        // Playthroughs
+        this.activePlaythrough = playthroughs.find((p) => p.status === 'playing') ?? null;
+        this.pastPlaythroughs = playthroughs.filter((p) => p.status !== 'playing');
+
+        // Screenshots
+        this.screenshots = screenshots ? screenshots.map((s) => s.image) : [];
+
+        // UI
+        setTimeout(() => this.checkAboutHeight());
+      } catch (err) {
+        console.error('Error cargando datos del juego:', err);
+      } finally {
+        this.isLoading = false;
+        this.cd.detectChanges();
       }
     });
   }
@@ -138,9 +177,17 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.loadPlaythroughs(this.game.id);
   }
 
-  editPlaythrough() {
-    // TODO: Abrir modal para editar notas de la partida
-    console.log('Editar notas', this.currentPlaythrough);
+  openEditModal() {
+    this.showEditModal = true;
+  }
+
+  closeEditModal() {
+    this.showEditModal = false;
+  }
+
+  onPlaythroughUpdated(updated: Playthrough) {
+    this.activePlaythrough = updated;
+    this.closeEditModal();
   }
 
   /* ================= UI ================= */
