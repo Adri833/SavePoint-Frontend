@@ -10,50 +10,48 @@
       <input #dateInput type="text" required />
     </label>
 
-    <!-- Horas -->
-    <label>
-      Horas jugadas
-      <div class="number-wrapper">
-        <input type="number" min="0" [(ngModel)]="hours" name="hours" #hoursInput />
-        <div class="spinner">
-          <div class="arrow up" (click)="increment(hoursInput)"></div>
-          <div class="arrow down" (click)="decrement(hoursInput)"></div>
+    @if (!isPlaying) {
+      <!-- Horas -->
+      <label>
+        Horas jugadas
+        <div class="number-wrapper">
+          <input type="number" min="0" [(ngModel)]="hours" name="hours" #hoursInput />
+          <div class="spinner">
+            <div class="arrow up" (click)="increment(hoursInput)"></div>
+            <div class="arrow down" (click)="decrement(hoursInput)"></div>
+          </div>
         </div>
+      </label>
+
+      <!-- Checkboxes -->
+      <div class="checkbox-group">
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="completed"
+            name="completed"
+            (change)="onCompletedChange()"
+          />
+          Historia completada
+        </label>
+
+        <label>
+          <input
+            type="checkbox"
+            [(ngModel)]="platinum"
+            name="platinum"
+            (change)="onPlatinumChange()"
+            [disabled]="!completed"
+          />
+          Platino conseguido
+        </label>
       </div>
-    </label>
-
-    <!-- Checkboxes -->
-    <div class="checkbox-group">
-      <label>
-        <input
-          type="checkbox"
-          [(ngModel)]="completed"
-          name="completed"
-          (change)="onCompletedChange()"
-        />
-        Historia completada
-      </label>
-
-      <label>
-        <input
-          type="checkbox"
-          [(ngModel)]="platinum"
-          name="platinum"
-          (change)="onPlatinumChange()"
-          [disabled]="!completed"
-        />
-        Platino conseguido
-      </label>
-    </div>
+    }
 
     <!-- Notas -->
     <label>
       Notas
-      <textarea
-        [(ngModel)]="notes"
-        name="notes"
-        rows="3"
-      ></textarea>
+      <textarea [(ngModel)]="notes" name="notes" rows="3"></textarea>
     </label>
 
     @if (errorMessage) {

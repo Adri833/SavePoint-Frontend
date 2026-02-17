@@ -74,6 +74,7 @@ export class FinishPlaythroughModal implements OnInit {
       singleMode: true,
       format: 'DD MMM. YYYY',
       maxDate: today,
+      minDate: this.playthrough.started_at,
       mobileFriendly: true,
       lang: 'es-ES',
       startDate: today,
@@ -81,15 +82,15 @@ export class FinishPlaythroughModal implements OnInit {
 
     const start = this.picker.getStartDate();
     if (start) {
-      this.startedAtISO = start.format('YYYY-MM-DD'); // ISO para Supabase
-      this.startedAtDisplay = start.format('DD MMM. YYYY'); // legible para mostrar
+      this.startedAtISO = start.format('YYYY-MM-DD');
+      this.startedAtDisplay = start.format('DD MMM. YYYY');
       this.dateInput.nativeElement.value = this.startedAtDisplay;
     }
 
     // Actualizar fechas al seleccionar
     this.picker.on('selected', (date) => {
-      this.startedAtISO = date.format('YYYY-MM-DD'); // ISO
-      this.startedAtDisplay = date.format('DD MMM. YYYY'); // legible
+      this.startedAtISO = date.format('YYYY-MM-DD');
+      this.startedAtDisplay = date.format('DD MMM. YYYY');
       this.dateInput.nativeElement.value = this.startedAtDisplay;
     });
   }

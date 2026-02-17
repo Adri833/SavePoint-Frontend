@@ -7,11 +7,7 @@
     <!-- Fecha -->
     <label>
       Fecha de inicio
-      <input 
-      #dateInput 
-      type="text" 
-      required 
-      />
+      <input #dateInput type="text" required />
     </label>
 
     <!-- Notas -->
@@ -35,7 +31,12 @@
       <button type="button" class="cancel" (click)="close()">Cancelar</button>
 
       <button type="submit" [disabled]="isLoading">
-        {{ isLoading ? 'Guardando...' : 'Comenzar' }}
+        <span class="btn-content">
+          @if (isLoading) {
+            <span class="spinner"></span>
+          }
+          <span class="btn-text">Comenzar</span>
+        </span>
       </button>
     </div>
   </form>

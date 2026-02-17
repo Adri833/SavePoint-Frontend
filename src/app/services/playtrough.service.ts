@@ -179,7 +179,7 @@ export class PlaythroughService {
       .from('playthroughs')
       .update({
         status: 'finished',
-        ended_at: new Date().toISOString(),
+        ended_at: ended_at.toISOString(),
         hours,
         completed,
         platinum,

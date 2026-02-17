@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 
 export interface Game {
   id: number;
@@ -8,16 +8,16 @@ export interface Game {
   background_image: string;
   rating: number;
   released: string;
-  parent_platforms: { platform: { name: string } }[]; 
+  parent_platforms: { platform: { name: string } }[];
   description: string;
 }
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GamesService {
   private apiUrl = 'http://localhost:3000/games';
+  private gameCache = new Map<number, Game>();
 
   constructor(private http: HttpClient) {}
 
@@ -34,7 +34,16 @@ export class GamesService {
   }
 
   getGameById(id: number): Observable<Game> {
-    return this.http.get<Game>(`${this.apiUrl}/${id}`);
+    if (this.gameCache.has(id)) {
+      return of(this.gameCache.get(id)!);
+    }
+
+    return this.http.get<Game>(`${this.apiUrl}/${id}`).pipe(
+      map((game) => {
+        this.gameCache.set(id, game);
+        return game;
+      }),
+    );
   }
 
   getGameScreenshots(id: number): Observable<any[]> {

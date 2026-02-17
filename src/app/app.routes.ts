@@ -30,7 +30,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'biblioteca',
-        loadComponent: () => import('./pages/guard/home/biblioteca/biblioteca').then(m => m.Biblioteca),
+        loadComponent: () => import('./pages/guard/home/playthroughs/playtroughs').then(m => m.Playthroughs),
       },
       {
         path: 'dashboard',

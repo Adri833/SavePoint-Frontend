@@ -1,0 +1,67 @@
+<div class="playthroughs-container">
+  <!-- Loading -->
+  @if (loading) {
+    <div class="loading">
+      <div class="spinner"></div>
+    </div>
+  }
+
+  <!-- Error -->
+  @if (error) {
+    <div class="error">{{ error }}</div>
+  }
+
+  <!-- No hay partidas -->
+  @if (!loading && playthroughs.length === 0) {
+    <div class="empty">No tienes partidas aún.</div>
+  }
+
+  <!-- HEADER con selector de año -->
+  <div class="header">
+    <h1>Mis partidas</h1>
+
+    @if (years.length > 0) {
+      <select [(ngModel)]="selectedYear" class="year-select">
+        @for (year of years; track year) {
+          <option [value]="year">{{ year }}</option>
+        }
+      </select>
+    }
+  </div>
+
+  <!-- GRID de partidas -->
+  @if (!loading && filteredPlaythroughs.length > 0) {
+    <div class="games-grid">
+      @for (p of filteredPlaythroughs; track p.id) {
+        <div class="game-card" [ngClass]="p.status">
+          <!-- Imagen de fondo -->
+          <div class="cover">
+            <img [src]="p.game_background" [alt]="p.game_name" />
+          </div>
+
+          <!-- Overlay con info -->
+          <div class="info">
+            <h3>{{ p.game_name }}</h3>
+            <p>{{ p.hours || 0 }}h jugadas</p>
+
+            <!-- Badge según estado -->
+            @if (p.status === 'playing') {
+              <span class="badge playing-badge">En curso</span>
+            }
+            @if (p.status === 'finished') {
+              <span class="badge completed-badge">Completado</span>
+            }
+            @if (p.status === 'dropped') {
+              <span class="badge dropped-badge">Abandonado</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- No hay partidas para el año -->
+  @if (!loading && filteredPlaythroughs.length === 0 && years.length > 0) {
+    <div class="empty">No hay partidas en {{ selectedYear }}</div>
+  }
+</div>

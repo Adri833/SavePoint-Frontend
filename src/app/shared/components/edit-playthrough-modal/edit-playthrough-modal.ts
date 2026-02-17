@@ -47,6 +47,10 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
     private renderer: Renderer2,
   ) {}
 
+  get isPlaying(): boolean {
+    return this.playthrough.status === 'playing';
+  }
+
   ngOnInit(): void {
     this.startedAtISO = this.playthrough.started_at.toISOString().split('T')[0];
     this.hours = this.playthrough.hours ?? 0;
@@ -100,9 +104,9 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
       const updatedPlaythrough = await this.playthroughService.update(
         this.playthrough.id,
         new Date(this.startedAtISO),
-        this.hours,
-        this.completed,
-        this.platinum,
+        this.isPlaying ? 0 : this.hours,
+        this.isPlaying ? false : this.completed,
+        this.isPlaying ? false : this.platinum,
         this.notes ?? undefined,
       );
 
