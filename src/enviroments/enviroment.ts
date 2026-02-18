@@ -2,4 +2,6 @@ export const environment = {
   production: false,
   supabaseUrl: 'https://pnmbpibybsjjhmvqssmz.supabase.co',
   supabaseAnonKey: 'sb_publishable_BLuTfaJPj1TbsnoXk_vW7A_X9Y6T_TR',
+  rawgApiUrl: 'https://api.rawg.io/api',
+  rawgApiKey: '3d2a238aa42f4bd4bc26602e0b5c8a0f'
 };

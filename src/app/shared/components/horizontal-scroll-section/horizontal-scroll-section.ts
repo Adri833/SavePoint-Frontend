@@ -13,8 +13,8 @@ import {
 import { CommonModule } from '@angular/common';
 
 export interface ScrollItem {
-  name: string;
-  background_image: string;
+  name: string | null;
+  background_image: string | null;
 }
 
 @Component({

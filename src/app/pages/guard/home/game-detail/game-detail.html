@@ -35,10 +35,10 @@
         <h1>{{ game.name }}</h1>
 
         <div class="game-meta">
-          @if (game.parent_platforms.length) {
+          @if (game.parent_platforms?.length) {
             <div class="meta-item platforms">
               <app-platform-icons
-                [platforms]="game.parent_platforms"
+                [platforms]="game.parent_platforms ?? []"
                 size="md"
               ></app-platform-icons>
             </div>

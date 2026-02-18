@@ -8,7 +8,8 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Game, GamesService } from '../../../../services/games.service';
+import { GamesService } from '../../../../services/games.service';
+import { GameDetailDTO } from '../../../../utils/game-mapper';
 import { PlatformIcons } from '../../../../shared/components/platform-icons/platform-icons';
 import { Playthrough } from '../../../../models/playtrough.model';
 import { PlaythroughService } from '../../../../services/playtrough.service';
@@ -33,7 +34,7 @@ import { EditPlaythroughModal } from '../../../../shared/components/edit-playthr
 })
 export class GameDetail implements OnInit, AfterViewChecked {
   isLoading = true;
-  game!: Game;
+  game!: GameDetailDTO;
   screenshots: string[] = [];
 
   showFullAbout = false;

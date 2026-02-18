@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, switchMap, of, map } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-
-export interface SearchGame {
-  id: number;
-  name: string;
-  background_image: string;
-  parent_platforms: { platform: { name: string } }[];
-}
+import { RawgService } from './rawg.service';
+import { GameDTO } from '../utils/game-mapper';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-  constructor(private http: HttpClient) {}
+  constructor(private rawg: RawgService) {}
 
   private querySubject = new BehaviorSubject<string>('');
   query$ = this.querySubject.asObservable();
@@ -19,28 +13,30 @@ export class SearchService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
-  private debouncedQuery$ = this.query$.pipe(debounceTime(300), distinctUntilChanged());
+  private debouncedQuery$ = this.query$.pipe(
+    debounceTime(300),
+    distinctUntilChanged()
+  );
 
+  /** Resultados filtrados de RAWG */
   results$ = this.debouncedQuery$.pipe(
     switchMap((query) => {
-      if (!query.trim()) {
+      const trimmed = query.trim();
+      if (!trimmed) {
         this.loadingSubject.next(false);
-        return of([]);
+        return of<GameDTO[]>([]);
       }
 
-      return this.http
-        .get<{
-          success: boolean;
-          games: SearchGame[];
-        }>('http://localhost:3000/games/search', { params: { query } })
-        .pipe(
-          map((res) => res.games),
-          map((games) => {
-            this.loadingSubject.next(false);
-            return games;
-          }),
-        );
-    }),
+      this.loadingSubject.next(true);
+
+      return this.rawg.searchGames(trimmed).pipe(
+        map((games) => games || []),
+        map((games) => {
+          this.loadingSubject.next(false);
+          return games;
+        })
+      );
+    })
   );
 
   setQuery(query: string) {

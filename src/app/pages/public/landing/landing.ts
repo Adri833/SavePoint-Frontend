@@ -1,7 +1,8 @@
 import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { GamesService, Game } from '../../../services/games.service';
+import { GamesService } from '../../../services/games.service';
+import { GameDTO } from '../../../utils/game-mapper';
 import { HorizontalScrollSection } from '../../../shared/components/horizontal-scroll-section/horizontal-scroll-section';
 import { SocialIcon } from "../../../shared/components/social-icon/social-icon";
 import { Navbar } from '../../../shared/components/navbar-landing/navbar';
@@ -15,9 +16,9 @@ import { Button } from '../../../shared/components/button/button';
   styleUrl: './landing.scss',
 })
 export class Landing {
-  trendingGames: Game[] = [];
-  upComingGames: Game[] = [];
-  thisWeekGames: Game[] = [];
+  trendingGames: GameDTO[] = [];
+  upComingGames: GameDTO[] = [];
+  thisWeekGames: GameDTO[] = [];
   
   constructor(
     private router: Router,

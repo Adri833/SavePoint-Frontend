@@ -15,7 +15,7 @@
           <div class="info">
             <h4>{{ game.name }}</h4>
 
-            <app-platform-icons [platforms]="game.parent_platforms" size="sm"></app-platform-icons>
+            <app-platform-icons [platforms]="game.parent_platforms ?? []" size="sm"></app-platform-icons>
           </div>
         </div>
       </div>
