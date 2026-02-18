@@ -1,4 +1,4 @@
-export type PlaythroughStatus = 'playing' | 'finished' | 'dropped';
+export type PlaythroughStatus = 'playing' | 'finished';
 
 export interface Playthrough {
   // ---------- Info básica ----------

@@ -39,7 +39,7 @@
     background: #1e1e2f;
     color: white;
     border: 2px solid #2a2a40;
-    padding: 10px 16px; 
+    padding: 10px 16px;
     font-size: 1rem;
     border-radius: 12px;
     text-align: center;
@@ -53,83 +53,166 @@
 
   .games-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
 
   .game-card {
     position: relative;
-    background: #1e1e2f;
-    border-radius: 14px;
+    opacity: 0;
+    border-radius: 16px;
     overflow: hidden;
-    transition: 0.25s ease;
+    border: 3px solid transparent;
     cursor: pointer;
-    border: 2px solid transparent;
+    animation: fadeUp 0.5s ease forwards;
 
-    &:hover {
-      transform: translateY(-6px);
-    }
+    .game-card-inner {
+      position: relative;
+      background: #1e1e2f;
+      overflow: hidden;
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
 
-    .cover img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-    }
-
-    .info {
-      padding: 12px;
-
-      h3 {
-        font-size: 0.95rem;
-        margin-bottom: 4px;
+      &:hover {
+        transform: scale(1.02);
       }
 
-      p {
-        font-size: 0.85rem;
-        color: #aaa;
+      .cover img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
       }
 
-      .badge {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 4px 10px;
-        border-radius: 999px;
-        font-size: 0.7rem;
-        font-weight: 600;
-        color: white;
-        text-transform: uppercase;
+      .info {
+        padding: 12px;
+
+        .info-top {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .title-hours {
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+              font-size: 1rem;
+              margin: 0;
+              font-weight: 600;
+            }
+
+            p {
+              font-size: 0.9rem;
+              color: #aaa;
+              margin: 2px 0 0 0;
+            }
+          }
+
+          .platinum-icon {
+            height: 100%;
+            max-height: 38px;
+            width: auto;
+            object-fit: contain;
+          }
+        }
+
+        .badge {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          padding: 5px 12px;
+          border-radius: 999px;
+          font-size: 0.75rem;
+          font-weight: 600;
+          color: white;
+          text-transform: uppercase;
+          box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+        }
       }
     }
 
     &.playing {
-      border-color: #7c5cff;
+      box-shadow:
+        0 0 0 3px #7c5cff,
+        0 0 10px rgba(124, 92, 255, 0.3);
     }
 
-    &.finished {
-      border-color: #2ecc71;
+    &.platinum {
+      box-shadow:
+        0 0 0 3px #a6ffff,
+        0 0 10px rgba(166, 255, 255, 0.3);
+      animation:
+        fadeUp 0.5s ease forwards,
+        platinum-glow 2s infinite ease-in-out;
+      animation-delay: 0.5s;
+    }
+
+    &.completed {
+      box-shadow:
+        0 0 0 3px #27a14c,
+        0 0 10px rgba(39, 161, 76, 0.3);
     }
 
     &.dropped {
-      border-color: #ff4e4e;
+      box-shadow:
+        0 0 0 3px #d13625,
+        0 0 10px rgba(209, 54, 37, 0.3);
+    }
+  }
+
+  @for $i from 1 through 20 {
+    .games-grid .game-card:nth-child(#{$i}) {
+      animation-delay: 0.05s * $i;
     }
   }
 
   .playing-badge {
-    background: linear-gradient(135deg, #7c5cff, #a88bff);
+    background: #7c5cff;
+  }
+
+  .platinum-badge {
+    background: linear-gradient(135deg, #d4d4f0, #a6ffff, #d4d4f0);
+    color: #1e1e2f !important;
+    font-weight: 700;
+    text-transform: uppercase;
   }
 
   .completed-badge {
-    background: #2ecc71;
+    background: #27a14c;
   }
 
   .dropped-badge {
-    background: #ff4e4e;
+    background: #d13625;
   }
 }
 
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes platinum-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px #a6ffff,
+      0 0 10px rgba(166, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px #a6ffff,
+      0 0 20px rgba(166, 255, 255, 0.5);
   }
 }

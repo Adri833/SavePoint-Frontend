@@ -23,7 +23,7 @@ export class Playthroughs implements OnInit {
   constructor(
     private playthroughService: PlaythroughService,
     private gamesService: GamesService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   async ngOnInit() {
@@ -47,6 +47,11 @@ export class Playthroughs implements OnInit {
         }),
       );
 
+      // Ordenar por fecha de comienzo
+      this.playthroughs.sort(
+        (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+      );
+
       // Extraemos los años dinámicos
       const yearSet = new Set<number>();
       this.playthroughs.forEach((p) => {
@@ -57,7 +62,6 @@ export class Playthroughs implements OnInit {
 
       this.years = Array.from(yearSet).sort((a, b) => b - a);
       this.selectedYear = this.years[0];
-
     } catch (err: any) {
       this.error = err.message ?? 'Error loading playthroughs';
     } finally {
@@ -74,14 +78,11 @@ export class Playthroughs implements OnInit {
     });
   }
 
-  getStatusClass(status: PlaythroughStatus) {
-    switch (status) {
-      case 'playing':
-        return 'playing';
-      case 'finished':
-        return 'completed';
-      case 'dropped':
-        return 'dropped';
-    }
+  getStatusClass(p: Playthrough) {
+    if (p.status === 'playing') return 'playing';
+    if (p.status === 'finished' && p.completed && p.platinum) return 'platinum';
+    if (p.status === 'finished' && p.completed) return 'completed';
+    if (p.status === 'finished' && !p.completed) return 'dropped';
+    return '';
   }
 }

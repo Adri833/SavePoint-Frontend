@@ -394,14 +394,9 @@
                   color: #2ecc71;
                 }
 
-                &.dropped {
-                  background: rgba(231, 76, 60, 0.2);
-                  color: #e74c3c;
-                }
-
-                &:not(.completed):not(.dropped) {
-                  background: rgba(124, 92, 255, 0.2);
-                  color: #c9c2ff;
+                &:not(.completed) {
+                  background: rgba(255, 0, 0, 0.501);
+                  color: #ccc;
                 }
               }
             }

@@ -199,26 +199,4 @@ export class PlaythroughService {
       updated_at: new Date(data.updated_at),
     } as Playthrough;
   }
-
-  async drop(id: string, notes?: string) {
-    const { data, error } = await supabase
-      .from('playthroughs')
-      .update({
-        status: 'dropped',
-        notes: notes ?? null,
-      })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    return {
-      ...data,
-      started_at: new Date(data.started_at),
-      ended_at: data.ended_at ? new Date(data.ended_at) : null,
-      created_at: new Date(data.created_at),
-      updated_at: new Date(data.updated_at),
-    } as Playthrough;
-  }
 }

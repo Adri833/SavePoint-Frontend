@@ -33,27 +33,40 @@
   @if (!loading && filteredPlaythroughs.length > 0) {
     <div class="games-grid">
       @for (p of filteredPlaythroughs; track p.id) {
-        <div class="game-card" [ngClass]="p.status">
-          <!-- Imagen de fondo -->
-          <div class="cover">
-            <img [src]="p.game_background" [alt]="p.game_name" />
-          </div>
+        <div class="game-card" [ngClass]="getStatusClass(p)">
+          <div class="game-card-inner">
+            <!-- Imagen de fondo -->
+            <div class="cover">
+              <img [src]="p.game_background" [alt]="p.game_name" />
+            </div>
 
-          <!-- Overlay con info -->
-          <div class="info">
-            <h3>{{ p.game_name }}</h3>
-            <p>{{ p.hours || 0 }}h jugadas</p>
+            <!-- Overlay con info -->
+            <div class="info">
+              <div class="info-top">
+                <div class="title-hours">
+                  <h3>{{ p.game_name }}</h3>
+                  <p>{{ p.hours || 0 }}h jugadas</p>
+                  <p>{{ p.notes || 'Sin notas' }}</p>
+                </div>
 
-            <!-- Badge según estado -->
-            @if (p.status === 'playing') {
-              <span class="badge playing-badge">En curso</span>
-            }
-            @if (p.status === 'finished') {
-              <span class="badge completed-badge">Completado</span>
-            }
-            @if (p.status === 'dropped') {
-              <span class="badge dropped-badge">Abandonado</span>
-            }
+                @if (p.platinum) {
+                  <img class="platinum-icon" src="/trophy-platinum.png" alt="Platino" />
+                }
+              </div>
+
+              <!-- Badge según estado -->
+              @if (p.status === 'playing') {
+                <span class="badge playing-badge">En curso</span>
+              }
+              @if (p.status === 'finished' && p.completed && p.platinum) {
+                <span class="badge platinum-badge">100%</span>
+              } @else if (p.status === 'finished' && p.completed) {
+                <span class="badge completed-badge">Completado</span>
+              }
+              @if (p.status === 'finished' && !p.completed) {
+                <span class="badge dropped-badge">Abandonado</span>
+              }
+            </div>
           </div>
         </div>
       }
