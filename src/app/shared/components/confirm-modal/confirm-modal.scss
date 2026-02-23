@@ -1,0 +1,83 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 18, 0.75);
+  backdrop-filter: blur(6px);
+  z-index: 200;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(420px, 90%);
+  background: #141421;
+  border-radius: 16px;
+  padding: 2rem;
+  z-index: 201;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+  animation: scaleIn 0.25s ease forwards;
+  text-align: center;
+}
+
+.message {
+  margin: 1rem 0 2rem 0;
+  color: #bbb;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.btn {
+  padding: 0.6rem 1.4rem;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn.secondary {
+  background: #2a2a3a;
+  color: #ddd;
+}
+
+.btn.secondary:hover {
+  background: #35354a;
+}
+
+.btn.danger {
+  background: #a72b45;
+  color: white;
+  transition: background 0.2s ease;
+}
+
+.btn.danger:hover {
+  background: #842236;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

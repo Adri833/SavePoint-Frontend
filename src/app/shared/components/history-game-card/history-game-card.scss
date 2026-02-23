@@ -1,14 +1,6 @@
 .playthrough-history {
   margin-top: 1.5rem;
 
-  h2 {
-    font-size: 1.25rem;
-    margin-bottom: 1.2rem;
-    color: #fff;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-
   .history-list {
     display: flex;
     flex-direction: column;
@@ -22,7 +14,7 @@
   .history-item {
     position: relative;
     background: rgba(20, 20, 34, 0.65);
-    border: 2px solid rgba(124, 92, 255, 0.18);
+    border: 2.5px solid rgba(124, 92, 255, 0.18);
     border-radius: 14px;
     padding: 1.4rem 1.2rem 1.2rem;
     display: flex;
@@ -94,7 +86,7 @@
 
   /* ---------- STATUS ---------- */
   .history-status {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
     padding: 5px 12px;
@@ -122,15 +114,15 @@
 
   /* Platinum icon */
   .platinum-icon {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
     filter: drop-shadow(0 0 3px rgba(180, 255, 255, 0.6));
   }
 
   /* ---------- DATE ---------- */
   .history-date {
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #fff;
     font-weight: 500;
   }
@@ -145,7 +137,7 @@
     border: 1px solid rgba(124, 92, 255, 0.35);
     padding: 0.6rem 0;
     border-radius: 8px;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #e0dbff;
     backdrop-filter: blur(4px);
@@ -167,7 +159,7 @@
 
   /* ---------- NOTES ---------- */
   .history-notes {
-    font-size: 0.83rem;
+    font-size: 0.9rem;
     color: #dcdcff;
     line-height: 1.45;
     opacity: 0.95;

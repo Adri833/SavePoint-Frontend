@@ -1,0 +1,19 @@
+<div class="overlay" (click)="onCancel()"></div>
+
+<div class="modal">
+  <h2>{{ title }}</h2>
+
+  <p class="message">
+    {{ message }}
+  </p>
+
+  <div class="actions">
+    <button class="btn secondary" (click)="onCancel()">
+      {{ cancelText }}
+    </button>
+
+    <button class="btn danger" (click)="onConfirm()">
+      {{ confirmText }}
+    </button>
+  </div>
+</div>

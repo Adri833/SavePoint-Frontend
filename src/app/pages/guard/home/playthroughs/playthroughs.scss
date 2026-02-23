@@ -75,6 +75,7 @@
     animation: fadeUp 0.5s ease forwards;
 
     .game-card-inner {
+      width: 100%;
       position: relative;
       background: #1e1e2f;
       overflow: hidden;
@@ -86,10 +87,19 @@
         transform: scale(1.02);
       }
 
-      .cover img {
+      .cover {
         width: 100%;
         height: 240px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .cover img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
+        object-position: center;
+        display: block;
       }
 
       .info {

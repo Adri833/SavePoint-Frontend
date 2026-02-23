@@ -1,0 +1,32 @@
+<div class="overlay" (click)="onClose()"></div>
+
+<div class="modal">
+  <div class="modal-header">
+    <h2>{{ playthrough.game_name }}</h2>
+    <app-close-button (close)="onClose()"></app-close-button>
+  </div>
+
+  <div class="modal-body">
+    <img class="cover-image" [src]="playthrough.game_background" [alt]="playthrough.game_name" />
+
+    <div class="details">
+      <p><strong>Inicio:</strong> {{ playthrough.started_at | date: 'dd/MM/yyyy' }}</p>
+      <p><strong>Horas jugadas:</strong> {{ playthrough.hours || 0 }}h</p>
+      <p><strong>Estado:</strong> {{ playthrough.status }}</p>
+      <p><strong>Notas:</strong> {{ playthrough.notes || 'Sin notas' }}</p>
+    </div>
+
+    <div class="modal-actions">
+
+      <!-- Boton finalizar (solo si el estado es 'playing') -->
+      @if (playthrough.status === 'playing') {
+        <button class="btn primary" (click)="onFinish()">Terminar partida</button>
+      } @else {
+        <app-history-game-card
+          [pastPlaythroughs]="playthrough"
+          (edit)="onEdit()"
+        ></app-history-game-card>
+      }
+    </div>
+  </div>
+</div>

@@ -11,7 +11,16 @@ import { Playthrough } from '../../../models/playtrough.model';
   styleUrls: ['./history-game-card.scss'],
 })
 export class HistoryGameCard{
-  @Input() pastPlaythroughs: Playthrough[] = [];
+  private _playthroughs: Playthrough[] = [];
+
+  @Input() 
+  set pastPlaythroughs(value: Playthrough[] | Playthrough) {
+    this._playthroughs = Array.isArray(value) ? value : [value];
+  }
+  get pastPlaythroughs(): Playthrough[] {
+    return this._playthroughs;
+  }
+
   @Output() editPlaythrough = new EventEmitter<Playthrough>();
 
   onEdit(pt: Playthrough) {

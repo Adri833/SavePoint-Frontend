@@ -169,6 +169,7 @@
         <!-- Historial de partidas -->
         @if (pastPlaythroughs.length) {
           <div class="history-list">
+            <h2>Partidas anteriores</h2>
             @for (pt of pastPlaythroughs; track trackById($index, pt)) {
               <app-history-game-card
                 [pastPlaythroughs]="[pt]"
