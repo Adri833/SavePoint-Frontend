@@ -1,24 +1,29 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { firstValueFrom } from 'rxjs';
+import { forkJoin, firstValueFrom } from 'rxjs';
 import { PlaythroughService } from '../../../../services/playtrough.service';
-import { Playthrough, PlaythroughStatus } from '../../../../models/playtrough.model';
+import { Playthrough } from '../../../../models/playtrough.model';
 import { GamesService } from '../../../../services/games.service';
+import { GameDTO } from '../../../../utils/game-mapper';
 
 @Component({
   selector: 'app-playthroughs',
+  standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './playthroughs.html',
   styleUrl: './playthroughs.scss',
 })
 export class Playthroughs implements OnInit {
+  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'dropped' = 'all';
+
   playthroughs: Playthrough[] = [];
   loading = false;
   error: string | null = null;
 
   years: number[] = [];
   selectedYear!: number;
+  showGrid = true;
 
   constructor(
     private playthroughService: PlaythroughService,
@@ -33,35 +38,28 @@ export class Playthroughs implements OnInit {
   async loadLibrary() {
     this.loading = true;
     this.cd.detectChanges();
+
     try {
       this.playthroughs = await this.playthroughService.getAllByUser();
 
-      // Cargamos info de juegos
-      await Promise.all(
-        this.playthroughs.map(async (p) => {
-          const game = await firstValueFrom(this.gamesService.getGameById(p.game_id));
-          p.game_name = game?.name ?? 'Desconocido';
-          p.game_background =
-            game?.background_image ??
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJQeJyzgAzTEVqXiGe90RGBFhfp_4RcJJMQ&s';
-        }),
-      );
+      if (this.playthroughs.length) {
+        const gameRequests = this.playthroughs.map((p) => this.gamesService.getGameById(p.game_id));
 
-      // Ordenar por fecha de comienzo
-      this.playthroughs.sort(
-        (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
-      );
+        const games: GameDTO[] = await firstValueFrom(forkJoin(gameRequests));
 
-      // Extraemos los años dinámicos
-      const yearSet = new Set<number>();
-      this.playthroughs.forEach((p) => {
-        const start = new Date(p.started_at).getFullYear();
-        const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
-        for (let y = start; y <= end; y++) yearSet.add(y);
-      });
+        games.forEach((game, i) => {
+          const p = this.playthroughs[i];
+          p.game_name = game.name;
+          p.game_background = game.background_image ?? '';
+        });
 
-      this.years = Array.from(yearSet).sort((a, b) => b - a);
-      this.selectedYear = this.years[0];
+        this.playthroughs.sort(
+          (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),
+        );
+
+        this.years = this.extractYears(this.playthroughs);
+        this.selectedYear = this.years[0];
+      }
     } catch (err: any) {
       this.error = err.message ?? 'Error loading playthroughs';
     } finally {
@@ -70,12 +68,49 @@ export class Playthroughs implements OnInit {
     }
   }
 
+  private extractYears(playthroughs: Playthrough[]): number[] {
+    const yearSet = new Set<number>();
+    playthroughs.forEach((p) => {
+      const start = new Date(p.started_at).getFullYear();
+      const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
+      for (let y = start; y <= end; y++) yearSet.add(y);
+    });
+    return Array.from(yearSet).sort((a, b) => b - a);
+  }
+
   get filteredPlaythroughs(): Playthrough[] {
     return this.playthroughs.filter((p) => {
       const start = new Date(p.started_at).getFullYear();
       const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
-      return start <= this.selectedYear && end >= this.selectedYear;
+
+      // Filtrar por año
+      const inYear = start <= this.selectedYear && end >= this.selectedYear;
+
+      // Filtrar por estado
+      let statusMatch = true;
+      if (this.selectedStatus !== 'all') {
+        if (this.selectedStatus === 'platinum') {
+          statusMatch = p.status === 'finished' && p.completed && p.platinum;
+        } else if (this.selectedStatus === 'finished') {
+          statusMatch = p.status === 'finished' && p.completed && !p.platinum;
+        } else if (this.selectedStatus === 'playing') {
+          statusMatch = p.status === 'playing';
+        } else if (this.selectedStatus === 'dropped') {
+          statusMatch = p.status === 'finished' && !p.completed;
+        }
+      }
+
+      return inYear && statusMatch;
     });
+  }
+
+  onFilterChange() {
+    this.showGrid = false;
+    this.cd.detectChanges();
+    setTimeout(() => {
+      this.showGrid = true;
+      this.cd.detectChanges();
+    }, 10);
   }
 
   getStatusClass(p: Playthrough) {

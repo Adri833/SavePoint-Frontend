@@ -126,7 +126,9 @@
                 <div class="playthrough-actions">
                   <button class="finish-btn" (click)="openFinishModal()">Terminar partida</button>
 
-                  <button class="edit-btn" (click)="openEditModal()">Editar</button>
+                  <button class="edit-btn" (click)="openEditModal(currentPlaythrough)">
+                    Editar
+                  </button>
                 </div>
               </div>
             </div>
@@ -143,7 +145,7 @@
 
         @if (showEditModal) {
           <app-edit-playthrough-modal
-            [playthrough]="currentPlaythrough"
+            [playthrough]="currentEditPlaytrhough"
             (closed)="closeEditModal()"
             (updated)="onPlaythroughUpdated($event)"
           />
@@ -166,48 +168,13 @@
 
         <!-- Historial de partidas -->
         @if (pastPlaythroughs.length) {
-          <div class="playthrough-history">
-            <h2>Partidas anteriores</h2>
-            <div class="history-list">
-              @for (pt of pastPlaythroughs; track pt.id) {
-                <div class="history-item">
-                  <div class="history-header">
-                    <span class="history-date">
-                      {{ formatDate(pt.started_at) }} -
-                      {{ pt.ended_at ? formatDate(pt.ended_at) : '—' }}
-                    </span>
-                    <span
-                      class="history-status"
-                      [ngClass]="{
-                        completed: pt.completed,
-                      }"
-                    >
-                      {{ pt.completed ? 'Completada' : 'Abandonada' }}
-                    </span>
-                  </div>
-
-                  <div class="history-body">
-                    <div class="history-stats">
-                      @if (pt.hours) {
-                        <span>
-                          Horas jugadas: <strong>{{ pt.hours }}h</strong>
-                        </span>
-                      }
-                      @if (pt.platinum !== undefined) {
-                        <span>
-                          PLatino:
-                          <strong>{{ pt.platinum ? 'Sí' : 'No' }}</strong>
-                        </span>
-                      }
-                    </div>
-
-                    @if (pt.notes) {
-                      <p class="history-notes">{{ pt.notes }}</p>
-                    }
-                  </div>
-                </div>
-              }
-            </div>
+          <div class="history-list">
+            @for (pt of pastPlaythroughs; track trackById($index, pt)) {
+              <app-history-game-card
+                [pastPlaythroughs]="[pt]"
+                (editPlaythrough)="openEditModal($event)"
+              ></app-history-game-card>
+            }
           </div>
         }
       </div>

@@ -20,17 +20,30 @@
   <div class="header">
     <h1>Mis partidas</h1>
 
-    @if (years.length > 0) {
-      <select [(ngModel)]="selectedYear" class="year-select">
-        @for (year of years; track year) {
-          <option [value]="year">{{ year }}</option>
-        }
+    <!-- Contenedor de filtros a la derecha -->
+    <div class="filters">
+      <!-- Selector de estado -->
+      <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="status-select">
+        <option value="all">Todos</option>
+        <option value="playing">En curso</option>
+        <option value="finished">Completado</option>
+        <option value="platinum">100%</option>
+        <option value="dropped">Abandonado</option>
       </select>
-    }
+
+      <!-- Selector de año -->
+      @if (years.length > 0) {
+        <select [(ngModel)]="selectedYear" (change)="onFilterChange()" class="year-select">
+          @for (year of years; track year) {
+            <option [value]="year">{{ year }}</option>
+          }
+        </select>
+      }
+    </div>
   </div>
 
   <!-- GRID de partidas -->
-  @if (!loading && filteredPlaythroughs.length > 0) {
+  @if (showGrid && !loading && filteredPlaythroughs.length > 0) {
     <div class="games-grid">
       @for (p of filteredPlaythroughs; track p.id) {
         <div class="game-card" [ngClass]="getStatusClass(p)">
@@ -75,6 +88,6 @@
 
   <!-- No hay partidas para el año -->
   @if (!loading && filteredPlaythroughs.length === 0 && years.length > 0) {
-    <div class="empty">No hay partidas en {{ selectedYear }}</div>
+    <div class="empty">No hay partidas para el año {{ selectedYear }}</div>
   }
 </div>

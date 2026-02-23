@@ -1,0 +1,195 @@
+.playthrough-history {
+  margin-top: 1.5rem;
+
+  h2 {
+    font-size: 1.25rem;
+    margin-bottom: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 0.4rem;
+  }
+
+  /* ---------- CARD ---------- */
+  .history-item {
+    position: relative;
+    background: rgba(20, 20, 34, 0.65);
+    border: 2px solid rgba(124, 92, 255, 0.18);
+    border-radius: 14px;
+    padding: 1.4rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: all 0.2s ease;
+
+    /* Estados del borde */
+    &.platinum {
+      border-color: rgba(180, 255, 255, 0.7);
+
+      &:hover {
+        border-color: rgba(180, 255, 255, 0.9);
+      }
+    }
+
+    &.completed {
+      border-color: rgba(46, 204, 113, 0.35);
+
+      &:hover {
+        border-color: rgba(46, 204, 113, 0.5);
+      }
+    }
+
+    &.abandoned {
+      border-color: rgba(255, 80, 80, 0.3);
+
+      &:hover {
+        border-color: rgba(255, 80, 80, 0.5);
+      }
+    }
+  }
+
+  /* ---------- TOP BAR ---------- */
+  .history-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  /* Edit button */
+  .edit-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    padding: 0;
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+  }
+
+  /* Right side (status + platinum) */
+  .top-right {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  /* ---------- STATUS ---------- */
+  .history-status {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 5px 12px;
+    border-radius: 999px;
+    letter-spacing: 0.4px;
+
+    &.platinum {
+      background: rgba(180, 255, 255, 0.2) !important;
+      color: #00ffff !important;
+      border: 1px solid rgba(180, 255, 255, 0.5) !important;
+    }
+
+    &.completed {
+      background: rgba(46, 204, 113, 0.12);
+      color: #2ecc71;
+      border: 1px solid rgba(46, 204, 113, 0.35);
+    }
+
+    &:not(.completed) {
+      background: rgba(255, 80, 80, 0.12);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 80, 80, 0.3);
+    }
+  }
+
+  /* Platinum icon */
+  .platinum-icon {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 3px rgba(180, 255, 255, 0.6));
+  }
+
+  /* ---------- DATE ---------- */
+  .history-date {
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  /* ---------- STATS (Horas) ---------- */
+  .history-item .stat-pill {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(124, 92, 255, 0.35);
+    padding: 0.6rem 0;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #e0dbff;
+    backdrop-filter: blur(4px);
+    transition: all 0.2s ease;
+  }
+
+  /* Colores según estado del padre */
+  .history-item.platinum .stat-pill {
+    border-color: rgba(180, 255, 255, 0.5);
+  }
+
+  .history-item.completed .stat-pill {
+    border-color: rgba(46, 204, 113, 0.35);
+  }
+
+  .history-item.abandoned .stat-pill {
+    border-color: rgba(255, 80, 80, 0.3);
+  }
+
+  /* ---------- NOTES ---------- */
+  .history-notes {
+    font-size: 0.83rem;
+    color: #dcdcff;
+    line-height: 1.45;
+    opacity: 0.95;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.5rem 0.8rem;
+    border-left: 3px solid #7c5cff;
+    border-radius: 8px;
+    font-style: italic;
+    box-shadow: 0 1px 4px rgba(124, 92, 255, 0.1);
+    backdrop-filter: blur(2px);
+    transition: all 0.2s ease;
+  }
+
+  .history-item.platinum .history-notes {
+    border-left-color: rgba(180, 255, 255, 0.5);
+  }
+
+  .history-item.completed .history-notes {
+    border-left-color: rgba(46, 204, 113, 0.35);
+  }
+
+  .history-item.abandoned .history-notes {
+    border-left-color: rgba(255, 80, 80, 0.3);
+  }
+}

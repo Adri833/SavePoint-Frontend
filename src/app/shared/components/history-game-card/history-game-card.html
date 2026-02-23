@@ -1,0 +1,51 @@
+@if (pastPlaythroughs.length) {
+  <div class="playthrough-history">
+    <h2>Partidas anteriores</h2>
+    <div class="history-list">
+      @for (pt of pastPlaythroughs; track pt.id) {
+        <div
+          class="history-item"
+          [ngClass]="pt.platinum ? 'platinum' : pt.completed ? 'completed' : 'abandoned'"
+        >
+          <div class="history-top">
+            <!-- Editar -->
+            <button class="edit-btn" (click)="onEdit(pt)">
+              <img src="/edit.svg" alt="Editar" />
+            </button>
+
+            <!-- Fecha centrada -->
+            <div class="history-date">
+              {{ pt.started_at | date: 'd MMM y' }} -
+              {{ pt.ended_at ? (pt.ended_at | date: 'd MMM y') : '—' }}
+            </div>
+
+            <!-- Status + Platino -->
+            <div class="top-right">
+              @if (pt.platinum) {
+                <img src="/trophy-platinum.png" class="platinum-icon" alt="Platino" />
+              }
+              <span
+                class="history-status"
+                [ngClass]="{ completed: pt.completed, platinum: pt.platinum }"
+              >
+                {{ pt.platinum ? '100%' : pt.completed ? 'Completada' : 'Abandonada' }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="history-stats">
+            @if (pt.hours) {
+              <span class="stat-pill">{{ pt.hours }}h</span>
+            }
+          </div>
+
+          <!-- Notes -->
+          @if (pt.notes) {
+            <p class="history-notes">{{ pt.notes }}</p>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

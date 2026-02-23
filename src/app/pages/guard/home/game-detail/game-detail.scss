@@ -180,7 +180,7 @@
         border-radius: 18px;
         background: rgba(20, 20, 34, 0.65);
         backdrop-filter: blur(14px);
-        border: 1px solid rgba(124, 92, 255, 0.25);
+        border: 2px solid rgba(124, 92, 255, 0.25);
         box-shadow: 0 0 40px rgba(124, 92, 255, 0.08);
         animation: fadeInScale 0.35s ease both;
 
@@ -338,103 +338,6 @@
           &:hover {
             transform: scale(1.04);
             box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
-          }
-        }
-      }
-
-      /* ---------------- Historial de partidas ---------------- */
-      .playthrough-history {
-        margin-top: 1rem;
-
-        h2 {
-          font-size: 1.2rem;
-          margin-bottom: 1rem;
-          color: #fff;
-          font-weight: 600;
-          letter-spacing: 0.3px;
-        }
-
-        .history-list {
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-          max-height: 400px;
-          overflow-y: auto;
-          padding-right: 0.3rem;
-
-          .history-item {
-            background: rgba(20, 20, 34, 0.65);
-            border: 1px solid rgba(124, 92, 255, 0.25);
-            border-radius: 12px;
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-
-            .history-header {
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              margin-bottom: 8px;
-
-              .history-date {
-                font-size: 0.9rem;
-                color: #c9c2ff;
-              }
-
-              .history-status {
-                font-size: 0.8rem;
-                font-weight: 600;
-                text-transform: uppercase;
-                padding: 6px 10px;
-                border-radius: 999px;
-
-                &.completed {
-                  background: rgba(46, 204, 113, 0.2);
-                  color: #2ecc71;
-                }
-
-                &:not(.completed) {
-                  background: rgba(255, 0, 0, 0.501);
-                  color: #ccc;
-                }
-              }
-            }
-
-            .history-body {
-              display: flex;
-              flex-direction: column;
-              gap: 0.3rem;
-              font-size: 0.85rem;
-              color: #dcdcf5;
-              line-height: 1.4;
-
-              .history-stats {
-                display: flex;
-                gap: 0.5rem;
-
-                span {
-                  flex: 1;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  background: rgba(255, 255, 255, 0.05);
-                  padding: 0.3rem 0.6rem;
-                  border-radius: 6px;
-                  font-size: 0.9rem;
-                }
-              }
-
-              .history-notes {
-                width: 100%;
-                margin-top: 0.4rem;
-                background: rgba(255, 255, 255, 0.04);
-                padding: 0.5rem 0.75rem;
-                border-radius: 8px;
-                font-size: 0.8rem;
-                text-align: center;
-              }
-            }
           }
         }
       }

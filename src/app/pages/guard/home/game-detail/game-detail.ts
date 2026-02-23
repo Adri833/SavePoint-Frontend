@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { StartPlaythroughModal } from '../../../../shared/components/start-playthrough-modal/start-playthrough-modal';
 import { FinishPlaythroughModal } from '../../../../shared/components/finish-playthrough-modal/finish-playthrough-modal';
 import { EditPlaythroughModal } from '../../../../shared/components/edit-playthrough-modal/edit-playthrough-modal';
+import { HistoryGameCard } from '../../../../shared/components/history-game-card/history-game-card';
 
 @Component({
   selector: 'app-game-detail',
@@ -28,6 +29,7 @@ import { EditPlaythroughModal } from '../../../../shared/components/edit-playthr
     StartPlaythroughModal,
     FinishPlaythroughModal,
     EditPlaythroughModal,
+    HistoryGameCard,
   ],
   templateUrl: './game-detail.html',
   styleUrl: './game-detail.scss',
@@ -45,6 +47,7 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   activePlaythrough: Playthrough | null = null;
   pastPlaythroughs: Playthrough[] = [];
+  editingPlaythrough: Playthrough | null = null;
 
   private needsHeightCheck = false;
 
@@ -65,6 +68,14 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
   get currentPlaythrough(): Playthrough {
     return this.activePlaythrough!;
+  }
+
+  get currentEditPlaytrhough(): Playthrough {
+    return this.editingPlaythrough!;
+  }
+
+  trackById(index: number, pt: Playthrough) {
+    return pt.id;
   }
 
   /* ================= LIFECYCLE ================= */
@@ -178,16 +189,29 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.loadPlaythroughs(this.game.id);
   }
 
-  openEditModal() {
+  openEditModal(pt: Playthrough) {
+    this.editingPlaythrough = { ...pt };
     this.showEditModal = true;
   }
 
   closeEditModal() {
     this.showEditModal = false;
+    this.editingPlaythrough = null;
   }
 
   onPlaythroughUpdated(updated: Playthrough) {
-    this.activePlaythrough = updated;
+    // Actualizamos la lista de partidas pasadas si corresponde
+    const index = this.pastPlaythroughs.findIndex((p) => p.id === updated.id);
+    if (index !== -1) {
+      this.pastPlaythroughs[index] = updated;
+    }
+
+    // Actualizamos la partida activa si corresponde
+    if (this.activePlaythrough?.id === updated.id) {
+      this.activePlaythrough = updated;
+    }
+
+    this.cd.detectChanges();
     this.closeEditModal();
   }
 
