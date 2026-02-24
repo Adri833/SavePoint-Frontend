@@ -9,23 +9,35 @@
   <div class="modal-body">
     <img class="cover-image" [src]="playthrough.game_background" [alt]="playthrough.game_name" />
 
-    <div class="details">
-      <p><strong>Inicio:</strong> {{ playthrough.started_at | date: 'dd/MM/yyyy' }}</p>
-      <p><strong>Horas jugadas:</strong> {{ playthrough.hours || 0 }}h</p>
-      <p><strong>Estado:</strong> {{ playthrough.status }}</p>
-      <p><strong>Notas:</strong> {{ playthrough.notes || 'Sin notas' }}</p>
-    </div>
-
     <div class="modal-actions">
-
-      <!-- Boton finalizar (solo si el estado es 'playing') -->
+      <!-- MODALS -->
       @if (playthrough.status === 'playing') {
-        <button class="btn primary" (click)="onFinish()">Terminar partida</button>
+        <app-active-playthrough-card
+          [playthrough]="playthrough"
+          (finish)="openFinishModal()"
+          (edit)="openEditModal($event)"
+        />
       } @else {
         <app-history-game-card
           [pastPlaythroughs]="playthrough"
-          (edit)="onEdit()"
+          (editPlaythrough)="openEditModal($event)"
         ></app-history-game-card>
+      }
+
+      @if (showEditModal) {
+        <app-edit-playthrough-modal
+          [playthrough]="playthrough"
+          (closed)="closeEditModal()"
+          (updated)="onPlaythroughUpdated($event)"
+        />
+      }
+
+      @if (showFinishModal) {
+        <app-finish-playthrough-modal
+          [playthrough]="playthrough"
+          (closed)="closeFinishModal()"
+          (finished)="onPlaythroughFinished($event)"
+        />
       }
     </div>
   </div>

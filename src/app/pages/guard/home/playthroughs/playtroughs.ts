@@ -7,12 +7,11 @@ import { Playthrough } from '../../../../models/playtrough.model';
 import { GamesService } from '../../../../services/games.service';
 import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
-import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-playthroughs',
   standalone: true,
-  imports: [CommonModule, FormsModule, PlaythroughDetailModal, ConfirmModal],
+  imports: [CommonModule, FormsModule, PlaythroughDetailModal, ],
   templateUrl: './playthroughs.html',
   styleUrl: './playthroughs.scss',
 })
@@ -28,7 +27,6 @@ export class Playthroughs implements OnInit {
   years: number[] = [];
   selectedYear!: number;
   showGrid = true;
-  showConfirmModal = false;
 
   constructor(
     private playthroughService: PlaythroughService,
@@ -138,25 +136,7 @@ export class Playthroughs implements OnInit {
 
   handleFinish(p: Playthrough) {
     this.playthroughToFinish = p;
-    this.showConfirmModal = true;
-  }
-
-  confirmFinish() {
-    if (!this.playthroughToFinish) return;
-    // Hay que llamar al service
-    console.log('Confirmado finalizar:', this.playthroughToFinish);
-
-    this.showConfirmModal = false;
-    this.playthroughToFinish = null;
-  }
-
-  cancelFinish() {
-    this.showConfirmModal = false;
-    this.playthroughToFinish = null;
-  }
-
-  handleEdit(p: Playthrough) {
-    //TODO: logica de editar partida
-    console.log('Editar partida', p);
+    this.closeDetailModal();
+    this.loadLibrary();
   }
 }

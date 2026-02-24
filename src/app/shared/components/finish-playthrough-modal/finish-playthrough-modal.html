@@ -3,7 +3,7 @@
 <div class="modal">
   <h2>Finalizar partida</h2>
 
-  <form (ngSubmit)="finishPlaythrough()" novalidate>
+  <form (ngSubmit)="onSubmit()" novalidate>
     <!-- Fecha -->
     <label>
       Fecha de finalización
@@ -53,7 +53,7 @@
         [(ngModel)]="notes"
         name="notes"
         rows="3"
-        placeholder="Ej: 100%, todas las secundarias..."
+        placeholder="Ej: NG+, comenzado con 10h..."
       ></textarea>
     </label>
 
@@ -76,3 +76,14 @@
     </div>
   </form>
 </div>
+
+@if (showConfirmModal) {
+  <app-confirm-modal
+    title="Finalizar partida"
+    message="¿Seguro que quieres finalizar esta partida? Se marcará como completada."
+    confirmText="Finalizar"
+    cancelText="Cancelar"
+    (confirm)="confirmFinish()"
+    (cancel)="close()"
+  />
+}

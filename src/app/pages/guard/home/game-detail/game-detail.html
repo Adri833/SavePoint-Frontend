@@ -93,45 +93,11 @@
 
           <!-- Partida activa -->
           @if (hasActivePlaythrough) {
-            <div class="active-playthrough">
-              <div class="active-header">
-                <span class="status-dot"></span>
-                <h2>Partida activa</h2>
-              </div>
-
-              <div class="active-body">
-                <div class="active-main-info">
-                  <div class="info-block">
-                    <span class="label">Iniciada</span>
-                    <span class="value">
-                      {{ formatDate(currentPlaythrough.started_at) }}
-                    </span>
-                  </div>
-
-                  @if (currentPlaythrough.hours) {
-                    <div class="info-block">
-                      <span class="label">Tiempo jugado</span>
-                      <span class="value highlight"> {{ currentPlaythrough.hours }}h </span>
-                    </div>
-                  }
-                </div>
-
-                <div class="active-notes">
-                  <span class="label">Notas</span>
-                  <p>
-                    {{ currentPlaythrough.notes || 'Sin notas todavía...' }}
-                  </p>
-                </div>
-
-                <div class="playthrough-actions">
-                  <button class="finish-btn" (click)="openFinishModal()">Terminar partida</button>
-
-                  <button class="edit-btn" (click)="openEditModal(currentPlaythrough)">
-                    Editar
-                  </button>
-                </div>
-              </div>
-            </div>
+            <app-active-playthrough-card
+              [playthrough]="currentPlaythrough"
+              (finish)="openFinishModal()"
+              (edit)="openEditModal($event)"
+            />
           }
         </div>
 

@@ -15,10 +15,11 @@ import { FormsModule } from '@angular/forms';
 import Litepicker from 'litepicker';
 import { Playthrough } from '../../../models/playtrough.model';
 import { PlaythroughService } from '../../../services/playtrough.service';
+import { ConfirmModal } from '../confirm-modal/confirm-modal';
 
 @Component({
   selector: 'app-finish-playthrough-modal',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ConfirmModal],
   templateUrl: './finish-playthrough-modal.html',
   styleUrl: './finish-playthrough-modal.scss',
 })
@@ -30,7 +31,7 @@ export class FinishPlaythroughModal implements OnInit {
   startedAtDisplay: string = '';
 
   @Output() closed = new EventEmitter<void>();
-  @Output() finished = new EventEmitter<void>();
+  @Output() finished = new EventEmitter<Playthrough>();
 
   endDate!: string;
   hours!: number;
@@ -39,6 +40,8 @@ export class FinishPlaythroughModal implements OnInit {
   notes: string | null = null;
   isLoading = false;
   errorMessage: string | null = null;
+
+  showConfirmModal = false;
 
   private removeKeyListener!: () => void;
   private picker!: Litepicker;
@@ -95,6 +98,12 @@ export class FinishPlaythroughModal implements OnInit {
     });
   }
 
+  onSubmit() {
+    if (this.isLoading) return;
+
+    this.showConfirmModal = true;
+  }
+
   async finishPlaythrough() {
     this.errorMessage = null;
 
@@ -124,7 +133,7 @@ export class FinishPlaythroughModal implements OnInit {
     this.isLoading = true;
 
     try {
-      await this.playthroughService.finish(
+      const updated = await this.playthroughService.finish(
         this.playthrough.id,
         endedAt,
         this.hours,
@@ -133,13 +142,18 @@ export class FinishPlaythroughModal implements OnInit {
         this.notes ?? undefined,
       );
 
-      this.finished.emit();
+      this.finished.emit(updated);
       this.close();
     } catch (err: any) {
       this.errorMessage = err.message ?? 'Error inesperado';
     } finally {
       this.isLoading = false;
     }
+  }
+
+  confirmFinish() {
+    this.showConfirmModal = false;
+    this.finishPlaythrough();
   }
 
   onCompletedChange() {

@@ -33,14 +33,11 @@
 
 .cover-image {
   width: 100%;
+  height: auto;
   max-height: 400px;
   object-fit: cover;
   border-radius: 12px;
   margin-bottom: 1rem;
-}
-
-.details p {
-  margin: 0.5rem 0;
 }
 
 .btn {
@@ -74,7 +71,7 @@
 @keyframes scaleIn {
   from {
     opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
+    transform: translate(-50%, -48%) scale(0.96);
   }
   to {
     opacity: 1;

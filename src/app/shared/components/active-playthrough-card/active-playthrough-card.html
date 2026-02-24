@@ -1,0 +1,28 @@
+<div class="active-playthrough">
+  <div class="active-item">
+    <div class="active-top">
+      <div class="left-group">
+        <span class="status-dot"></span>
+        <span class="active-title">Partida activa</span>
+      </div>
+
+      <div class="right-group">
+        <span class="active-date">
+          {{ playthrough.started_at | date: 'd MMM y' }}
+        </span>
+
+        <button class="icon-btn" (click)="onEdit()">
+          <img src="/edit.svg" alt="Editar" />
+        </button>
+      </div>
+    </div>
+
+    <div class="active-notes">
+      {{ playthrough.notes || 'Sin notas todavía...' }}
+    </div>
+
+    <div class="active-actions">
+      <button class="action-btn finish-btn" (click)="onFinish()">Terminar</button>
+    </div>
+  </div>
+</div>

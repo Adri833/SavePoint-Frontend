@@ -90,18 +90,6 @@
         [playthrough]="selectedPlaythrough"
         (close)="closeDetailModal()"
         (finish)="handleFinish(selectedPlaythrough!)"
-        (edit)="handleEdit(selectedPlaythrough!)"
-      />
-    }
-
-    @if (showConfirmModal) {
-      <app-confirm-modal
-        title="Finalizar partida"
-        message="¿Seguro que quieres finalizar esta partida? Se marcará como completada."
-        confirmText="Finalizar"
-        cancelText="Cancelar"
-        (confirm)="confirmFinish()"
-        (cancel)="cancelFinish()"
       />
     }
   }

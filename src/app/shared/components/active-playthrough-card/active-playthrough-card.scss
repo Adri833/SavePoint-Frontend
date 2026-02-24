@@ -1,0 +1,143 @@
+.active-playthrough {
+  margin-top: 1.8rem;
+
+  .active-item {
+    position: relative;
+    background: rgba(20, 20, 34, 0.65);
+    border: 2.5px solid rgba(124, 92, 255, 0.35);
+    border-radius: 14px;
+    padding: 1.4rem 1.2rem 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    transition: all 0.25s ease;
+    box-shadow: 0 0 30px rgba(124, 92, 255, 0.08);
+
+    &:hover {
+      border-color: rgba(124, 92, 255, 0.6);
+    }
+  }
+
+  /* ---------- TOP ---------- */
+  .active-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .left-group {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+
+  .right-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .icon-btn {
+    background: transparent;
+
+    border: none;
+    cursor: pointer;
+    opacity: 0.8;
+    color: #dcdcff;
+    transition: all 0.2s ease;
+
+    img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.1);
+      color: #7c5cff;
+    }
+  }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #7c5cff;
+    box-shadow: 0 0 12px rgba(124, 92, 255, 0.8);
+    animation: pulse 1.8s infinite ease-in-out;
+  }
+
+  .active-title {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #fff;
+  }
+
+  .active-date {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  /* ---------- NOTES ---------- */
+  .active-notes {
+    font-size: 0.9rem;
+    color: #dcdcff;
+    line-height: 1.45;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.6rem 0.8rem;
+    border-left: 3px solid #7c5cff;
+    border-radius: 8px;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+
+  /* ---------- ACTIONS ---------- */
+  .active-actions {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+  }
+
+  .action-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    color: #dcdcff;
+
+    &:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+  }
+
+  .finish-btn {
+    color: #7c5cff;
+  }
+}
+
+/* ---------- PULSE ---------- */
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+  }
+}

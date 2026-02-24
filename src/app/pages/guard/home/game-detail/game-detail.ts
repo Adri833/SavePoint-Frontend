@@ -18,6 +18,7 @@ import { StartPlaythroughModal } from '../../../../shared/components/start-playt
 import { FinishPlaythroughModal } from '../../../../shared/components/finish-playthrough-modal/finish-playthrough-modal';
 import { EditPlaythroughModal } from '../../../../shared/components/edit-playthrough-modal/edit-playthrough-modal';
 import { HistoryGameCard } from '../../../../shared/components/history-game-card/history-game-card';
+import { ActivePlaythroughCard } from '../../../../shared/components/active-playthrough-card/active-playthrough-card';
 
 @Component({
   selector: 'app-game-detail',
@@ -30,6 +31,7 @@ import { HistoryGameCard } from '../../../../shared/components/history-game-card
     FinishPlaythroughModal,
     EditPlaythroughModal,
     HistoryGameCard,
+    ActivePlaythroughCard,
   ],
   templateUrl: './game-detail.html',
   styleUrl: './game-detail.scss',
