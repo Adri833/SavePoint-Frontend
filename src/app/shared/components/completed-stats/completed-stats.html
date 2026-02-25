@@ -1,0 +1,23 @@
+<div class="completed-card">
+  @if (loading) {
+    <div class="big-number-skeleton"></div>
+    <div class="label-skeleton"></div>
+    <div class="progress-bar-skeleton">
+      <div class="completed-skeleton"></div>
+    </div>
+  } @else {
+    <div class="big-number">{{ animatedCompleted }}</div>
+    <div class="label">Juegos completados</div>
+
+    <div class="progress-bar-container" [class.no-data]="!hasData">
+      <div class="progress-bar">
+        <div class="completed" [style.width.%]="completionRate"></div>
+      </div>
+
+      <div class="tooltip">
+        {{ completionRate.toFixed(0) }}% completado / {{ (100 - completionRate).toFixed(0) }}%
+        abandonado
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,119 @@
+.completed-card {
+  max-width: 400px;
+  margin: auto;
+  text-align: center;
+  color: white;
+}
+
+.big-number {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.label {
+  margin-bottom: 20px;
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.progress-bar-container {
+  position: relative;
+  width: 100%;
+}
+
+.progress-bar {
+  height: 12px;
+  width: 100%;
+  background-color: #d13625;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.progress-bar.no-data {
+  background-color: #444;
+}
+
+.completed {
+  height: 100%;
+  background-color: #27a14c;
+  transition:
+    width 0.6s ease,
+    background-color 0.3s ease;
+}
+
+/* Hover: colores más vivos */
+.progress-bar-container:hover .progress-bar {
+  background-color: #f34b35; // rojo más brillante
+}
+
+.progress-bar-container:hover .completed {
+  background-color: #31d665; // verde más brillante
+}
+
+.tooltip {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.85);
+  color: #fff;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.progress-bar-container:hover .tooltip {
+  opacity: 1;
+  transform: translateX(-50%) translateY(4px);
+}
+
+// ========== SKELETON ============
+.big-number-skeleton,
+.label-skeleton,
+.completed-skeleton {
+  border-radius: 4px;
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+}
+
+.big-number-skeleton {
+  width: 120px;
+  height: 60px;
+  margin: 0 auto 10px auto;
+}
+
+.label-skeleton {
+  width: 100px;
+  height: 12px;
+  margin: 0 auto 20px auto;
+}
+
+.progress-bar-skeleton {
+  height: 12px;
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #444;
+}
+
+.completed-skeleton {
+  height: 100%;
+  width: 50%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}

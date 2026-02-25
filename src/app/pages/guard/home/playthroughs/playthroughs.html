@@ -11,11 +11,6 @@
     <div class="error">{{ error }}</div>
   }
 
-  <!-- No hay partidas -->
-  @if (!loading && playthroughs.length === 0) {
-    <div class="empty">No tienes partidas aún.</div>
-  }
-
   <!-- HEADER con selector de año -->
   <div class="header">
     <h1>Mis partidas</h1>
@@ -97,5 +92,10 @@
   <!-- No hay partidas para el año -->
   @if (!loading && filteredPlaythroughs.length === 0 && years.length > 0) {
     <div class="empty">No hay partidas para el año {{ selectedYear }}</div>
+  }
+
+  <!-- No hay partidas -->
+  @if (!loading && playthroughs.length === 0) {
+    <div class="empty">No tienes partidas aún.</div>
   }
 </div>

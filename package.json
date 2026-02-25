@@ -32,8 +32,10 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@supabase/supabase-js": "^2.90.1",
+    "chart.js": "^4.5.1",
     "flatpickr": "^4.6.13",
     "litepicker": "^2.0.12",
+    "ng2-charts": "^8.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

@@ -1,0 +1,11 @@
+<div class="chart-container">
+  <h3 class="chart-title">Horas totales por juego</h3>
+
+  @if (loading) {
+    <div class="doughnut-skeleton">
+      <div class="inner-hole"></div>
+    </div>
+  } @else {
+    <canvas #doughnutCanvas></canvas>
+  }
+</div>

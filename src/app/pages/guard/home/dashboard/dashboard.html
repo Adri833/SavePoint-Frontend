@@ -1,1 +1,10 @@
-<p>dashboard works!</p>
+<app-doughnut-chart 
+    [games]="gamesData"
+    [loading]="isLoading">
+</app-doughnut-chart>
+
+<app-completed-stats
+    [completed]="completedGames"
+    [abandoned]="abandonedGames"
+    [loading]="isLoading">
+</app-completed-stats>

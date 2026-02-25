@@ -1,0 +1,48 @@
+.chart-container {
+  position: relative;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+}
+
+.chart-title {
+  color: #fff;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.doughnut-skeleton {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  aspect-ratio: 1;
+  margin: 20px auto;
+  border-radius: 50%;
+
+  background: linear-gradient(90deg, #2a2a2a 25%, #3a3a3a 50%, #2a2a2a 75%);
+
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.inner-hole {
+  width: 60%;
+  height: 60%;
+  background-color: #0f0f14;
+  border-radius: 50%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
