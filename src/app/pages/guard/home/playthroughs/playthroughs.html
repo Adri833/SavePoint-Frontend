@@ -15,7 +15,6 @@
   <div class="header">
     <h1>Mis partidas</h1>
 
-    <!-- Contenedor de filtros a la derecha -->
     <div class="filters">
       <!-- Selector de estado -->
       <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="status-select">
@@ -28,11 +27,12 @@
 
       <!-- Selector de año -->
       @if (years.length > 0) {
-        <select [(ngModel)]="selectedYear" (change)="onFilterChange()" class="year-select">
-          @for (year of years; track year) {
-            <option [value]="year">{{ year }}</option>
-          }
-        </select>
+        <app-year-selector
+          [years]="years"
+          [selectedYear]="selectedYear"
+          [disabled]="loading"
+          (yearChange)="onYearChange($event)">
+        </app-year-selector>
       }
     </div>
   </div>
@@ -43,12 +43,10 @@
       @for (p of filteredPlaythroughs; track p.id) {
         <div class="game-card" [ngClass]="getStatusClass(p)" (click)="openDetailModal(p)">
           <div class="game-card-inner">
-            <!-- Imagen de fondo -->
             <div class="cover">
               <img [src]="p.game_background" [alt]="p.game_name" />
             </div>
 
-            <!-- Overlay con info -->
             <div class="info">
               <div class="info-top">
                 <div class="title-hours">
@@ -62,7 +60,6 @@
                 }
               </div>
 
-              <!-- Badge según estado -->
               @if (p.status === 'playing') {
                 <span class="badge playing-badge">En curso</span>
               }
@@ -85,16 +82,15 @@
         [playthrough]="selectedPlaythrough"
         (close)="closeDetailModal()"
         (finish)="handleFinish(selectedPlaythrough!)"
+        (deleted)="onPlaythroughDeleted()"
       />
     }
   }
 
-  <!-- No hay partidas para el año -->
   @if (!loading && filteredPlaythroughs.length === 0 && years.length > 0) {
     <div class="empty">No hay partidas para el año {{ selectedYear }}</div>
   }
 
-  <!-- No hay partidas -->
   @if (!loading && playthroughs.length === 0) {
     <div class="empty">No tienes partidas aún.</div>
   }

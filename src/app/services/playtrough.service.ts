@@ -122,6 +122,7 @@ export class PlaythroughService {
     completed: boolean,
     platinum: boolean,
     notes?: string,
+    ended_at?: Date,
   ) {
     if (platinum && !completed) {
       throw new Error('No se puede tener platino sin completar el juego');
@@ -129,6 +130,14 @@ export class PlaythroughService {
 
     if (started_at > new Date()) {
       throw new Error('La fecha de inicio no puede ser futura');
+    }
+
+    if (ended_at && ended_at < started_at) {
+      throw new Error('La fecha de fin no puede ser anterior a la de inicio');
+    }
+
+    if (ended_at && ended_at > new Date()) {
+      throw new Error('La fecha de fin no puede ser futura');
     }
 
     if (hours < 0) {
@@ -143,6 +152,7 @@ export class PlaythroughService {
         completed,
         platinum,
         notes: notes ?? null,
+        ...(ended_at ? { ended_at: ended_at.toISOString() } : {}),
       })
       .eq('id', id)
       .select()
@@ -157,6 +167,14 @@ export class PlaythroughService {
       created_at: new Date(data.created_at),
       updated_at: new Date(data.updated_at),
     } as Playthrough;
+  }
+
+  /* ========== DELETE ========== */
+
+  async delete(id: string): Promise<void> {
+    const { error } = await supabase.from('playthroughs').delete().eq('id', id);
+
+    if (error) throw error;
   }
 
   async finish(

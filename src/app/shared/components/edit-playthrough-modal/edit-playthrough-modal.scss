@@ -78,7 +78,6 @@
     outline: none;
   }
 
-  /* Quitar flechas predeterminadas */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -131,6 +130,7 @@
     transform: translateY(-1px);
   }
 
+  /* ---------- CHECKBOXES ---------- */
   .checkbox-group {
     display: flex;
     flex-direction: column;
@@ -174,8 +174,6 @@
         transition: transform 0.15s ease-in-out;
       }
 
-      /* ===== HISTORIA COMPLETADA ===== */
-
       &:nth-child(1) input[type='checkbox']:checked {
         border-color: #7c5cff;
         background: #1a1a2e;
@@ -186,8 +184,6 @@
         box-shadow: 0 0 8px rgba(124, 92, 255, 0.7);
         transform: scale(1);
       }
-
-      /* ===== PLATINO ===== */
 
       &:nth-child(2) input[type='checkbox'] {
         position: relative;
@@ -215,7 +211,6 @@
         height: 28px;
         transform: translate(-50%, -50%);
         border-radius: 8px;
-
         background: radial-gradient(
           circle,
           rgba(58, 166, 255, 0.9) 0%,
@@ -223,7 +218,6 @@
           rgba(58, 166, 255, 0.05) 75%,
           transparent 85%
         );
-
         animation: platinumEnergy 2s ease-in-out infinite;
         pointer-events: none;
         z-index: 1;
@@ -231,10 +225,11 @@
     }
   }
 
+  /* ---------- ACTIONS ---------- */
   .actions {
     display: flex;
-    justify-content: flex-end;
-    gap: 0.8rem;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 1.5rem;
 
     button {
@@ -245,60 +240,92 @@
       font-weight: 600;
       transition: 0.2s ease;
     }
+  }
 
-    button[type='submit'] {
-      position: relative;
-      background: #fff;
-      color: #141422;
-      min-width: 110px;
+  .right-actions {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
 
-      &:hover {
-        transform: scale(1.05);
-      }
+  /* ---------- DELETE BUTTON ---------- */
+  .delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0 !important;
+    border-radius: 10px !important;
+    background: transparent;
+    color: #555;
+    border: 1px solid #2a2a40 !important;
+    transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, width 0.2s ease !important;
+    overflow: hidden;
+    white-space: nowrap;
 
-      &:disabled {
-        opacity: 0.8;
-        cursor: not-allowed;
-        transform: none;
-      }
+    &:hover:not(:disabled) {
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.08);
+      border-color: rgba(255, 107, 107, 0.3) !important;
+    }
 
-      .btn-content.hidden {
-        visibility: hidden;
-      }
+    &.confirming {
+      width: 80px;
+      color: #ff6b6b;
+      background: rgba(255, 107, 107, 0.12);
+      border-color: rgba(255, 107, 107, 0.5) !important;
+      font-size: 0.8rem;
 
-      .btn-spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 18px;
-        height: 18px;
-        border: 2px solid rgba(20, 20, 34, 0.3);
-        border-top: 2px solid #141422;
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        animation: spin 0.7s linear infinite;
+      &:hover:not(:disabled) {
+        background: rgba(255, 107, 107, 0.22);
       }
     }
 
-    .cancel {
-      background: transparent;
-      color: #aaa;
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+  }
+
+  /* ---------- SUBMIT BUTTON ---------- */
+  button[type='submit'] {
+    position: relative;
+    background: #fff;
+    color: #141422;
+    min-width: 110px;
+
+    &:hover {
+      transform: scale(1.05);
     }
 
-    button[type='submit'] {
-      background: #fff;
-      color: #141422;
-
-      &:hover {
-        transform: scale(1.05);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
+    &:disabled {
+      opacity: 0.8;
+      cursor: not-allowed;
+      transform: none;
     }
+
+    .btn-content.hidden {
+      visibility: hidden;
+    }
+
+    .btn-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(20, 20, 34, 0.3);
+      border-top: 2px solid #141422;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: spin 0.7s linear infinite;
+    }
+  }
+
+  .cancel {
+    background: transparent;
+    color: #aaa;
   }
 
   .error {
@@ -321,12 +348,8 @@
 }
 
 @keyframes fadeInOverlay {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 @keyframes platinumEnergy {
@@ -335,23 +358,19 @@
     filter: blur(2px);
     opacity: 0.7;
   }
-
   25% {
     transform: translate(-50%, -50%) scale(1.1) rotate(5deg);
     filter: blur(3px);
     opacity: 1;
   }
-
   50% {
     transform: translate(-50%, -50%) scale(1.05) rotate(-4deg);
     filter: blur(2px);
   }
-
   75% {
     transform: translate(-50%, -50%) scale(1.12) rotate(3deg);
     filter: blur(3px);
   }
-
   100% {
     transform: translate(-50%, -50%) scale(0.9);
     filter: blur(2px);

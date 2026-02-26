@@ -1,21 +1,29 @@
-<div class="dashboard-split">
-  <div class="left">
-    <app-doughnut-chart 
-        [games]="gamesData"
-        [loading]="isLoading">
-    </app-doughnut-chart>
+<div class="dashboard-wrapper">
+  <div class="dashboard-header">
+    <app-year-selector
+      [years]="availableYears"
+      [selectedYear]="selectedYear"
+      [disabled]="isLoading"
+      (yearChange)="onYearChange($event)"
+    >
+    </app-year-selector>
   </div>
 
-  <div class="right">
-    <app-completed-stats
+  <div class="dashboard-split">
+    <div class="left">
+      <app-doughnut-chart [games]="gamesData" [loading]="isLoading"> </app-doughnut-chart>
+    </div>
+
+    <div class="right">
+      <app-completed-stats
         [completed]="completedGames"
         [abandoned]="abandonedGames"
-        [loading]="isLoading">
-    </app-completed-stats>
+        [loading]="isLoading"
+      >
+      </app-completed-stats>
 
-    <app-platinum-stats
-        [totalPlatinum]="platinumGames"
-        [loading]="isLoading">
-    </app-platinum-stats>
+      <app-platinum-stats [totalPlatinum]="platinumGames" [loading]="isLoading">
+      </app-platinum-stats>
+    </div>
   </div>
 </div>

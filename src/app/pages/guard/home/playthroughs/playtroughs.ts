@@ -7,11 +7,12 @@ import { Playthrough } from '../../../../models/playtrough.model';
 import { GamesService } from '../../../../services/games.service';
 import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
+import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
 
 @Component({
   selector: 'app-playthroughs',
   standalone: true,
-  imports: [CommonModule, FormsModule, PlaythroughDetailModal, ],
+  imports: [CommonModule, FormsModule, PlaythroughDetailModal, YearSelector],
   templateUrl: './playthroughs.html',
   styleUrl: './playthroughs.scss',
 })
@@ -47,7 +48,6 @@ export class Playthroughs implements OnInit {
 
       if (this.playthroughs.length) {
         const gameRequests = this.playthroughs.map((p) => this.gamesService.getGameById(p.game_id));
-
         const games: GameDTO[] = await firstValueFrom(forkJoin(gameRequests));
 
         games.forEach((game, i) => {
@@ -86,10 +86,8 @@ export class Playthroughs implements OnInit {
       const start = new Date(p.started_at).getFullYear();
       const end = p.ended_at ? new Date(p.ended_at).getFullYear() : new Date().getFullYear();
 
-      // Filtrar por año
       const inYear = start <= this.selectedYear && end >= this.selectedYear;
 
-      // Filtrar por estado
       let statusMatch = true;
       if (this.selectedStatus !== 'all') {
         if (this.selectedStatus === 'platinum') {
@@ -105,6 +103,16 @@ export class Playthroughs implements OnInit {
 
       return inYear && statusMatch;
     });
+  }
+
+  onYearChange(year: number) {
+    this.selectedYear = year;
+    this.onFilterChange();
+  }
+
+  onPlaythroughDeleted() {
+    this.closeDetailModal();
+    this.loadLibrary();
   }
 
   onFilterChange() {
@@ -123,8 +131,6 @@ export class Playthroughs implements OnInit {
     if (p.status === 'finished' && !p.completed) return 'dropped';
     return '';
   }
-
-  // ---------- MODAL DE DATOS DE PARTIDA ---------
 
   openDetailModal(p: Playthrough) {
     this.selectedPlaythrough = p;

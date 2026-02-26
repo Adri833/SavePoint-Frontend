@@ -10,7 +10,6 @@
     <img class="cover-image" [src]="playthrough.game_background" [alt]="playthrough.game_name" />
 
     <div class="modal-actions">
-      <!-- MODALS -->
       @if (playthrough.status === 'playing') {
         <app-active-playthrough-card
           [playthrough]="playthrough"
@@ -29,6 +28,7 @@
           [playthrough]="playthrough"
           (closed)="closeEditModal()"
           (updated)="onPlaythroughUpdated($event)"
+          (deleted)="onPlaythroughDeleted()"
         />
       }
 

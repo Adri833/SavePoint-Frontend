@@ -24,7 +24,8 @@ export class PlaythroughDetailModal {
   @Input() playthrough!: Playthrough;
   @Output() close = new EventEmitter<void>();
   @Output() finish = new EventEmitter<Playthrough>();
-  
+  @Output() deleted = new EventEmitter<void>();
+
   showEditModal = false;
   showFinishModal = false;
 
@@ -48,10 +49,7 @@ export class PlaythroughDetailModal {
 
   onPlaythroughFinished(updated: Playthrough) {
     this.closeFinishModal();
-    this.playthrough = {
-      ...this.playthrough,
-      ...updated,
-    };
+    this.playthrough = { ...this.playthrough, ...updated };
     this.finish.emit(updated);
     this.close.emit();
   }
@@ -67,12 +65,14 @@ export class PlaythroughDetailModal {
 
   onPlaythroughUpdated(updated: Playthrough) {
     if (this.playthrough?.id === updated.id) {
-      this.playthrough = {
-        ...this.playthrough,
-        ...updated,
-      };
+      this.playthrough = { ...this.playthrough, ...updated };
     }
-
     this.closeEditModal();
+  }
+
+  onPlaythroughDeleted() {
+    this.closeEditModal();
+    this.close.emit();
+    this.deleted.emit();
   }
 }

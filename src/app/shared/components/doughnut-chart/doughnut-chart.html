@@ -1,9 +1,9 @@
 <div class="chart-container">
-  @if (loading) {
-    <div class="doughnut-skeleton">
-      <div class="inner-hole"></div>
-    </div>
-  } @else {
+  <div class="doughnut-skeleton" [class.hidden]="!loading">
+    <div class="inner-hole"></div>
+  </div>
+
+  <div #chartWrapper class="chart-wrapper" [class.hidden]="loading">
     <canvas #doughnutCanvas></canvas>
-  }
+  </div>
 </div>

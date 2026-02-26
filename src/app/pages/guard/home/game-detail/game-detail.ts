@@ -191,6 +191,11 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.loadPlaythroughs(this.game.id);
   }
 
+  onPlaythroughDeleted() {
+    this.closeEditModal();
+    this.loadPlaythroughs(this.game.id);
+  }
+  
   openEditModal(pt: Playthrough) {
     this.editingPlaythrough = { ...pt };
     this.showEditModal = true;
@@ -202,13 +207,11 @@ export class GameDetail implements OnInit, AfterViewChecked {
   }
 
   onPlaythroughUpdated(updated: Playthrough) {
-    // Actualizamos la lista de partidas pasadas si corresponde
     const index = this.pastPlaythroughs.findIndex((p) => p.id === updated.id);
     if (index !== -1) {
       this.pastPlaythroughs[index] = updated;
     }
 
-    // Actualizamos la partida activa si corresponde
     if (this.activePlaythrough?.id === updated.id) {
       this.activePlaythrough = updated;
     }
@@ -216,6 +219,7 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.cd.detectChanges();
     this.closeEditModal();
   }
+
 
   /* ================= UI ================= */
 

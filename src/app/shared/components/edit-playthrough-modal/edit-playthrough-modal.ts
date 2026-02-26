@@ -27,20 +27,26 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
   @Input() playthrough!: Playthrough;
   @Output() closed = new EventEmitter<void>();
   @Output() updated = new EventEmitter<Playthrough>();
+  @Output() deleted = new EventEmitter<void>();
 
   @ViewChild('dateInput') dateInput!: ElementRef;
+  @ViewChild('endDateInput') endDateInput?: ElementRef;
 
   startedAtISO!: string;
+  endedAtISO: string | null = null;
   hours!: number;
   completed = false;
   platinum = false;
   notes: string | null = null;
 
   isLoading = false;
+  confirmingDelete = false;
   errorMessage: string | null = null;
 
   private picker!: Litepicker;
+  private endPicker?: Litepicker;
   private removeKeyListener!: () => void;
+  private confirmTimeout?: ReturnType<typeof setTimeout>;
 
   constructor(
     private playthroughService: PlaythroughService,
@@ -58,10 +64,20 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
     this.platinum = this.playthrough.platinum;
     this.notes = this.playthrough.notes;
 
+    if (this.playthrough.ended_at) {
+      this.endedAtISO = this.playthrough.ended_at.toISOString().split('T')[0];
+    }
+
     this.renderer.setStyle(document.body, 'overflow', 'hidden');
 
     this.removeKeyListener = this.renderer.listen('window', 'keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Escape') this.close();
+      if (event.key === 'Escape') {
+        if (this.confirmingDelete) {
+          this.confirmingDelete = false;
+        } else {
+          this.close();
+        }
+      }
     });
   }
 
@@ -74,7 +90,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
       format: 'DD MMM. YYYY',
       mobileFriendly: true,
       lang: 'es-ES',
-      startDate: startDate,
+      startDate,
     });
 
     this.dateInput.nativeElement.value = this.picker.getStartDate()?.format('DD MMM. YYYY');
@@ -82,7 +98,32 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
     this.picker.on('selected', (date) => {
       this.startedAtISO = date.format('YYYY-MM-DD');
       this.dateInput.nativeElement.value = date.format('DD MMM. YYYY');
+
+      if (this.endPicker) {
+        this.endPicker.setOptions({ minDate: new Date(this.startedAtISO) });
+      }
     });
+
+    if (this.endDateInput && this.endedAtISO) {
+      const endDate = new Date(this.endedAtISO);
+
+      this.endPicker = new Litepicker({
+        element: this.endDateInput.nativeElement,
+        singleMode: true,
+        format: 'DD MMM. YYYY',
+        mobileFriendly: true,
+        lang: 'es-ES',
+        startDate: endDate,
+        minDate: startDate,
+      });
+
+      this.endDateInput.nativeElement.value = this.endPicker.getStartDate()?.format('DD MMM. YYYY');
+
+      this.endPicker.on('selected', (date) => {
+        this.endedAtISO = date.format('YYYY-MM-DD');
+        this.endDateInput!.nativeElement.value = date.format('DD MMM. YYYY');
+      });
+    }
   }
 
   async updatePlaythrough() {
@@ -90,6 +131,11 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
 
     if (!this.startedAtISO) {
       this.errorMessage = 'Debes seleccionar una fecha válida';
+      return;
+    }
+
+    if (this.endedAtISO && this.endedAtISO < this.startedAtISO) {
+      this.errorMessage = 'La fecha de fin no puede ser anterior a la de inicio';
       return;
     }
 
@@ -108,10 +154,10 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
         this.isPlaying ? false : this.completed,
         this.isPlaying ? false : this.platinum,
         this.notes ?? undefined,
+        this.endedAtISO ? new Date(this.endedAtISO) : undefined,
       );
 
       this.updated.emit(updatedPlaythrough);
-
       this.close();
     } catch (err: any) {
       this.errorMessage = err.message ?? 'Error inesperado';
@@ -119,6 +165,38 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
       this.isLoading = false;
     }
   }
+
+  // ===== DELETE =====
+
+  onDeleteClick() {
+    if (!this.confirmingDelete) {
+      // Primer click: pide confirmación y cancela solo si no se confirma en 3s
+      this.confirmingDelete = true;
+      this.confirmTimeout = setTimeout(() => {
+        this.confirmingDelete = false;
+      }, 3000);
+    } else {
+      // Segundo click: borra
+      clearTimeout(this.confirmTimeout);
+      this.deletePlaythrough();
+    }
+  }
+
+  private async deletePlaythrough() {
+    this.isLoading = true;
+    try {
+      await this.playthroughService.delete(this.playthrough.id);
+      this.deleted.emit();
+      this.close();
+    } catch (err: any) {
+      this.errorMessage = err.message ?? 'Error al borrar la partida';
+      this.confirmingDelete = false;
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  // ===== FORM HELPERS =====
 
   onCompletedChange() {
     if (!this.completed) this.platinum = false;
@@ -150,5 +228,7 @@ export class EditPlaythroughModal implements OnInit, AfterViewInit, OnDestroy {
     this.renderer.removeStyle(document.body, 'overflow');
     if (this.removeKeyListener) this.removeKeyListener();
     if (this.picker) this.picker.destroy();
+    if (this.endPicker) this.endPicker.destroy();
+    clearTimeout(this.confirmTimeout);
   }
 }
