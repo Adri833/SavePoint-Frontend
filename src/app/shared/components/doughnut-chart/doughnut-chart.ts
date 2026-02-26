@@ -51,9 +51,7 @@ export class DoughnutChart implements AfterViewInit, OnChanges {
   private chart!: Chart;
 
   ngAfterViewInit() {
-    if (!this.loading) {
-      this.createChart(this.games);
-    }
+    requestAnimationFrame(() => this.createChart(this.games));
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -67,8 +65,7 @@ export class DoughnutChart implements AfterViewInit, OnChanges {
   }
 
   private createChart(games: { gameName: string; hours: number }[]) {
-    const validGames = games.filter((g) => g.hours > 0).sort((a, b) => b.hours - a.hours);
-
+    const validGames = this.games.filter((g) => g.hours > 0).sort((a, b) => b.hours - a.hours);
     const hasData = validGames.length > 0;
 
     this.chart = new Chart(this.doughnutCanvas.nativeElement, {
@@ -86,6 +83,7 @@ export class DoughnutChart implements AfterViewInit, OnChanges {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         cutout: '65%',
         layout: { padding: 10 },
         plugins: {
@@ -109,17 +107,16 @@ export class DoughnutChart implements AfterViewInit, OnChanges {
           beforeDraw: (chart) => {
             const { width, height, ctx } = chart;
             const data = chart.data.datasets[0].data as number[];
+            const labels = chart.data.labels as string[];
 
-            const validGames = chart.data.labels
-              ? chart.data.labels.filter((_, i) => data[i] > 0)
-              : [];
-            const totalHours = data.reduce((a, b) => a + b, 0);
-            const totalGames = validGames.length;
+            const isEmpty = labels.length === 1 && labels[0] === 'Sin datos';
 
+            const totalHours = isEmpty ? 0 : data.reduce((a, b) => a + b, 0);
+            const totalGames = isEmpty ? 0 : data.filter((d) => d > 0).length;
             ctx.save();
 
             // === Horas totales ===
-            const hoursFontSize = height / 8;
+            const hoursFontSize = height / 9;
             ctx.font = `${hoursFontSize}px sans-serif`;
             ctx.textBaseline = 'middle';
             ctx.fillStyle = totalGames > 0 ? '#ffffff' : '#777777';

@@ -4,11 +4,12 @@ import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js
 import { DashboardService } from '../../../../services/dashboard.service';
 import { DoughnutChart } from '../../../../shared/components/doughnut-chart/doughnut-chart';
 import { CompletedStats } from '../../../../shared/components/completed-stats/completed-stats';
+import { PlatinumStats } from "../../../../shared/components/platinum-stats/platinum-stats";
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, DoughnutChart, CompletedStats],
+  imports: [CommonModule, DoughnutChart, CompletedStats, PlatinumStats],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })
@@ -17,6 +18,7 @@ export class Dashboard implements OnInit {
 
   completedGames = 0;
   abandonedGames = 0;
+  platinumGames = 0;
 
   isLoading = true;
 
@@ -35,6 +37,7 @@ export class Dashboard implements OnInit {
 
       this.completedGames = stats.completedCount;
       this.abandonedGames = stats.abandonedCount;
+      this.platinumGames = stats.totalPlatinum;
 
       this.gamesData = await this.dashboardService.getHoursByGameForYear(currentYear);
     } catch (error) {

@@ -1,22 +1,15 @@
 .chart-container {
-  position: relative;
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-  margin: auto;
-}
-
-.chart-title {
-  color: #fff;
-  margin-bottom: 16px;
-  font-weight: 600;
-  font-size: 1.2rem;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .doughnut-skeleton {
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   aspect-ratio: 1;
   margin: 20px auto;
   border-radius: 50%;
@@ -34,7 +27,7 @@
 .inner-hole {
   width: 60%;
   height: 60%;
-  background-color: #0f0f14;
+  background-color: #1a1a25;
   border-radius: 50%;
 }
 

@@ -1,0 +1,71 @@
+.dashboard-split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: #0f0f14;
+  gap: 30px;
+  padding: 30px;
+  min-height: 0;
+  box-sizing: border-box;
+
+  .left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+
+    app-doughnut-chart {
+      width: 100%;
+      height: 100%;
+      background: #1a1a25;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 4%, 50px);
+    }
+  }
+
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-height: 0;
+
+    app-completed-stats,
+    app-platinum-stats {
+      flex: 1;
+      background: #1a1a25;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(16px, 10%, 80px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: auto;
+    padding: 12px;
+    gap: 12px;
+
+    .left {
+      min-height: 300px;
+    }
+
+    .right {
+      gap: 12px;
+
+      app-completed-stats,
+      app-platinum-stats {
+        min-height: 160px;
+      }
+    }
+  }
+}

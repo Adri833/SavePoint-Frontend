@@ -9,7 +9,7 @@ import { SidebarItemComponent } from "../sidebar-item/sidebar-item";
   styleUrl: './sidebar.scss',
 })
 export class Sidebar {
-  collapsed = true;
+  collapsed = false;
 
   toggle() {
     this.collapsed = !this.collapsed;

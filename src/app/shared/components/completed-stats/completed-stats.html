@@ -6,10 +6,12 @@
       <div class="completed-skeleton"></div>
     </div>
   } @else {
-    <div class="big-number">{{ animatedCompleted }}</div>
+    <div class="big-number" [class.no-data]="!hasData">
+      {{ animatedCompleted }}
+    </div>
     <div class="label">Juegos completados</div>
 
-    <div class="progress-bar-container" [class.no-data]="!hasData">
+    <div class="progress-bar-container" [class.no-data]="!hasData" [class.disabled]="!hasData">
       <div class="progress-bar">
         <div class="completed" [style.width.%]="completionRate"></div>
       </div>

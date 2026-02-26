@@ -1,0 +1,25 @@
+<div class="platinum-card">
+  @if (loading) {
+    <div class="content">
+      <div class="left">
+        <div class="big-number-skeleton"></div>
+        <div class="label-skeleton"></div>
+      </div>
+      <div class="right skeleton-icon"></div>
+    </div>
+  } @else {
+    <div class="content">
+      <div class="left">
+        <div class="big-number" [class.no-data]="!hasData">
+          {{ animatedValue }}
+        </div>
+
+        <div class="label" [class.no-data]="!hasData">Platinos conseguidos</div>
+      </div>
+
+      <div class="right" [class.no-data]="!hasData" [style.--glow-intensity]="glowIntensity">
+        <img src="/trophy-platinum.png" alt="trophy-platinum" class="platinum-trophy" />
+      </div>
+    </div>
+  }
+</div>
