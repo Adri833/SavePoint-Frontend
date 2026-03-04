@@ -19,6 +19,7 @@ import { FinishPlaythroughModal } from '../../../../shared/components/finish-pla
 import { EditPlaythroughModal } from '../../../../shared/components/edit-playthrough-modal/edit-playthrough-modal';
 import { HistoryGameCard } from '../../../../shared/components/history-game-card/history-game-card';
 import { ActivePlaythroughCard } from '../../../../shared/components/active-playthrough-card/active-playthrough-card';
+import { TranslationService } from '../../../../services/translation.service';
 
 @Component({
   selector: 'app-game-detail',
@@ -38,11 +39,12 @@ import { ActivePlaythroughCard } from '../../../../shared/components/active-play
 })
 export class GameDetail implements OnInit, AfterViewChecked {
   isLoading = true;
+  isTranslating = false;
   game!: GameDetailDTO;
   screenshots: string[] = [];
 
   showFullAbout = false;
-  showToggle = false;
+  showToggle = false; 
   showStartModal = false;
   showFinishModal = false;
   showEditModal = false;
@@ -60,6 +62,7 @@ export class GameDetail implements OnInit, AfterViewChecked {
     private gamesService: GamesService,
     private cd: ChangeDetectorRef,
     private playthroughService: PlaythroughService,
+    private translationService: TranslationService
   ) {}
 
   /* ================= GETTERS ================= */
@@ -93,7 +96,6 @@ export class GameDetail implements OnInit, AfterViewChecked {
       this.screenshots = [];
 
       try {
-        // Esperamos a que juego y playthroughs se carguen juntos
         const [game, playthroughs, screenshots] = await Promise.all([
           this.gamesService.getGameById(gameId).toPromise(),
           this.playthroughService.getByGame(gameId),
@@ -103,6 +105,15 @@ export class GameDetail implements OnInit, AfterViewChecked {
         // Juego
         if (!game) return;
         this.game = game;
+
+        // Traduccion
+        if (this.game.description) {
+          this.isTranslating = true;
+          this.cd.detectChanges();
+          this.game.description = await this.translationService.translate(this.game.description);
+          this.isTranslating = false;
+          this.cd.detectChanges();
+        }
 
         // Playthroughs
         this.activePlaythrough = playthroughs.find((p) => p.status === 'playing') ?? null;
@@ -183,8 +194,8 @@ export class GameDetail implements OnInit, AfterViewChecked {
   }
 
   onPlaythroughFinished() {
-    this.loadPlaythroughs(this.game.id);
     this.closeFinishModal();
+    this.loadPlaythroughs(this.game.id);
   }
 
   onPlaythroughStarted() {
@@ -195,7 +206,7 @@ export class GameDetail implements OnInit, AfterViewChecked {
     this.closeEditModal();
     this.loadPlaythroughs(this.game.id);
   }
-  
+
   openEditModal(pt: Playthrough) {
     this.editingPlaythrough = { ...pt };
     this.showEditModal = true;
@@ -218,8 +229,8 @@ export class GameDetail implements OnInit, AfterViewChecked {
 
     this.cd.detectChanges();
     this.closeEditModal();
+    this.loadPlaythroughs(this.game.id);
   }
-
 
   /* ================= UI ================= */
 

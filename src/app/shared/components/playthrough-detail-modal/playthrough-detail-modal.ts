@@ -68,6 +68,8 @@ export class PlaythroughDetailModal {
       this.playthrough = { ...this.playthrough, ...updated };
     }
     this.closeEditModal();
+    this.close.emit();
+    this.finish.emit(updated);
   }
 
   onPlaythroughDeleted() {

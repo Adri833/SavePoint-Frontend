@@ -46,34 +46,39 @@
 
           @if (game.released) {
             <div class="meta-item release">
-              <span class="icon">📅</span>
+              <img class="icon" src="/calendar.svg" alt="calendar-icon" />
               <span>{{ formatDate(game.released) }}</span>
             </div>
           }
 
           @if (game.rating) {
             <div class="meta-item rating" [ngClass]="getRatingClass(game.rating)">
-              <span class="icon">⭐</span>
+              <img class="icon" src="star.svg" alt="star-icon" />
               <span>{{ game.rating }}/5</span>
             </div>
           }
         </div>
 
-        @if (game.description) {
+        @if (game.description || isTranslating) {
           <div class="about">
             <h2>Descripción</h2>
-            <p
-              #aboutText
-              class="about-text"
-              [class.collapsed]="!showFullAbout && showToggle"
-              [class.expanded]="showFullAbout"
-              [innerHTML]="game.description"
-            ></p>
 
-            @if (showToggle) {
-              <button class="toggle-btn" (click)="showFullAbout = !showFullAbout">
-                {{ showFullAbout ? 'Mostrar menos' : 'Mostrar más' }}
-              </button>
+            @if (isTranslating) {
+              <p class="about-text">Traduciendo descripción...</p>
+            } @else {
+              <p
+                #aboutText
+                class="about-text"
+                [class.collapsed]="!showFullAbout && showToggle"
+                [class.expanded]="showFullAbout"
+                [innerHTML]="game.description"
+              ></p>
+
+              @if (showToggle) {
+                <button class="toggle-btn" (click)="showFullAbout = !showFullAbout">
+                  {{ showFullAbout ? 'Mostrar menos' : 'Mostrar más' }}
+                </button>
+              }
             }
           </div>
         }

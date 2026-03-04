@@ -57,6 +57,7 @@
         .meta-item {
           display: inline-flex;
           align-items: center;
+          line-height: 1;
           gap: 0.5rem;
           padding: 0.5rem 1rem;
           border-radius: 999px;
@@ -102,8 +103,8 @@
         }
 
         .icon {
-          font-size: 0.9rem;
-          opacity: 0.85;
+          width: 24px;
+          height: 24px;
         }
       }
 

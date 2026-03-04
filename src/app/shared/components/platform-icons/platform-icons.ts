@@ -37,6 +37,8 @@ export class PlatformIcons {
         return 'icon-xbox';
       case 'nintendo':
         return 'icon-nintendo';
+      case 'sega':
+        return 'icon-sega';
       default:
         return '';
     }

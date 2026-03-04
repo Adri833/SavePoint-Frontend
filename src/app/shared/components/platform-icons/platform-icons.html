@@ -1,13 +1,11 @@
 @if (platforms.length) {
-  <div
-    class="platforms"
-    [ngClass]="sizeClass"
-  >
-  <span
-    class="platform"
-    *ngFor="let p of platforms"
-    [ngClass]="getPlatformIcon(p.platform.name)"
-    [title]="p.platform.name"
-  ></span>
-</div>
+  <div class="platforms" [ngClass]="sizeClass">
+    @for (p of platforms; track p.platform.name) {
+      <span
+        class="platform"
+        [ngClass]="getPlatformIcon(p.platform.name)"
+        [title]="p.platform.name"
+      ></span>
+    }
+  </div>
 }

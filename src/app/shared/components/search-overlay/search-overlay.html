@@ -1,29 +1,33 @@
-<div class="search-overlay" *ngIf="query$ | async as query" (click)="closeOverlay()">
-  <div class="results" (click)="$event.stopPropagation()">
-    <!-- LOADING -->
-    <div class="loading" *ngIf="loading$ | async">
-      <div class="spinner"></div>
-      Buscando juegos…
-    </div>
-
-    <!-- RESULTADOS -->
-    <ng-container *ngIf="results$ | async as results">
-      <div class="games" *ngIf="results.length && !(loading$ | async); else noResults">
-        <div class="game-card" *ngFor="let game of results" (click)="goToGame(game.id)">
-          <img [src]="game.background_image" alt="" />
-
-          <div class="info">
-            <h4>{{ game.name }}</h4>
-
-            <app-platform-icons [platforms]="game.parent_platforms ?? []" size="sm"></app-platform-icons>
-          </div>
+@if (query) {
+  <div class="search-overlay" (click)="closeOverlay()">
+    <div class="results" (click)="$event.stopPropagation()">
+      @if (loading) {
+        <div class="loading">
+          <div class="spinner"></div>
+          Buscando juegos…
         </div>
-      </div>
-    </ng-container>
+      }
 
-    <!-- VACÍO -->
-    <ng-template #noResults>
-      <p class="empty" *ngIf="!(loading$ | async)">No se encontraron juegos</p>
-    </ng-template>
+      @if (!loading && results.length) {
+        <div class="games">
+          @for (game of results; track game.id) {
+            <div class="game-card" (click)="goToGame(game.id)">
+              <img [src]="game.background_image" alt="" />
+              <div class="info">
+                <app-platform-icons
+                  [platforms]="game.parent_platforms ?? []"
+                  size="sm"
+                ></app-platform-icons>
+                <h4>{{ game.name }}</h4>
+              </div>
+            </div>
+          }
+        </div>
+      }
+
+      @if (!loading && !results.length) {
+        <p class="empty">No se encontraron juegos</p>
+      }
+    </div>
   </div>
-</div>
+}
