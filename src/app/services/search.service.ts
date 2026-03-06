@@ -13,11 +13,16 @@ export class SearchService {
   private loadingSubject = new BehaviorSubject<boolean>(false);
   loading$ = this.loadingSubject.asObservable();
 
-  private debouncedQuery$ = this.query$.pipe(
-    debounceTime(300),
-    distinctUntilChanged()
-  );
+  private focusSubject = new BehaviorSubject<boolean>(false);
+  focus$ = this.focusSubject.asObservable();
 
+  private debouncedQuery$ = this.query$.pipe(debounceTime(300), distinctUntilChanged());
+
+  triggerFocus() {
+    this.focusSubject.next(true);
+    this.focusSubject.next(false);
+  }
+  
   /** Resultados filtrados de RAWG */
   results$ = this.debouncedQuery$.pipe(
     switchMap((query) => {
@@ -34,9 +39,9 @@ export class SearchService {
         map((games) => {
           this.loadingSubject.next(false);
           return games;
-        })
+        }),
       );
-    })
+    }),
   );
 
   setQuery(query: string) {

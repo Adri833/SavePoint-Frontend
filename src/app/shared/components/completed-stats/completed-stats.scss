@@ -138,3 +138,23 @@
     background-position: -200% 0;
   }
 }
+
+
+@media (max-width: 768px) {
+  .big-number {
+    font-size: clamp(4rem, 14vw, 8rem);
+  }
+
+  .label {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+
+  .progress-bar {
+    height: 8px;
+  }
+
+  .progress-bar-skeleton {
+    height: 8px;
+  }
+}

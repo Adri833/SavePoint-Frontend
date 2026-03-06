@@ -31,7 +31,8 @@
           [years]="years"
           [selectedYear]="selectedYear"
           [disabled]="loading"
-          (yearChange)="onYearChange($event)">
+          (yearChange)="onYearChange($event)"
+        >
         </app-year-selector>
       }
     </div>
@@ -92,6 +93,15 @@
   }
 
   @if (!loading && playthroughs.length === 0) {
-    <div class="empty">No tienes partidas aún.</div>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <img src="/logo_savepoint_sinfondo.png" alt="empty-state" />
+      </div>
+      <h2 class="empty-title">Tu biblioteca está vacía</h2>
+      <p class="empty-subtitle">
+        Empieza a registrar tus partidas y lleva el control de todos tus juegos
+      </p>
+      <button class="empty-btn" (click)="openSearch()">Añadir primer juego</button>
+    </div>
   }
 </div>

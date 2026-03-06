@@ -18,7 +18,12 @@
       </div>
 
       <div class="right" [class.no-data]="!hasData" [style.--glow-intensity]="glowIntensity">
-        <img src="/trophy-platinum.png" alt="trophy-platinum" class="platinum-trophy" />
+        <img
+          src="/trophy-platinum.png"
+          alt="trophy-platinum"
+          class="platinum-trophy"
+          [class.trophy-no-data]="!hasData"
+        />
       </div>
     </div>
   }
