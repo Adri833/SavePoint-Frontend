@@ -15,15 +15,24 @@ export class AuthCallback implements OnInit {
     const params = new URLSearchParams(hash.substring(1));
     const type = params.get('type');
 
-    console.log('type:', type);
-
-    await supabase.auth.getSession();
-
     if (type === 'recovery') {
       this.router.navigate(['/reset-password']);
       return;
     }
 
-    this.router.navigate(['/home/biblioteca']);
+    const { data } = await supabase.auth.getSession();
+
+    if (data.session) {
+      this.router.navigate(['/home/biblioteca']);
+      return;
+    }
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        this.router.navigate(['/home/biblioteca']);
+      } else if (!session) {
+        this.router.navigate(['/landing']);
+      }
+    });
   }
 }

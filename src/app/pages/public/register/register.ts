@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { Logo } from '../../../shared/components/logo/logo';
 import { InputFieldComponent } from '../../../shared/components/input-field/input-field';
-import { GoogleButton } from "../../../shared/components/google-button/google-button";
+import { GoogleButton } from '../../../shared/components/google-button/google-button';
 
 @Component({
   selector: 'app-register',
@@ -50,13 +50,7 @@ export class Register {
     this.cdr.detectChanges();
 
     try {
-      const { user, session } = await this.authService.register(this.email, this.password);
-
-      if (!session) {
-        this.error = 'Te hemos enviado un email de confirmación. Revísalo para activar tu cuenta.';
-        return;
-      }
-
+      await this.authService.register(this.email, this.password);
       await this.router.navigate(['/home/biblioteca']);
     } catch (error: any) {
       this.error = this.mapRegisterError(error);

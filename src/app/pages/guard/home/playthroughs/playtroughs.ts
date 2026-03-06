@@ -8,6 +8,7 @@ import { GamesService } from '../../../../services/games.service';
 import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
 import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
+import { SearchService } from '../../../../services/search.service';
 
 @Component({
   selector: 'app-playthroughs',
@@ -32,6 +33,7 @@ export class Playthroughs implements OnInit {
   constructor(
     private playthroughService: PlaythroughService,
     private gamesService: GamesService,
+    private searchService: SearchService,
     private cd: ChangeDetectorRef,
   ) {}
 
@@ -158,5 +160,10 @@ export class Playthroughs implements OnInit {
     this.playthroughToFinish = p;
     this.closeDetailModal();
     this.loadLibrary();
+  }
+
+  openSearch() {
+    this.searchService.setQuery(' ');
+    this.searchService.triggerFocus();
   }
 }

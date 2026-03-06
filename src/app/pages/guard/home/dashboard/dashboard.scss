@@ -121,19 +121,14 @@
 
       app-completed-stats,
       app-platinum-stats {
+        padding: 24px;
         min-height: 160px;
       }
     }
   }
-}
 
-@media (max-width: 768px) {
   .dashboard-header {
     padding: 12px 12px 0;
     justify-content: center;
-  }
-
-  ::ng-deep app-platinum-stats img {
-    max-width: 100px;
   }
 }

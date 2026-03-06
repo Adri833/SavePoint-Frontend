@@ -211,6 +211,61 @@
   .dropped-badge {
     background: #d13625;
   }
+
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    text-align: center;
+    gap: 12px;
+    animation: fadeUp 0.5s ease forwards;
+
+    .empty-icon {
+      img {
+        width: 160px;
+        height: 160px;
+        object-fit: contain;
+        opacity: 0.6;
+        filter: grayscale(1);
+      }
+    }
+
+    .empty-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+
+    .empty-subtitle {
+      font-size: 1rem;
+      color: #666;
+      max-width: 360px;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .empty-btn {
+      margin-top: 8px;
+      padding: 12px 28px;
+      background: #7c5cff;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition:
+        background 0.2s ease,
+        transform 0.2s ease;
+
+      &:hover {
+        background: #6a4de0;
+      }
+    }
+  }
 }
 
 @keyframes spin {
