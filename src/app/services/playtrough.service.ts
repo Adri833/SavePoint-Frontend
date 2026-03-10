@@ -121,11 +121,16 @@ export class PlaythroughService {
     hours: number,
     completed: boolean,
     platinum: boolean,
+    online: boolean,
     notes?: string,
     ended_at?: Date,
   ) {
-    if (platinum && !completed) {
-      throw new Error('No se puede tener platino sin completar el juego');
+    if (platinum && !completed && !online) {
+      throw new Error('No se puede tener platino sin historia completada o juego online');
+    }
+
+    if (completed && online) {
+      throw new Error('No puede estar activo historia y online a la vez');
     }
 
     if (started_at > new Date()) {
@@ -151,6 +156,7 @@ export class PlaythroughService {
         hours,
         completed,
         platinum,
+        online,
         notes: notes ?? null,
         ...(ended_at ? { ended_at: ended_at.toISOString() } : {}),
       })
@@ -183,14 +189,15 @@ export class PlaythroughService {
     hours: number,
     completed: boolean,
     platinum: boolean,
+    online: boolean,
     notes?: string,
   ) {
-    if (platinum && !completed) {
-      throw new Error('No se puede tener platino sin completar el juego');
+    if (platinum && !completed && !online) {
+      throw new Error('No se puede tener platino sin historia completada o juego online');
     }
 
-    if (ended_at > new Date()) {
-      throw new Error('La fecha de finalización no puede ser futura');
+    if (completed && online) {
+      throw new Error('No puede estar activo historia y online a la vez');
     }
 
     const { data, error } = await supabase
@@ -201,6 +208,7 @@ export class PlaythroughService {
         hours,
         completed,
         platinum,
+        online,
         notes: notes ?? null,
       })
       .eq('id', id)

@@ -9,6 +9,7 @@ import { GameDTO } from '../../../../utils/game-mapper';
 import { PlaythroughDetailModal } from '../../../../shared/components/playthrough-detail-modal/playthrough-detail-modal';
 import { YearSelector } from '../../../../shared/components/year-selector/year-selector';
 import { SearchService } from '../../../../services/search.service';
+import { getPlaythroughState } from '../../../../utils/playthrough-state';
 
 @Component({
   selector: 'app-playthroughs',
@@ -18,7 +19,7 @@ import { SearchService } from '../../../../services/search.service';
   styleUrl: './playthroughs.scss',
 })
 export class Playthroughs implements OnInit {
-  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'dropped' = 'all';
+  selectedStatus: 'all' | 'playing' | 'finished' | 'platinum' | 'online' | 'dropped' = 'all';
   selectedPlaythrough: Playthrough | null = null;
 
   playthroughs: Playthrough[] = [];
@@ -94,6 +95,14 @@ export class Playthroughs implements OnInit {
   get filteredPlaythroughs(): Playthrough[] {
     const currentYear = new Date().getFullYear();
 
+    const statusMap: Record<string, string> = {
+      playing: 'playing',
+      platinum: 'platinum',
+      finished: 'completed',
+      online: 'online',
+      dropped: 'abandoned',
+    };
+
     return this.playthroughs.filter((p) => {
       let inYear: boolean;
 
@@ -104,18 +113,9 @@ export class Playthroughs implements OnInit {
           p.started_at.getFullYear() <= this.selectedYear && this.selectedYear <= currentYear;
       }
 
-      let statusMatch = true;
-      if (this.selectedStatus !== 'all') {
-        if (this.selectedStatus === 'platinum') {
-          statusMatch = p.status === 'finished' && p.completed && p.platinum;
-        } else if (this.selectedStatus === 'finished') {
-          statusMatch = p.status === 'finished' && p.completed && !p.platinum;
-        } else if (this.selectedStatus === 'playing') {
-          statusMatch = p.status === 'playing';
-        } else if (this.selectedStatus === 'dropped') {
-          statusMatch = p.status === 'finished' && !p.completed;
-        }
-      }
+      const statusMatch =
+        this.selectedStatus === 'all' ||
+        getPlaythroughState(p).cssClass === statusMap[this.selectedStatus];
 
       return inYear && statusMatch;
     });
@@ -140,13 +140,7 @@ export class Playthroughs implements OnInit {
     }, 10);
   }
 
-  getStatusClass(p: Playthrough) {
-    if (p.status === 'playing') return 'playing';
-    if (p.status === 'finished' && p.completed && p.platinum) return 'platinum';
-    if (p.status === 'finished' && p.completed) return 'completed';
-    if (p.status === 'finished' && !p.completed) return 'dropped';
-    return '';
-  }
+  getState = getPlaythroughState;
 
   openDetailModal(p: Playthrough) {
     this.selectedPlaythrough = p;

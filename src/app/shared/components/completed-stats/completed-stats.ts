@@ -9,6 +9,7 @@ import { ChangeDetectorRef, Component, Input, SimpleChanges } from '@angular/cor
 export class CompletedStats {
   @Input() completed = 0;
   @Input() abandoned = 0;
+  @Input() online = 0;
   @Input() loading = false;
 
   animatedCompleted = 0;
@@ -16,16 +17,25 @@ export class CompletedStats {
   constructor(private cdr: ChangeDetectorRef) {}
 
   get hasData(): boolean {
-    return this.completed + this.abandoned > 0;
+    return this.completed + this.abandoned + this.online > 0;
   }
 
   get totalConsidered(): number {
-    return this.completed + this.abandoned;
+    return this.completed + this.abandoned + this.online;
   }
 
   get completionRate(): number {
     if (this.totalConsidered === 0) return 0;
     return Math.round((this.completed / this.totalConsidered) * 100);
+  }
+
+  get onlineRate(): number {
+    if (this.totalConsidered === 0) return 0;
+    return Math.round((this.online / this.totalConsidered) * 100);
+  }
+
+  get abandonedRate(): number {
+    return 100 - this.completionRate - this.onlineRate;
   }
 
   ngOnChanges(changes: SimpleChanges) {

@@ -41,6 +41,7 @@
   background-color: #d13625;
   border-radius: 6px;
   overflow: hidden;
+  display: flex;
   transition: background-color 0.3s ease;
 }
 
@@ -64,12 +65,24 @@
     background-color 0.3s ease;
 }
 
+.online-seg {
+  height: 100%;
+  background-color: #e06b1a;
+  transition:
+    width 0.6s ease,
+    background-color 0.3s ease;
+}
+
 .progress-bar-container:hover .progress-bar {
   background-color: #f34b35;
 }
 
 .progress-bar-container:hover .completed {
   background-color: #31d665;
+}
+
+.progress-bar-container:hover .online-seg {
+  background-color: #f07830;
 }
 
 .tooltip {
@@ -138,7 +151,6 @@
     background-position: -200% 0;
   }
 }
-
 
 @media (max-width: 768px) {
   .big-number {

@@ -39,6 +39,14 @@
       }
     }
 
+    &.online {
+      border-color: rgba(224, 107, 26, 0.35);
+
+      &:hover {
+        border-color: rgba(224, 107, 26, 0.55);
+      }
+    }
+
     &.abandoned {
       border-color: rgba(255, 80, 80, 0.3);
 
@@ -105,7 +113,13 @@
       border: 1px solid rgba(46, 204, 113, 0.35);
     }
 
-    &:not(.completed) {
+    &.online {
+      background: rgba(224, 107, 26, 0.12);
+      color: #e06b1a;
+      border: 1px solid rgba(224, 107, 26, 0.35);
+    }
+
+    &:not(.completed):not(.online):not(.platinum) {
       background: rgba(255, 80, 80, 0.12);
       color: #ff6b6b;
       border: 1px solid rgba(255, 80, 80, 0.3);
@@ -153,6 +167,10 @@
     border-color: rgba(46, 204, 113, 0.35);
   }
 
+  .history-item.online .stat-pill {
+    border-color: rgba(224, 107, 26, 0.35);
+  }
+
   .history-item.abandoned .stat-pill {
     border-color: rgba(255, 80, 80, 0.3);
   }
@@ -178,6 +196,10 @@
 
   .history-item.completed .history-notes {
     border-left-color: rgba(46, 204, 113, 0.35);
+  }
+
+  .history-item.online .history-notes {
+    border-left-color: rgba(224, 107, 26, 0.5);
   }
 
   .history-item.abandoned .history-notes {

@@ -180,7 +180,13 @@
         0 0 10px rgba(39, 161, 76, 0.3);
     }
 
-    &.dropped {
+    &.online {
+      box-shadow:
+        0 0 0 3px #e06b1a,
+        0 0 10px rgba(255, 140, 66, 0.3);
+    }
+
+    &.abandoned {
       box-shadow:
         0 0 0 3px #d13625,
         0 0 10px rgba(209, 54, 37, 0.3);
@@ -208,7 +214,11 @@
     background: #27a14c;
   }
 
-  .dropped-badge {
+  .online-badge {
+    background: #e06b1a;
+  }
+
+  .abandoned-badge {
     background: #d13625;
   }
 
