@@ -44,17 +44,17 @@ export class CompletedStats {
     }
   }
 
-  private animateNumber(duration: number = 1200) {
+  private animateNumber(duration: number = 800) {
     const start = 0;
     const end = this.completed;
     const startTime = performance.now();
 
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+    const easeInOutQuad = (t: number) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
     const step = (currentTime: number) => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const easedProgress = easeOutCubic(progress);
+      const easedProgress = easeInOutQuad(progress);
 
       this.animatedCompleted = Math.floor(easedProgress * (end - start) + start);
 

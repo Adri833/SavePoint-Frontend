@@ -1,0 +1,235 @@
+@use '../../../../../styles/colors' as *;
+
+// ========== PAGE ==========
+
+.profile-page {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 24px 80px;
+}
+
+// ========== HERO ==========
+
+.profile-hero {
+  background: $color-bg-surface;
+  border: 1px solid $color-primary-15;
+  border-radius: 20px;
+  padding: 28px;
+  margin-bottom: 24px;
+}
+
+.hero-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  animation: fade-in-up 0.4s ease both;
+}
+
+// ========== AVATAR ==========
+
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 700;
+  color: $color-white;
+  box-shadow:
+    0 0 0 1px $color-primary-20,
+    0 8px 28px $color-primary-30;
+
+  &--img {
+    object-fit: cover;
+    background: none;
+  }
+
+  &.skeleton {
+    box-shadow: none;
+    border-radius: 50%;
+  }
+}
+
+// ========== META ==========
+
+.hero-info {
+  flex: 1;
+}
+
+.hero-username {
+  font-size: 26px;
+  font-weight: 700;
+  color: $color-white;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
+.hero-joined {
+  font-size: 12px;
+  color: $color-text-faint;
+  margin-top: 4px;
+  margin-bottom: 12px;
+}
+
+.hero-bio {
+  font-size: 14px;
+  color: $color-text-muted;
+  line-height: 1.6;
+  text-align: justify;
+  margin-bottom: 14px;
+
+  &.is-placeholder {
+    color: $color-text-faint;
+    font-style: italic;
+  }
+}
+
+// ========== TAGS ==========
+
+.hero-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  &--public {
+    background: $color-success-12;
+    color: $color-success;
+    border: 1px solid $color-success-20;
+  }
+
+  &--private {
+    background: $color-danger-08;
+    color: $color-danger;
+    border: 1px solid $color-danger-35;
+  }
+}
+
+// ========== ACTIONS ==========
+
+.hero-actions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  margin-left: auto;
+
+  .icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// ========== BUTTONS ==========
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    border-color 0.2s;
+
+  &-sm {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+
+  &-ghost {
+    background: $color-primary-08;
+    color: $color-text-primary;
+    border: 1px solid $color-primary-20;
+    &:hover {
+      background: $color-primary-20;
+    }
+  }
+
+  &-copied {
+    background: $color-success-12;
+    color: $color-success;
+    border: 1px solid $color-success-20;
+    pointer-events: none;
+  }
+}
+
+// ========== SKELETON ==========
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    $color-gray-dark 25%,
+    $color-gray-mid2 50%,
+    $color-gray-dark 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 8px;
+
+  &--text {
+    display: block;
+    border-radius: 6px;
+  }
+
+  &--username {
+    width: 200px;
+    height: 28px;
+    margin-bottom: 8px;
+  }
+  &--joined {
+    width: 130px;
+    height: 14px;
+    margin-bottom: 16px;
+  }
+  &--bio-1 {
+    width: 65%;
+    height: 14px;
+    margin-bottom: 8px;
+  }
+  &--bio-2 {
+    width: 45%;
+    height: 14px;
+  }
+}
+
+// ========== ANIMATION ==========
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
