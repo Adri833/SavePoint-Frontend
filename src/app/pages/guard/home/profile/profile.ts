@@ -2,12 +2,13 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Profile } from '../../../../models/profile.model';
 import { ProfileService } from '../../../../services/profile.service';
-import { EditProfileModal } from "../../../../shared/components/edit-profile-modal/edit-profile-modal";
+import { EditProfileModal } from '../../../../shared/components/edit-profile-modal/edit-profile-modal';
+import { FavoriteGamesComponent } from '../../../../shared/components/favorite-games/favorite-games';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, EditProfileModal],
+  imports: [CommonModule, EditProfileModal, FavoriteGamesComponent],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -16,6 +17,7 @@ export class ProfileComponent implements OnInit {
   loading = true;
   error: string | null = null;
   showEditModal = false;
+  linkCopied = false;
 
   constructor(
     private profileService: ProfileService,
@@ -53,8 +55,6 @@ export class ProfileComponent implements OnInit {
 
   /* ========== SHARE ========== */
 
-  linkCopied = false;
-
   async copyProfileLink() {
     if (!this.profile) return;
 
@@ -67,7 +67,6 @@ export class ProfileComponent implements OnInit {
     this.cdr.detectChanges();
     setTimeout(() => (this.linkCopied = false), 2000);
   }
-
 
   /* ========== HELPERS ========== */
 
