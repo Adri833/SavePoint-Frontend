@@ -4,11 +4,12 @@ import { Profile } from '../../../../models/profile.model';
 import { ProfileService } from '../../../../services/profile.service';
 import { EditProfileModal } from '../../../../shared/components/edit-profile-modal/edit-profile-modal';
 import { FavoriteGamesComponent } from '../../../../shared/components/favorite-games/favorite-games';
+import { RecentPlatinum } from "../../../../shared/components/recent-platinum/recent-platinum";
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, EditProfileModal, FavoriteGamesComponent],
+  imports: [CommonModule, EditProfileModal, FavoriteGamesComponent, RecentPlatinum],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })

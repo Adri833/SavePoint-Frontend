@@ -1,4 +1,6 @@
 ﻿@use '../../../../../styles/colors' as *;
+@use '../../../../../styles/mixins' as *;
+
 .game-detail-container {
   position: relative;
   min-height: 100vh;
@@ -129,7 +131,11 @@
           &.collapsed {
             max-height: 300px;
             mask-image: linear-gradient(to bottom, $color-overlay-black-100 70%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, $color-overlay-black-100 70%, transparent 100%);
+            -webkit-mask-image: linear-gradient(
+              to bottom,
+              $color-overlay-black-100 70%,
+              transparent 100%
+            );
           }
 
           &.expanded {
@@ -225,16 +231,8 @@
     &.skeleton {
       pointer-events: none;
 
-      [class^='sk-'] {
-        background: linear-gradient(
-          110deg,
-          $color-overlay-white-6 25%,
-          $color-overlay-white-12 37%,
-          $color-overlay-white-6 63%
-        );
-        background-size: 200% 100%;
-        animation: shimmer 1.4s infinite linear;
-        border-radius: 10px;
+      [class^='sk-']:not(.sk-images) {
+        @include skeleton;
       }
 
       .sk-title {
@@ -277,11 +275,6 @@
     }
 
     /* ---------- ANIMATIONS ---------- */
-    @keyframes shimmer {
-      to {
-        background-position: -200% 0;
-      }
-    }
 
     @keyframes fadeUp {
       from {

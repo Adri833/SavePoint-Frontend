@@ -1,10 +1,14 @@
 @use '../../../../styles/colors' as *;
+@use '../../../../styles/mixins' as *;
 
 // ========== SECTION ==========
 
 .favorites {
   animation: fade-in-up 0.4s 0.1s ease both;
   position: relative;
+  background: $color-bg-base;
+  padding: 32px 28px;
+  box-sizing: border-box;
 }
 
 .favorites-header {
@@ -19,6 +23,8 @@
   font-weight: 700;
   color: $color-white;
   margin: 0;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 // ========== GRID ==========
@@ -38,7 +44,7 @@
   position: relative;
   cursor: pointer;
   background: $color-bg-surface;
-  border: 1px solid $color-primary-15;
+  border: 1px solid $color-overlay-white-6;
   transition:
     border-color 0.2s,
     transform 0.2s,
@@ -59,7 +65,7 @@
       color: $color-text-secondary;
     }
     .fav-name {
-      font-size: 12px;
+      font-size: 11px;
     }
     .fav-remove {
       opacity: 1;
@@ -106,7 +112,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, $color-overlay-black-85 0%, transparent 60%);
+    background: linear-gradient(to top, $color-overlay-black-40 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.2s;
     border-radius: inherit;
@@ -125,7 +131,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: font-size 0.2s ease;
-  text-shadow: 0 1px 6px $color-overlay-black-85;
+  text-shadow: 0 1px 6px $color-overlay-black-40;
 }
 
 .fav-remove {
@@ -167,17 +173,10 @@
 // ========== SKELETON ==========
 
 .fav-skeleton {
+  @include skeleton;
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  background: linear-gradient(
-    90deg,
-    $color-gray-dark 25%,
-    $color-gray-mid2 50%,
-    $color-gray-dark 75%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite linear;
 }
 
 // ========== PICKER WRAP ==========
@@ -223,8 +222,6 @@
   color: $color-white;
 }
 
-// ========== PICKER SEARCH ==========
-
 .picker-search {
   padding: 14px 18px 0;
 }
@@ -263,8 +260,6 @@
     border-color: $color-primary-45;
   }
 }
-
-// ========== PICKER RESULTS ==========
 
 .picker-results {
   padding: 10px;
@@ -343,15 +338,6 @@
 }
 
 // ========== ANIMATIONS ==========
-
-@keyframes shimmer {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
 
 @keyframes spin {
   to {
