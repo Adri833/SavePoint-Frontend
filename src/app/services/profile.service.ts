@@ -46,11 +46,11 @@ export class ProfileService {
     if (!data) return null;
 
     if (!user) {
-      return data.is_public ? this.mapProfile(data) : null;
+      if (!data.is_public) throw new Error('PRIVATE_PROFILE');
+      return this.mapProfile(data);
     }
 
     if (data.id === user.id) return this.mapProfile(data);
-
     if (data.is_public) return this.mapProfile(data);
 
     const { data: friendship } = await supabase
@@ -62,7 +62,9 @@ export class ProfileService {
       )
       .maybeSingle();
 
-    return friendship ? this.mapProfile(data) : null;
+    if (friendship) return this.mapProfile(data);
+
+    throw Object.assign(new Error('PRIVATE_PROFILE'), { profile: this.mapProfile(data) });
   }
 
   async isUsernameAvailable(username: string): Promise<boolean> {

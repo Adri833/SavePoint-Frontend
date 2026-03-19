@@ -2,7 +2,7 @@
   <!-- Header -->
   <div class="widget-header">
     <div class="header-left">
-      <img class="trophy-icon" src="/trophy-platinum.png">
+      <img class="trophy-icon" src="/trophy-platinum.png" />
       <h2 class="widget-title">Últimos Platinos</h2>
     </div>
     <button class="see-all-btn" (click)="goToAll()">
@@ -18,7 +18,7 @@
     <div class="list-container">
       @for (e of entries; track e.playthrough.id; let i = $index) {
         <div class="platinum-item" [style.animation-delay]="animationDelay(i)">
-          <div class="item-rank">{{ i + 1 }}</div>
+          <div class="item-rank">{{ totalPlatinums - i }}</div>
 
           @if (e.gameCover) {
             <div class="item-cover">
@@ -44,7 +44,7 @@
   <!-- Empty -->
   @if (!loading && entries.length === 0) {
     <div class="empty-state">
-      <img class="empty-icon" src="/logo_savepoint_sinfondo.png" alt="empty-icon">
+      <img class="empty-icon" src="/logo_savepoint_sinfondo.png" alt="empty-icon" />
       <p>Aún no tienes ningún platino</p>
     </div>
   }

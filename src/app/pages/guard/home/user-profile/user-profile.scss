@@ -130,8 +130,6 @@
 
 // ========== BUTTONS ==========
 
-// ========== BUTTONS ==========
-
 .btn {
   display: inline-flex;
   align-items: center;
@@ -169,8 +167,51 @@
   }
 }
 
-.btn--no-slide:hover svg {
-  transform: none;
+.btn-friend {
+  background: $color-primary;
+  color: $color-white;
+  border: 1px solid $color-primary;
+
+  &:hover:not(:disabled) {
+    background: $color-primary-dark;
+    border-color: $color-primary-dark;
+
+    svg {
+      transform: none;
+    }
+  }
+}
+
+.btn-pending {
+  background: $color-overlay-white-5;
+  color: $color-text-faint;
+  border: 1px solid $color-overlay-white-8;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-08;
+    color: $color-danger;
+    border-color: $color-danger-35;
+
+    svg {
+      transform: none;
+    }
+  }
+}
+
+.btn-friend-added {
+  background: $color-success-12;
+  color: $color-success;
+  border: 1px solid $color-success-20;
+
+  &:hover:not(:disabled) {
+    background: $color-danger-08;
+    color: $color-danger;
+    border-color: $color-danger-35;
+
+    svg {
+      transform: none;
+    }
+  }
 }
 
 // ========== SKELETON ==========
@@ -234,6 +275,38 @@ app-recent-platinum {
 }
 
 // ========== NOT FOUND / PRIVATE ==========
+
+.private-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 80px 24px;
+  gap: 16px;
+  animation: fade-in-up 0.4s 0.1s ease both;
+}
+
+.private-icon {
+  width: 120px;
+  height: auto;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.private-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: $color-text-muted;
+  margin: 0;
+}
+
+.private-desc {
+  font-size: 17px;
+  color: $color-text-faint;
+  margin: 0;
+  max-width: 420px;
+  line-height: 1.6;
+}
 
 .not-found {
   min-height: 100vh;

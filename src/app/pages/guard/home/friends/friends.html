@@ -1,7 +1,7 @@
 <div class="friends-page">
   @if (loading) {
     <div class="page-loading">
-      <div class="spinner spinner--lg"></div>
+      <div class="spinner"></div>
     </div>
   } @else {
     <!-- ========== SEARCH ========== -->
@@ -46,7 +46,7 @@
 
       @if (searchLoading) {
         <div class="search-spinner-wrap">
-          <span class="spinner"></span>
+          <span class="spinner spinner--sm"></span>
         </div>
       }
 
@@ -68,7 +68,7 @@
                 @switch (getFriendshipStatus(result)) {
                   @case ('none') {
                     <button
-                      class="btn btn-primary btn-sm"
+                      class="btn btn-primary"
                       (click)="sendRequest(result)"
                       [disabled]="isLoading(result.id)"
                     >
@@ -77,6 +77,9 @@
                   }
                   @case ('pending_sent') {
                     <span class="status-badge status-pending">Pendiente</span>
+                  }
+                  @case ('pending_received') {
+                    <span class="status-badge status-received">Te ha enviado solicitud</span>
                   }
                   @case ('accepted') {
                     <span class="status-badge status-friend">Amigo</span>
@@ -116,18 +119,10 @@
                 <span class="user-name">{{ f.friend_username }}</span>
               </div>
               <div class="user-actions">
-                <button
-                  class="btn btn-primary btn-sm"
-                  (click)="accept(f)"
-                  [disabled]="isLoading(f.id)"
-                >
+                <button class="btn btn-primary" (click)="accept(f)" [disabled]="isLoading(f.id)">
                   Aceptar
                 </button>
-                <button
-                  class="btn btn-ghost btn-sm"
-                  (click)="remove(f)"
-                  [disabled]="isLoading(f.id)"
-                >
+                <button class="btn btn-ghost" (click)="remove(f)" [disabled]="isLoading(f.id)">
                   Rechazar
                 </button>
               </div>
@@ -154,40 +149,24 @@
           <p class="empty-subtitle">Busca jugadores por su nombre de usuario para añadirlos</p>
         </div>
       } @else {
-        <div class="friends-list">
-          @for (f of friends; track f.id) {
-            <div class="user-row" [class.loading]="isLoading(f.id)">
-              <div class="user-avatar" (click)="goToProfile(f.friend_username)">
+        <div class="friends-grid">
+          @for (f of friends; track f.id; let i = $index) {
+            <div
+              class="friend-card"
+              [class.card-loading]="isLoading(f.id)"
+              [style.animation-delay]="i * 50 + 'ms'"
+              (click)="goToProfile(f.friend_username)"
+            >
+              <div class="friend-card__cover">
                 @if (f.friend_avatar) {
                   <img [src]="f.friend_avatar" [alt]="f.friend_username" />
                 } @else {
-                  <span>{{ avatarInitial(f.friend_username) }}</span>
+                  <span class="friend-card__initial">{{ avatarInitial(f.friend_username) }}</span>
                 }
               </div>
-              <div class="user-info" (click)="goToProfile(f.friend_username)">
-                <span class="user-name">{{ f.friend_username }}</span>
-              </div>
-              <div class="user-actions">
-                <button class="btn btn-ghost btn-sm" (click)="goToBiblioteca(f.friend_username)">
-                  Biblioteca
-                  <svg
-                    width="11"
-                    height="11"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M3 8h10M9 4l4 4-4 4" />
-                  </svg>
-                </button>
-                <button
-                  class="btn btn-danger btn-sm"
-                  (click)="remove(f)"
-                  [disabled]="isLoading(f.id)"
-                >
-                  Eliminar
-                </button>
+              <div class="friend-card__body">
+                <p class="friend-card__name">{{ f.friend_username }}</p>
+                <span class="friend-card__label">Amigo</span>
               </div>
             </div>
           }
@@ -199,33 +178,44 @@
     @if (pendingSent.length > 0) {
       <hr class="divider" />
       <section class="friends-section">
-        <h2 class="section-title">Solicitudes enviadas</h2>
-        <div class="friends-list">
-          @for (f of pendingSent; track f.id) {
-            <div class="user-row" [class.loading]="isLoading(f.id)">
-              <div class="user-avatar" (click)="goToProfile(f.friend_username)">
+        <h2 class="section-title">
+          Solicitudes enviadas
+          <span class="badge-count">{{ pendingSent.length }}</span>
+        </h2>
+        <div class="friends-grid">
+          @for (f of pendingSent; track f.id; let i = $index) {
+            <div
+              class="friend-card"
+              [class.card-loading]="isLoading(f.id)"
+              [style.animation-delay]="i * 50 + 'ms'"
+              (click)="goToProfile(f.friend_username)"
+            >
+              <div class="friend-card__cover">
                 @if (f.friend_avatar) {
                   <img [src]="f.friend_avatar" [alt]="f.friend_username" />
                 } @else {
-                  <span>{{ avatarInitial(f.friend_username) }}</span>
+                  <span class="friend-card__initial">{{ avatarInitial(f.friend_username) }}</span>
                 }
               </div>
-              <div class="user-info" (click)="goToProfile(f.friend_username)">
-                <span class="user-name">{{ f.friend_username }}</span>
-              </div>
-              <div class="user-actions">
-                <button
-                  class="btn btn-ghost btn-sm"
-                  (click)="cancelRequest(f)"
-                  [disabled]="isLoading(f.id)"
-                >
-                  Cancelar
-                </button>
+              <div class="friend-card__body">
+                <p class="friend-card__name">{{ f.friend_username }}</p>
+                <span class="friend-card__label friend-card__label--pending">Pendiente</span>
               </div>
             </div>
           }
         </div>
       </section>
     }
+  }
+
+  @if (friendToRemove) {
+    <app-confirm-modal
+      title="Eliminar amigo"
+      [message]="'¿Quieres eliminar a ' + friendToRemove.friend_username + ' de tus amigos?'"
+      confirmText="Eliminar"
+      cancelText="Cancelar"
+      (confirm)="remove(friendToRemove)"
+      (cancel)="friendToRemove = null"
+    />
   }
 </div>

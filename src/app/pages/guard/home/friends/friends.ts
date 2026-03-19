@@ -1,11 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { debounceTime, distinctUntilChanged, Subject, switchMap, of, catchError, from } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, of, catchError, from } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FriendshipService } from '../../../../services/friendship.service';
 import { FriendshipWithProfile, Friendship } from '../../../../models/friendship.model';
 import { Profile } from '../../../../models/profile.model';
+import { ConfirmModal } from '../../../../shared/components/confirm-modal/confirm-modal';
 
 interface SearchResult extends Profile {
   friendship: Friendship | null;
@@ -14,23 +16,25 @@ interface SearchResult extends Profile {
 @Component({
   selector: 'app-friends',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ConfirmModal],
   templateUrl: './friends.html',
   styleUrl: './friends.scss',
 })
-export class Friends implements OnInit {
+export class Friends implements OnInit, OnDestroy {
   friends: FriendshipWithProfile[] = [];
   pendingReceived: FriendshipWithProfile[] = [];
   pendingSent: FriendshipWithProfile[] = [];
+  friendToRemove: FriendshipWithProfile | null = null;
 
   searchQuery = '';
   searchResults: SearchResult[] = [];
   searchLoading = false;
 
   loading = true;
-  actionLoading: Set<string> = new Set();
+  actionLoading = new Set<string>();
 
   private search$ = new Subject<string>();
+  private searchSub!: Subscription;
 
   constructor(
     private friendshipService: FriendshipService,
@@ -41,6 +45,10 @@ export class Friends implements OnInit {
   async ngOnInit() {
     this.setupSearch();
     await this.loadAll();
+  }
+
+  ngOnDestroy() {
+    this.searchSub?.unsubscribe();
   }
 
   // ========== LOAD ==========
@@ -55,7 +63,6 @@ export class Friends implements OnInit {
         this.friendshipService.getPendingReceived(),
         this.friendshipService.getPendingSent(),
       ]);
-
       this.friends = friends;
       this.pendingReceived = received;
       this.pendingSent = sent;
@@ -70,7 +77,7 @@ export class Friends implements OnInit {
   // ========== SEARCH ==========
 
   private setupSearch() {
-    this.search$
+    this.searchSub = this.search$
       .pipe(
         debounceTime(350),
         distinctUntilChanged(),
@@ -89,13 +96,12 @@ export class Friends implements OnInit {
         }),
       )
       .subscribe(async (profiles: any[]) => {
-        const results: SearchResult[] = await Promise.all(
+        this.searchResults = await Promise.all(
           profiles.map(async (p) => ({
             ...p,
             friendship: await this.friendshipService.getFriendshipWith(p.id),
           })),
         );
-        this.searchResults = results;
         this.searchLoading = false;
         this.cdr.detectChanges();
       });
@@ -114,86 +120,47 @@ export class Friends implements OnInit {
   // ========== ACTIONS ==========
 
   async sendRequest(profile: SearchResult) {
-    this.actionLoading.add(profile.id);
-    this.cdr.detectChanges();
-
-    try {
-      const friendship = await this.friendshipService.sendRequest(profile.id);
-      profile.friendship = friendship;
+    await this.withLoading(profile.id, async () => {
+      profile.friendship = await this.friendshipService.sendRequest(profile.id);
       await this.loadAll();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.actionLoading.delete(profile.id);
-      this.cdr.detectChanges();
-    }
+      this.clearSearch();
+    });
   }
 
   async accept(f: FriendshipWithProfile) {
-    this.actionLoading.add(f.id);
-    this.cdr.detectChanges();
-
-    try {
+    await this.withLoading(f.id, async () => {
       await this.friendshipService.accept(f.id);
       await this.loadAll();
-    } finally {
-      this.actionLoading.delete(f.id);
-      this.cdr.detectChanges();
-    }
-  }
-
-  async reject(f: FriendshipWithProfile) {
-    this.actionLoading.add(f.id);
-    this.cdr.detectChanges();
-
-    try {
-      await this.friendshipService.remove(f.id);
-      await this.loadAll();
-    } finally {
-      this.actionLoading.delete(f.id);
-      this.cdr.detectChanges();
-    }
+    });
   }
 
   async remove(f: FriendshipWithProfile) {
-    this.actionLoading.add(f.id);
-    this.cdr.detectChanges();
-
-    try {
+    this.friendToRemove = null;
+    await this.withLoading(f.id, async () => {
       await this.friendshipService.remove(f.id);
       await this.loadAll();
-    } finally {
-      this.actionLoading.delete(f.id);
-      this.cdr.detectChanges();
-    }
+    });
   }
 
-  async cancelRequest(f: FriendshipWithProfile) {
-    this.actionLoading.add(f.id);
+  confirmRemove(f: FriendshipWithProfile) {
+    this.friendToRemove = f;
     this.cdr.detectChanges();
-
-    try {
-      await this.friendshipService.remove(f.id);
-      await this.loadAll();
-      const result = this.searchResults.find((r) => r.id === f.friend_id);
-      if (result) result.friendship = null;
-    } finally {
-      this.actionLoading.delete(f.id);
-      this.cdr.detectChanges();
-    }
-  }
-
-  // ========== NAVIGATION ==========
-
-  goToProfile(username: string) {
-    this.router.navigate(['/home/u', username]);
-  }
-
-  goToBiblioteca(username: string) {
-    this.router.navigate(['/home/u', username, 'biblioteca']);
   }
 
   // ========== HELPERS ==========
+
+  private async withLoading(id: string, fn: () => Promise<void>) {
+    this.actionLoading.add(id);
+    this.cdr.detectChanges();
+    try {
+      await fn();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      this.actionLoading.delete(id);
+      this.cdr.detectChanges();
+    }
+  }
 
   isLoading(id: string): boolean {
     return this.actionLoading.has(id);
@@ -209,9 +176,14 @@ export class Friends implements OnInit {
     if (!result.friendship) return 'none';
     if (result.friendship.status === 'accepted') return 'accepted';
     if (result.friendship.status === 'pending') {
-      const isSent = this.pendingSent.some((f) => f.friend_id === result.id);
-      return isSent ? 'pending_sent' : 'pending_received';
+      return this.pendingSent.some((f) => f.friend_id === result.id)
+        ? 'pending_sent'
+        : 'pending_received';
     }
     return 'none';
+  }
+
+  goToProfile(username: string) {
+    this.router.navigate(['home/u', username]);
   }
 }

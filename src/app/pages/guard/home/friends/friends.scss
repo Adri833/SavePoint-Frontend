@@ -1,13 +1,14 @@
 @use '../../../../../styles/colors' as *;
 @use '../../../../../styles/mixins' as *;
 
+// ========== PAGE ==========
+
 .friends-page {
-  max-width: 680px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 40px 24px 80px;
   display: flex;
   flex-direction: column;
-  gap: 0;
   color: $color-white;
   position: relative;
   min-height: 80vh;
@@ -29,14 +30,11 @@
   border: none;
 }
 
-// ========== SECTION ==========
+// ========== SECTIONS ==========
 
-.friends-section {
-  animation: fade-in-up 0.4s ease both;
-}
-
+.friends-section,
 .search-section {
-  animation: fade-in-up 0.3s ease both;
+  animation: fade-in-up 0.4s ease both;
 }
 
 .section-title {
@@ -163,14 +161,11 @@
     background: $color-primary-08;
     border-color: $color-primary-20;
   }
-
   &.loading {
     opacity: 0.5;
     pointer-events: none;
   }
 }
-
-// ========== AVATAR ==========
 
 .user-avatar {
   width: 42px;
@@ -201,8 +196,6 @@
   }
 }
 
-// ========== USER INFO ==========
-
 .user-info {
   flex: 1;
   min-width: 0;
@@ -224,13 +217,104 @@
   }
 }
 
-// ========== USER ACTIONS ==========
-
 .user-actions {
   display: flex;
   gap: 6px;
   align-items: center;
   flex-shrink: 0;
+}
+
+// ========== FRIEND CARDS GRID ==========
+
+.friends-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.friend-card {
+  display: flex;
+  flex-direction: column;
+  background: $color-overlay-white-3;
+  border: 1px solid $color-overlay-white-5;
+  border-radius: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    border-color 0.15s,
+    opacity 0.2s,
+    transform 0.15s;
+  animation: fade-in-up 0.35s ease both;
+
+  &:hover {
+    border-color: $color-primary-20;
+    transform: translateY(-2px);
+  }
+  &.card-loading {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  &__cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, $color-primary-dark, $color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .friend-card:hover & img {
+      transform: scale(1.04);
+    }
+  }
+
+  &__initial {
+    font-size: 32px;
+    font-weight: 700;
+    color: $color-white;
+    user-select: none;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    padding: 8px 10px 10px;
+    gap: 2px;
+  }
+
+  &__name {
+    font-size: 13px;
+    font-weight: 600;
+    color: $color-text-primary;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    transition: color 0.15s;
+
+    .friend-card:hover & {
+      color: $color-white;
+    }
+  }
+
+  &__label {
+    font-size: 11px;
+    color: $color-text-faint;
+    margin: 0;
+
+    &--pending {
+      color: $color-warning;
+    }
+  }
 }
 
 // ========== STATUS BADGES ==========
@@ -299,15 +383,6 @@
       background: $color-primary-20;
     }
   }
-
-  &-danger {
-    background: $color-danger-08;
-    color: $color-danger;
-    border: 1px solid $color-danger-35;
-    &:hover:not(:disabled) {
-      background: $color-danger-alt-12;
-    }
-  }
 }
 
 // ========== SPINNER ==========
@@ -319,6 +394,12 @@
   border-top-color: $color-primary;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+
+  &--sm {
+    width: 24px;
+    height: 24px;
+    border-width: 3px;
+  }
 }
 
 // ========== EMPTY STATE ==========
@@ -354,18 +435,16 @@
   line-height: 1.5;
 }
 
-// ========== SKELETON ==========
+// ========== PAGE LOADING ==========
 
-.skeleton-list {
+.page-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.skeleton-row {
-  @include skeleton;
-  height: 62px;
-  border-radius: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
 // ========== ANIMATIONS ==========
@@ -387,14 +466,16 @@
   }
 }
 
-// ========== PAGE LOADING ==========
+// ========== RESPONSIVE ==========
 
-.page-loading {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (max-width: 700px) {
+  .friends-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 400px) {
+  .friends-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

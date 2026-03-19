@@ -140,6 +140,25 @@ export class PlaythroughService {
     }));
   }
 
+  async countPlatinums(): Promise<number> {
+    const userId = await this.getUserId();
+    const { count } = await supabase
+      .from('playthroughs')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('platinum', true);
+    return count ?? 0;
+  }
+
+  async countPlatinumsByUserId(userId: string): Promise<number> {
+    const { count } = await supabase
+      .from('playthroughs')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('platinum', true);
+    return count ?? 0;
+  }
+
   /* ========== CREATE ========== */
 
   async start(gameId: number, startedAt: Date, notes?: string) {

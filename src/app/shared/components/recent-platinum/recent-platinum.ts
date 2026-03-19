@@ -22,6 +22,7 @@ export class RecentPlatinum implements OnInit {
   @Input() userId?: string;
 
   entries: PlatinumEntry[] = [];
+  totalPlatinums = 0;
   loading = true;
   error: string | null = null;
 
@@ -36,9 +37,16 @@ export class RecentPlatinum implements OnInit {
 
   async ngOnInit() {
     try {
-      const playthroughs = this.userId
-        ? await this.playthroughService.getRecentPlatinumsByUserId(this.userId, 6)
-        : await this.playthroughService.getRecentPlatinums(6);
+      const [playthroughs, total] = await Promise.all([
+        this.userId
+          ? this.playthroughService.getRecentPlatinumsByUserId(this.userId, 6)
+          : this.playthroughService.getRecentPlatinums(6),
+        this.userId
+          ? this.playthroughService.countPlatinumsByUserId(this.userId)
+          : this.playthroughService.countPlatinums(),
+      ]);
+
+      this.totalPlatinums = total;
 
       if (playthroughs.length === 0) {
         this.loading = false;
