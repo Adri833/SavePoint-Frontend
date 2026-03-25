@@ -58,15 +58,28 @@ export class Userplaythroughs implements OnInit {
       this.playthroughs = await this.playthroughService.getAllByUserId(this.profile.id);
 
       if (this.playthroughs.length) {
-        const gameRequests = this.playthroughs.map((p) => this.gamesService.getGameById(p.game_id));
-        const games: GameDTO[] = await firstValueFrom(forkJoin(gameRequests));
+        // Fallback para partidas antiguas sin datos de juego
+        const orphans = this.playthroughs.filter((p) => !p.game_name);
+        if (orphans.length) {
+          const requests = orphans.map((p) => this.gamesService.getGameById(p.game_id));
+          const games: GameDTO[] = await firstValueFrom(forkJoin(requests));
+          games.forEach((game, i) => {
+            orphans[i].game_name = game.name;
+            orphans[i].game_background = game.background_image ?? '';
+            orphans[i].game_released = game.released ?? '';
+          });
 
-        games.forEach((game, i) => {
-          const p = this.playthroughs[i];
-          p.game_name = game.name;
-          p.game_background = game.background_image ?? '';
-          p.game_released = game.released ?? '';
-        });
+          await Promise.all(
+            orphans.map((p) =>
+              this.playthroughService.updateGameInfo(
+                p.id,
+                p.game_name,
+                p.game_background,
+                p.game_released ?? '',
+              ),
+            ),
+          );
+        }
 
         this.playthroughs.sort(
           (a, b) => new Date(b.started_at).getTime() - new Date(a.started_at).getTime(),

@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { PlaythroughService } from '../../../services/playtrough.service';
-import { GamesService } from '../../../services/games.service';
-import { catchError, forkJoin, of } from 'rxjs';
 import { Playthrough } from '../../../models/playtrough.model';
 import { AllPlatinumModal } from '../all-platinum-modal/all-platinum-modal';
 
@@ -31,7 +29,6 @@ export class RecentPlatinum implements OnInit {
 
   constructor(
     private playthroughService: PlaythroughService,
-    private gamesService: GamesService,
     private cdr: ChangeDetectorRef,
   ) {}
 
@@ -54,26 +51,13 @@ export class RecentPlatinum implements OnInit {
         return;
       }
 
-      const gameRequests = playthroughs.map((p) =>
-        this.gamesService.getGameById(p.game_id).pipe(catchError(() => of(null))),
-      );
-
-      forkJoin(gameRequests).subscribe({
-        next: (games) => {
-          this.entries = playthroughs.map((p, i) => ({
-            playthrough: p,
-            gameName: games[i]?.name ?? `Game #${p.game_id}`,
-            gameCover: games[i]?.background_image ?? null,
-          }));
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-        error: (e) => {
-          this.error = e.message ?? 'Error al cargar los juegos';
-          this.loading = false;
-          this.cdr.detectChanges();
-        },
-      });
+      this.entries = playthroughs.map((p) => ({
+        playthrough: p,
+        gameName: p.game_name ?? `Game #${p.game_id}`,
+        gameCover: p.game_background ?? null,
+      }));
+      this.loading = false;
+      this.cdr.detectChanges();
     } catch (e: any) {
       this.error = e.message ?? 'Error al cargar los platinos';
       this.loading = false;

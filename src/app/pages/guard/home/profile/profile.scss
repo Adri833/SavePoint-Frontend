@@ -209,6 +209,27 @@
   }
 }
 
+// ========== FOOTER ==========
+.page-footer {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 0;
+}
+
+.logout-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: $color-text-dimmer;
+  font-size: 14px;
+  padding: 0;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $color-danger;
+  }
+}
+
 // ========== SKELETON ==========
 
 .skeleton {

@@ -53,28 +53,18 @@ export class DashboardService {
     const playthroughs = await this.playthroughService.getAllByUser();
     const filtered = this.filterByYear(playthroughs, year);
 
-    const map = new Map<number, number>();
+    const map = new Map<number, { gameName: string; hours: number }>();
 
     filtered.forEach((p) => {
-      const gameId = p.game_id;
-      const hours = p.hours ?? 0;
-      map.set(gameId, (map.get(gameId) ?? 0) + hours);
+      const existing = map.get(p.game_id);
+      const hours = (existing?.hours ?? 0) + (p.hours ?? 0);
+      map.set(p.game_id, {
+        gameName: p.game_name ?? `Game #${p.game_id}`,
+        hours,
+      });
     });
 
-    const entries = Array.from(map.entries());
-
-    const games = await Promise.all(
-      entries.map(async ([gameId, hours]) => {
-        try {
-          const game = await firstValueFrom(this.gamesService.getGameById(gameId));
-          return { gameName: game.name, hours };
-        } catch {
-          return { gameName: 'Unknown', hours };
-        }
-      }),
-    );
-
-    return games;
+    return Array.from(map.values());
   }
 
   /* ========== HELPERS ========== */

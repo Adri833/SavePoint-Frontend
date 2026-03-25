@@ -94,6 +94,9 @@ export class FavoriteGamesComponent implements OnInit, OnDestroy {
   }
 
   onSearchInput() {
+    if (this.searchQuery.trim()) {
+      this.searchLoading = true;
+    }
     this.search$.next(this.searchQuery);
     this.cdr.detectChanges();
   }

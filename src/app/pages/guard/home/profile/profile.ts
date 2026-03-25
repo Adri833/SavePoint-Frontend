@@ -5,6 +5,8 @@ import { ProfileService } from '../../../../services/profile.service';
 import { EditProfileModal } from '../../../../shared/components/edit-profile-modal/edit-profile-modal';
 import { FavoriteGamesComponent } from '../../../../shared/components/favorite-games/favorite-games';
 import { RecentPlatinum } from '../../../../shared/components/recent-platinum/recent-platinum';
+import { AuthService } from '../../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -24,6 +26,8 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   async ngOnInit() {
@@ -60,7 +64,6 @@ export class ProfileComponent implements OnInit {
   async copyProfileLink() {
     if (!this.profile) return;
 
-    // TODO: actualizar cuando exista la ruta de perfil público
     const url = `${window.location.origin}/u/${this.profile.username}`;
 
     await navigator.clipboard.writeText(url);
@@ -98,5 +101,10 @@ export class ProfileComponent implements OnInit {
       month: 'long',
       year: 'numeric',
     });
+  }
+
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/']);
   }
 }

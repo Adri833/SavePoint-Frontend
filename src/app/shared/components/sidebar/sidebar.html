@@ -50,10 +50,12 @@
   </nav>
 
   <div class="sidebar-footer">
-    <button class="logout-btn" (click)="logout()">
-      @if (!collapsed) {
-        <span>Cerrar sesión</span>
-      }
-    </button>
+    <app-social-icon
+      icon="/discord.svg"
+      href="https://discord.gg/FfSDhxhV7p"
+      label="¡Únete a nuestro Discord!"
+      [showLabel]="!collapsed"
+      target="_blank"
+    ></app-social-icon>
   </div>
 </aside>
